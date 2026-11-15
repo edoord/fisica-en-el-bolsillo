@@ -1464,7 +1464,8 @@ $("v-play").addEventListener("click",function(){if(vid.paused){vid.playbackRate=
 vid.addEventListener("ended",function(){$("v-play").textContent="Ver lento"});
 function paintMarks(){$("v-start-o").textContent=mark.s===null?"sin marcar":mark.s.toFixed(3)+" s";$("v-end-o").textContent=mark.e===null?"sin marcar":mark.e.toFixed(3)+" s";
   var ok=mark.s!==null&&mark.e!==null&&mark.e-mark.s>=0.1;$("v-save").disabled=!ok;$("v-save").textContent=ok?"Guardar "+f2(mark.e-mark.s)+" s":"Guardar este tiempo";
-  $("v-err").textContent=(mark.s!==null&&mark.e!==null&&!ok)?"La meta debe quedar después de la salida.":""}
+  var dd=num($("d-d").value),tt=ok?mark.e-mark.s:0,imp=ok&&dd>0&&2*dd/(tt*tt)>G;
+  $("v-err").textContent=(mark.s!==null&&mark.e!==null&&!ok)?"La meta debe quedar después de la salida.":imp?"Ojo: "+f2(tt)+" s es demasiado poco para "+f2(dd)+" m (daría más que una caída libre). Revisa las dos marcas con «Ver».":""}
 $("v-start").addEventListener("click",function(){vid.pause();mark.s=vid.currentTime;paintMarks()});
 $("v-goS").addEventListener("click",function(){if(mark.s!==null){vid.pause();vid.currentTime=mark.s}});
 $("v-goE").addEventListener("click",function(){if(mark.e!==null){vid.pause();vid.currentTime=mark.e}});
@@ -1525,6 +1526,8 @@ $("row-save").addEventListener("click",function(){var th=num($("d-theta").value)
   if(!(th>=1&&th<=60)){er.textContent="Falta el ángulo: fíjalo con el sensor o escríbelo en grados (entre 1 y 60).";$("d-theta").focus();return}
   if(!(d>=0.2&&d<=3)){er.textContent="Escribe la distancia en metros, entre 0.20 y 3. Por ejemplo, 80 cm se escribe 0.80.";$("d-d").focus();return}
   if(S.times.length<1){er.textContent="Falta el tiempo: guarda al menos un descenso de esta inclinación.";return}
+  var tmChk=S.times.reduce(function(a,x){return a+x.t},0)/S.times.length,aChk=2*d/(tmChk*tmChk);
+  if(aChk>G){er.textContent="Con d = "+f2(d)+" m, un tiempo de "+f2(tmChk)+" s daría "+Math.round(aChk)+" m/s², más que una caída libre (9.81 m/s²). Eso no puede pasar en una rampa: revisa las marcas de salida y meta en el video, o la distancia.";return}
   if(S.rows.some(function(r){return Math.abs(r.th-th)<1.5})){er.textContent="Ya tienes una inclinación casi igual. Cambia la altura de la tabla al menos 2°.";return}
   if(S.backup){S.rows=[];S.backup=false}
   var srcs=S.times.map(function(x){return x.src});
@@ -1547,7 +1550,8 @@ function renderAnaliza(){var has=S.rows.length>=1;$("an-empty").hidden=has;$("an
   $("an-res").hidden=!S.mano.ok;if(S.mano.ok)paintAnalysis(cs)}
 $("mano-go").addEventListener("click",function(){var cs=allCalc(),c0=cs[0],v=num($("mano-in").value),el=$("mano-fb");
   if(!(v>0)){fb(el,"ojo","Escribe tu resultado.","Usa punto decimal, por ejemplo 1.25.");return}
-  if(Math.abs(v-c0.med)/c0.med<=0.03){S.mano.ok=true;save();renderAnaliza();return}
+  var shown=2*num(f2(c0.d))/Math.pow(num(f2(c0.tm)),2);
+  if(Math.abs(v-c0.med)/c0.med<=0.03||Math.abs(v-shown)/shown<=0.03){S.mano.ok=true;save();renderAnaliza();return}
   S.mano.tries++;save();
   if(Math.abs(v-2*c0.d/c0.tm)/(2*c0.d/c0.tm)<=0.03)fb(el,"ojo","Casi.","Dividiste entre t, pero el tiempo va al cuadrado: multiplica "+f2(c0.tm)+" por sí mismo antes de dividir.");
   else if(S.mano.tries<2)fb(el,"ojo","Todavía no.","Primero eleva el tiempo al cuadrado, luego multiplica la distancia por 2 y al final divide.");
