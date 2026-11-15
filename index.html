@@ -292,6 +292,9 @@ footer{font-size:14px;color:var(--lapiz);margin-top:28px}
     <div><label for="f-equipo">Equipo y grupo</label><input type="text" id="f-equipo" placeholder="Equipo 3, 3.º B"></div>
   </div>
 
+  <p class="gris">Tus respuestas se guardan solo en este celular y en este navegador: nadie más las ve y no se envían a ningún lado. Si antes lo usó otra persona aquí, empieza de cero.</p>
+  <div class="mandos"><button class="boton sec chico" id="rst">Empezar de cero</button><span id="rst-ask" hidden class="mandos"><span class="err">Se borrarán todas las respuestas guardadas en este celular.</span><button class="boton chico" id="rst-yes">Sí, borrar todo</button><button class="boton sec chico" id="rst-no">Cancelar</button></span></div>
+
   <h2>Tus tres apuestas</h2>
   <p class="gris">Elige una, decide qué va a pasar y suelta para comprobarlo. Después arma tus propias pruebas.</p>
   <div class="mandos" id="reto-btns"></div>
@@ -1305,6 +1308,9 @@ function quien(){$("quien").textContent=[S.nombre,S.equipo].filter(Boolean).join
 [["f-nombre","nombre"],["f-equipo","equipo"],["cp-causa","causa"],["cp-dato","dato"],["x-exp","exp"],["x-mej","mej"],["co-quien","coQuien"],["co-com","coCom"],["co-cambio","cambio"],["z-salida","salida"],["z-trans","trans"],["z-meta","meta"]].forEach(function(p){
   var el=$(p[0]);el.value=S[p[1]]||"";el.addEventListener("input",function(){S[p[1]]=el.value;save();if(p[0][0]==="f")quien();if(p[0].slice(0,2)==="cp")checkCp()})});
 quien();
+$("rst").addEventListener("click",function(){$("rst-ask").hidden=false});
+$("rst-no").addEventListener("click",function(){$("rst-ask").hidden=true});
+$("rst-yes").addEventListener("click",function(){try{localStorage.removeItem("fmb-v3")}catch(e){}save=function(){};try{history.replaceState(null,"",location.pathname+location.search)}catch(e){location.hash=""}location.reload()});
 
 /* ================= física de la mesa de pruebas ================= */
 var BLEN=0.18,S_A=0.34,S_B=0.16,S_END=1.40,DT=1/240,GAP=0.08;
