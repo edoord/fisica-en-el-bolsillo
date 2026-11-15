@@ -226,6 +226,12 @@ textarea{min-height:104px;resize:vertical}
 .dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
 .grande{font:800 46px/1 var(--titulo);color:var(--boli);font-variant-numeric:tabular-nums;min-width:150px}
 .nivel{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.vwrap{position:relative}
+.mk{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid currentColor;background:rgba(255,255,255,.22);font-size:0;touch-action:none;cursor:grab;padding:0;box-shadow:0 0 0 1.5px #fff,inset 0 0 0 1.5px #fff}
+.mk::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:currentColor;box-shadow:0 0 0 1.5px #fff}
+.mk::after{position:absolute;left:50%;top:-24px;transform:translateX(-50%);font:800 14px var(--titulo);color:#fff;border-radius:4px;padding:0 6px;line-height:20px;white-space:nowrap}
+.mk.s{color:var(--boli)}.mk.m{color:var(--rojo)}
+.mk.s::after{content:"Salida";background:var(--boli)}.mk.m::after{content:"Meta";background:var(--rojo)}
 video,audio{width:100%;max-height:56vh;border-radius:8px;background:#000;display:block}
 audio{background:none}
 .reloj{font:500 15px var(--texto);background:var(--blanco);border:1.5px solid var(--tinta);border-radius:6px;padding:4px 8px;font-variant-numeric:tabular-nums}
@@ -341,7 +347,7 @@ footer{font-size:14px;color:var(--lapiz);margin-top:28px}
 <!-- 2 MIDE -->
 <section class="momento" id="s-mide" aria-labelledby="h-mide">
   <h1 id="h-mide">Tu celular es el instrumento</h1>
-  <p class="entrada">Mide la misma rampa con tres inclinaciones distintas. En cada una: fija el ángulo con el sensor y cronometra tres descensos con la cámara.</p>
+  <p class="entrada">Mide la misma rampa con tres inclinaciones distintas. En cada una: fija el ángulo con el sensor y cronometra hasta tres descensos con la cámara. Si solo tienes un video, puedes avanzar con ese.</p>
   <p class="gris">Necesitan una tabla lisa de 1 m o más, algo que ruede o resbale, cinta métrica y libros para elevar un extremo. Marquen en la tabla una salida y una meta.</p>
 
   <h2>A. El ángulo, con el sensor de inclinación</h2>
@@ -367,13 +373,17 @@ footer{font-size:14px;color:var(--lapiz);margin-top:28px}
   </div>
 
   <h2>B. El tiempo, con la cámara</h2>
-  <ol class="lista"><li>Graba de lado, de modo que se vean la salida y la meta.</li><li>Suelta el cuerpo <b>sin empujarlo</b> y deja de grabar cuando cruce la meta.</li><li>Avanza cuadro por cuadro y marca los dos instantes.</li></ol>
+  <ol class="lista"><li>Graba de lado, de modo que se vean la salida y la meta.</li><li>Suelta el cuerpo <b>sin empujarlo</b> y deja de grabar cuando cruce la meta.</li><li>Usa la detección automática o avanza cuadro por cuadro, y revisa los dos instantes.</li></ol>
   <div class="mandos">
     <label class="boton chico" for="vid-in">Abrir cámara y grabar</label><input class="sr" type="file" id="vid-in" accept="video/*" capture="environment">
     <label class="boton sec chico" for="vid-in2">Elegir un video guardado</label><input class="sr" type="file" id="vid-in2" accept="video/*">
   </div>
   <div id="vid-box" hidden style="display:flex;flex-direction:column;gap:10px">
-    <video id="vid" playsinline muted preload="auto"></video>
+    <div class="vwrap" id="vwrap"><video id="vid" playsinline muted preload="auto"></video>
+      <button class="mk s" id="mk-s" hidden aria-label="Punto de salida: arrástralo para corregirlo">S</button>
+      <button class="mk m" id="mk-m" hidden aria-label="Punto de meta: arrástralo para corregirlo">M</button></div>
+    <div class="mandos"><button class="boton chico" id="v-auto">Detección automática</button><span class="gris" id="v-auto-msg" aria-live="polite">Coloca el video un poco antes de soltar el cuerpo y presiona el botón.</span></div>
+    <p class="gris">La página busca dónde y cuándo empieza a moverse el cuerpo (S) y hasta dónde llega (M). Arrastra S o M sobre el video si no quedaron en tu salida y tu meta: los tiempos se recalculan solos. También puedes corregir cada instante con los botones de cuadro.</p>
     <div class="mandos">
       <button class="boton sec chico" id="v-b10" aria-label="Retroceder 10 cuadros">−10</button>
       <button class="boton sec chico" id="v-b1" aria-label="Retroceder un cuadro">−1</button>
@@ -383,8 +393,8 @@ footer{font-size:14px;color:var(--lapiz);margin-top:28px}
       <span class="reloj" id="v-now">0.000 s</span>
     </div>
     <div class="mandos">
-      <button class="boton sec chico" id="v-start">Marcar salida</button><span class="gris" id="v-start-o">sin marcar</span>
-      <button class="boton sec chico" id="v-end">Marcar meta</button><span class="gris" id="v-end-o">sin marcar</span>
+      <button class="boton sec chico" id="v-start">Marcar salida aquí</button><button class="boton sec chico" id="v-goS" aria-label="Ver el cuadro de salida">Ver</button><span class="gris" id="v-start-o">sin marcar</span>
+      <button class="boton sec chico" id="v-end">Marcar meta aquí</button><button class="boton sec chico" id="v-goE" aria-label="Ver el cuadro de meta">Ver</button><span class="gris" id="v-end-o">sin marcar</span>
     </div>
     <div class="mandos"><button class="boton chico" id="v-save" disabled>Guardar este tiempo</button><span class="err" id="v-err" aria-live="polite"></span></div>
     <p class="gris">Cada cuadro dura unos 0.03 s: esa es la precisión de tu cronómetro de video.</p>
@@ -392,7 +402,7 @@ footer{font-size:14px;color:var(--lapiz);margin-top:28px}
   <details><summary>No puedo grabar: escribir un tiempo de cronómetro</summary>
     <div class="mandos"><div style="flex:1;min-width:140px"><label for="t-man">Tiempo (s)</label><input type="number" id="t-man" inputmode="decimal" step="0.01" placeholder="1.12"></div><button class="boton sec chico" id="t-add">Agregar</button></div>
   </details>
-  <div><b>Tiempos de esta inclinación</b> <span class="gris">(se necesitan 3)</span><div class="mandos" id="t-list" style="margin-top:6px"></div></div>
+  <div><b>Tiempos de esta inclinación</b> <span class="gris">(de 1 a 3; lo mejor son 3)</span><div class="mandos" id="t-list" style="margin-top:6px"></div></div>
   <p class="err" id="d-err" aria-live="assertive"></p>
   <div><button class="boton" id="row-save">Guardar esta inclinación</button></div>
 
@@ -409,7 +419,7 @@ footer{font-size:14px;color:var(--lapiz);margin-top:28px}
 <!-- 3 ANALIZA -->
 <section class="momento" id="s-analiza" aria-labelledby="h-analiza">
   <h1 id="h-analiza">¿Qué dicen tus datos?</h1>
-  <div id="an-empty" hidden><p class="entrada">Todavía no hay suficientes mediciones. Guarda al menos dos inclinaciones.</p><p><button class="boton" data-go="mide">Ir a medir</button></p></div>
+  <div id="an-empty" hidden><p class="entrada">Todavía no hay mediciones. Guarda al menos una inclinación.</p><p><button class="boton" data-go="mide">Ir a medir</button></p></div>
   <div id="an-body" style="display:flex;flex-direction:column;gap:14px">
     <p class="entrada">Antes de ver la gráfica, calcula tú la primera fila. Así sabes de dónde sale cada número.</p>
     <div class="pregunta">
@@ -1440,8 +1450,8 @@ $("d-calc").addEventListener("click",function(){var h=num($("d-h").value),l=num(
   er.textContent="";$("d-theta").value=f1(Math.asin(h/l)/RAD);S.angSrc="altura y largo";save()});
 
 /* ================= cámara: cronómetro de video ================= */
-var vid=$("vid"),FR=1/30,mark={s:null,e:null},vurl=null;
-function loadVideo(file){if(!file)return;try{if(vurl)URL.revokeObjectURL(vurl)}catch(e){}vurl=URL.createObjectURL(file);vid.src=vurl;vid.load();$("vid-box").hidden=false;mark={s:null,e:null};paintMarks();$("v-err").textContent=""}
+var vid=$("vid"),FR=1/30,mark={s:null,e:null},vurl=null,det=null,mk={s:null,m:null};
+function loadVideo(file){if(!file)return;try{if(vurl)URL.revokeObjectURL(vurl)}catch(e){}vurl=URL.createObjectURL(file);vid.src=vurl;vid.load();$("vid-box").hidden=false;mark={s:null,e:null};det=null;mk={s:null,m:null};placeMk();autoMsg("Coloca el video un poco antes de soltar el cuerpo y presiona el botón.");paintMarks();$("v-err").textContent=""}
 $("vid-in").addEventListener("change",function(){loadVideo(this.files[0]);this.value=""});
 $("vid-in2").addEventListener("change",function(){loadVideo(this.files[0]);this.value=""});
 vid.addEventListener("error",function(){$("v-err").textContent="No se pudo abrir ese video. Prueba grabar de nuevo."});
@@ -1456,6 +1466,53 @@ function paintMarks(){$("v-start-o").textContent=mark.s===null?"sin marcar":mark
   var ok=mark.s!==null&&mark.e!==null&&mark.e-mark.s>=0.1;$("v-save").disabled=!ok;$("v-save").textContent=ok?"Guardar "+f2(mark.e-mark.s)+" s":"Guardar este tiempo";
   $("v-err").textContent=(mark.s!==null&&mark.e!==null&&!ok)?"La meta debe quedar después de la salida.":""}
 $("v-start").addEventListener("click",function(){vid.pause();mark.s=vid.currentTime;paintMarks()});
+$("v-goS").addEventListener("click",function(){if(mark.s!==null){vid.pause();vid.currentTime=mark.s}});
+$("v-goE").addEventListener("click",function(){if(mark.e!==null){vid.pause();vid.currentTime=mark.e}});
+/* ---- detección automática: compara cada cuadro con el primero y sigue dónde cambia la imagen ---- */
+var GW=192;
+function vrect(){var vw=vid.videoWidth||16,vh=vid.videoHeight||9,bw=vid.clientWidth,bh=vid.clientHeight,k=Math.min(bw/vw,bh/vh),w=vw*k,h=vh*k;return {x:vid.offsetLeft+(bw-w)/2,y:vid.offsetTop+(bh-h)/2,w:w,h:h}}
+function placeMk(){var r=vrect();[["s","mk-s"],["m","mk-m"]].forEach(function(p){var e=$(p[1]),m=mk[p[0]];e.hidden=!m;if(m){e.style.left=(r.x+m.x*r.w)+"px";e.style.top=(r.y+m.y*r.h)+"px"}})}
+window.addEventListener("resize",placeMk);
+function centroid(mask,W,H){var sx=0,sy=0,n=0;for(var i=0;i<mask.length;i++)if(mask[i]){sx+=i%W;sy+=(i/W)|0;n++}return n?{x:(sx/n+.5)/W,y:(sy/n+.5)/H,n:n}:null}
+function nearCount(mask,W,H,m,R){var cx=m.x*W,cy=m.y*H,r=R*W,n=0,x0=Math.max(0,Math.floor(cx-r)),x1=Math.min(W-1,Math.ceil(cx+r)),y0=Math.max(0,Math.floor(cy-r)),y1=Math.min(H-1,Math.ceil(cy+r));
+  for(var y=y0;y<=y1;y++)for(var x=x0;x<=x1;x++)if(mask[y*W+x]&&(x-cx)*(x-cx)+(y-cy)*(y-cy)<=r*r)n++;return n}
+function autoMsg(t){$("v-auto-msg").textContent=t}
+function recompute(){if(!det||!det.f||!mk.s||!mk.m)return;var F=det.f,W=det.W,H=det.H,iS=-1,iM=-1;
+  for(var i=1;i<F.length;i++){if(nearCount(F[i].mask,W,H,mk.s,0.045)>=2){iS=i;break}}
+  if(iS<0){autoMsg("No hay movimiento cerca de S. Arrástralo sobre el cuerpo en su posición de salida.");return}
+  for(var j=iS+1;j<F.length;j++){if(nearCount(F[j].mask,W,H,mk.m,0.022)>=2){iM=j;break}}
+  if(iM<0){autoMsg("El cuerpo no pasa por M en este tramo del video. Arrástralo sobre la meta.");return}
+  mark.s=F[iS-1].t;mark.e=F[iM].t;paintMarks();vid.pause();vid.currentTime=mark.e;
+  autoMsg("Salida en "+mark.s.toFixed(3)+" s y meta en "+mark.e.toFixed(3)+" s. Revisa los dos cuadros con «Ver» y corrige si hace falta antes de guardar.")}
+function analyze(F,W,H){var cells=W*H,thr=Math.max(6,Math.round(cells*0.0012)),i0=-1;
+  for(var i=1;i<F.length-2;i++){if(F[i].cnt>=thr&&F[i+1].cnt>=thr&&F[i+2].cnt>=thr){i0=i;break}}
+  if(i0<0)return "No detecté ningún movimiento en este tramo. Coloca el video justo antes de soltar el cuerpo e inténtalo otra vez, o marca a mano.";
+  var big=F.filter(function(f){return f.cnt>cells*0.3}).length;if(big>F.length*0.3)return "La imagen completa cambia mucho: parece que la cámara se movió. Apoya el celular al grabar, o marca los cuadros a mano.";
+  var i1=-1;for(var k2=F.length-1;k2>i0;k2--){if(F[k2].fresh&&F[k2].fresh.n>=4){i1=k2;break}}
+  if(i1<0)return "Vi que algo cambia, pero no un recorrido claro. Marca los cuadros a mano.";
+  var s0=centroid(F[i0].mask,W,H),m0=F[i1].fresh;
+  if(Math.hypot(s0.x-m0.x,(s0.y-m0.y)*H/W)<0.12)return "El movimiento que detecté es muy corto. Revisa que en el video se vea todo el recorrido, o marca a mano.";
+  mk.s={x:s0.x,y:s0.y};mk.m={x:m0.x,y:m0.y};return ""}
+$("v-auto").addEventListener("click",function(){if(!vid.duration||(det&&det.busy))return;var W=GW,H=Math.max(40,Math.round(GW*(vid.videoHeight||9)/(vid.videoWidth||16)));
+  var cv2=document.createElement("canvas");cv2.width=W;cv2.height=H;var cx=cv2.getContext("2d",{willReadFrequently:true}),F=[],ref=null,prevMask=null;
+  var t0=Math.max(0,vid.currentTime-0.05),tEnd=Math.min(vid.duration,t0+20);det={busy:true};mk={s:null,m:null};placeMk();autoMsg("Analizando el video…");$("v-auto").disabled=true;
+  function grab(t){try{cx.drawImage(vid,0,0,W,H)}catch(e){return}var d=cx.getImageData(0,0,W,H).data,g=new Uint8Array(W*H);for(var i=0,j=0;i<g.length;i++,j+=4)g[i]=(d[j]*3+d[j+1]*6+d[j+2])/10;
+    if(!ref){ref=g;F.push({t:t,mask:new Uint8Array(W*H),cnt:0,fresh:null});prevMask=F[0].mask;return}
+    var mask=new Uint8Array(W*H),cnt=0,fr=new Uint8Array(W*H);for(var q=0;q<g.length;q++){if(Math.abs(g[q]-ref[q])>22){mask[q]=1;cnt++;if(!prevMask[q])fr[q]=1}}
+    F.push({t:t,mask:mask,cnt:cnt,fresh:centroid(fr,W,H)});prevMask=mask}
+  var finished=false;
+  function finish(){if(finished)return;finished=true;vid.pause();$("v-auto").disabled=false;$("v-play").textContent="Ver lento";
+    if(F.length<6){det=null;autoMsg("No pude leer los cuadros de este video. Marca la salida y la meta a mano.");return}
+    var err=analyze(F,W,H);det={f:F,W:W,H:H};if(err){mk={s:null,m:null};placeMk();autoMsg(err);return}placeMk();recompute()}
+  if(vid.requestVideoFrameCallback){vid.playbackRate=1;vid.currentTime=t0;
+    var cb=function(now,meta){if(finished)return;grab(meta.mediaTime);if(meta.mediaTime>=tEnd-0.02||vid.ended){finish();return}vid.requestVideoFrameCallback(cb)};
+    vid.requestVideoFrameCallback(cb);vid.addEventListener("ended",finish,{once:true});var p=vid.play();if(p&&p.catch)p.catch(function(){finish()});
+    setTimeout(finish,(tEnd-t0)*1000+4000)}
+  else{var t=t0,onSeek=function(){if(finished){vid.removeEventListener("seeked",onSeek);return}grab(vid.currentTime);t+=1/30;if(t>tEnd){vid.removeEventListener("seeked",onSeek);finish();return}vid.currentTime=t};vid.addEventListener("seeked",onSeek);vid.currentTime=t}});
+[["s","mk-s"],["m","mk-m"]].forEach(function(p){var e=$(p[1]),dragging=false;
+  e.addEventListener("pointerdown",function(ev){dragging=true;try{e.setPointerCapture(ev.pointerId)}catch(x){}ev.preventDefault()});
+  e.addEventListener("pointermove",function(ev){if(!dragging)return;var r=vrect(),b=$("vwrap").getBoundingClientRect();mk[p[0]]={x:Math.max(0,Math.min(1,(ev.clientX-b.left-r.x)/r.w)),y:Math.max(0,Math.min(1,(ev.clientY-b.top-r.y)/r.h))};placeMk()});
+  ["pointerup","pointercancel"].forEach(function(n){e.addEventListener(n,function(){if(dragging){dragging=false;recompute()}})})});
 $("v-end").addEventListener("click",function(){vid.pause();mark.e=vid.currentTime;paintMarks()});
 $("v-save").addEventListener("click",function(){addTime(mark.e-mark.s,"video");mark={s:null,e:null};paintMarks()});
 $("t-add").addEventListener("click",function(){var t=num($("t-man").value);if(!(t>=0.2&&t<=15)){$("d-err").textContent="Escribe un tiempo entre 0.2 y 15 segundos.";return}addTime(t,"cronómetro");$("t-man").value=""});
@@ -1467,23 +1524,23 @@ paintTimes();
 $("row-save").addEventListener("click",function(){var th=num($("d-theta").value),d=num($("d-d").value),er=$("d-err");
   if(!(th>=1&&th<=60)){er.textContent="Falta el ángulo: fíjalo con el sensor o escríbelo en grados (entre 1 y 60).";$("d-theta").focus();return}
   if(!(d>=0.2&&d<=3)){er.textContent="Escribe la distancia en metros, entre 0.20 y 3. Por ejemplo, 80 cm se escribe 0.80.";$("d-d").focus();return}
-  if(S.times.length<3){er.textContent="Faltan tiempos: guarda tres descensos de esta inclinación.";return}
+  if(S.times.length<1){er.textContent="Falta el tiempo: guarda al menos un descenso de esta inclinación.";return}
   if(S.rows.some(function(r){return Math.abs(r.th-th)<1.5})){er.textContent="Ya tienes una inclinación casi igual. Cambia la altura de la tabla al menos 2°.";return}
   if(S.backup){S.rows=[];S.backup=false}
   var srcs=S.times.map(function(x){return x.src});
   S.rows.push({th:th,d:d,t:S.times.map(function(x){return x.t}),ang:S.angSrc||"a mano",tsrc:srcs.indexOf("cronómetro")<0?"video":(srcs.indexOf("video")<0?"cronómetro":"video y cronómetro")});
   S.rows.sort(function(a,b){return a.th-b.th});S.times=[];$("d-theta").value="";S.angSrc="";save();paintTimes();paintRows();er.textContent=""});
 function paintRows(){var tb=$("rows").tBodies[0];tb.innerHTML="";S.rows.forEach(function(r,i){var tr=document.createElement("tr");
-  tr.innerHTML="<td>"+r.th+"°</td><td>"+f2(r.d)+"</td><td>"+f2(r.t[0])+"</td><td>"+f2(r.t[1])+"</td><td>"+f2(r.t[2])+"</td><td></td>";
+  tr.innerHTML="<td>"+r.th+"°</td><td>"+f2(r.d)+"</td><td>"+[0,1,2].map(function(j){return r.t[j]?f2(r.t[j]):"–"}).join("</td><td>")+"</td><td></td>";
   var b=document.createElement("button");b.className="boton sec chico";b.textContent="Quitar";b.setAttribute("aria-label","Quitar la inclinación de "+r.th+" grados");
   b.addEventListener("click",function(){S.rows.splice(i,1);if(!S.rows.length)S.backup=false;save();paintRows()});tr.lastChild.appendChild(b);tb.appendChild(tr)});
-  var n=S.rows.length;$("rows-msg").textContent=S.backup?"Estás usando datos de respaldo. Si guardas una inclinación propia, se reemplazan.":(n===0?"Aún no guardas ninguna inclinación.":n<3?"Llevas "+n+" de 3. Cambia la altura de la tabla y repite.":"Listo: ya puedes analizar. Puedes agregar más inclinaciones si quieres.")}
+  var n=S.rows.length;$("rows-msg").textContent=S.backup?"Estás usando datos de respaldo. Si guardas una inclinación propia, se reemplazan.":(n===0?"Aún no guardas ninguna inclinación.":n<3?"Llevas "+n+" de 3. Ya puedes analizar, pero lo ideal es cambiar la altura de la tabla y repetir.":"Listo: ya puedes analizar. Puedes agregar más inclinaciones si quieres.")}
 $("d-backup").addEventListener("click",function(){S.backup=true;S.rows=[{th:8,d:1,t:[1.42,1.38,1.45],ang:"respaldo",tsrc:"respaldo"},{th:14,d:1,t:[1.02,0.99,1.04],ang:"respaldo",tsrc:"respaldo"},{th:20,d:1,t:[0.84,0.82,0.85],ang:"respaldo",tsrc:"respaldo"}];save();paintRows()});
 
 /* ================= analizar ================= */
-function calc(r){var tm=(r.t[0]+r.t[1]+r.t[2])/3,med=2*r.d/(tm*tm),mod=G*Math.sin(r.th*RAD);return {th:r.th,d:r.d,tm:tm,med:med,mod:mod,dif:(med-mod)/mod*100,spread:(Math.max.apply(null,r.t)-Math.min.apply(null,r.t))/tm,sin:Math.sin(r.th*RAD)}}
+function calc(r){var tm=r.t.reduce(function(a,b){return a+b},0)/r.t.length,med=2*r.d/(tm*tm),mod=G*Math.sin(r.th*RAD);return {th:r.th,d:r.d,tm:tm,med:med,mod:mod,dif:(med-mod)/mod*100,spread:(Math.max.apply(null,r.t)-Math.min.apply(null,r.t))/tm,sin:Math.sin(r.th*RAD),n:r.t.length}}
 function allCalc(){return S.rows.map(calc)}
-function renderAnaliza(){var has=S.rows.length>=2;$("an-empty").hidden=has;$("an-body").style.display=has?"flex":"none";if(!has)return;
+function renderAnaliza(){var has=S.rows.length>=1;$("an-empty").hidden=has;$("an-body").style.display=has?"flex":"none";if(!has)return;
   var cs=allCalc(),c0=cs[0],key=c0.th+"|"+f2(c0.tm)+"|"+c0.d;if(S.mano.key!==key){S.mano={ok:false,tries:0,key:key};save();$("mano-in").value="";$("mano-fb").innerHTML=""}
   $("mano-q").textContent="A "+c0.th+"° tu equipo recorrió d = "+f2(c0.d)+" m en un tiempo promedio de "+f2(c0.tm)+" s. Calcula a = 2d / t².";
   if(S.mano.ok){$("mano-in").value=f2(c0.med);fb($("mano-fb"),"ok","Correcto.","a = "+f2(c0.med)+" m/s². Las demás filas se calculan igual.")}
@@ -1511,13 +1568,14 @@ function paintAnalysis(cs){var tb=$("an-table").tBodies[0];tb.innerHTML="";cs.fo
   $("chart").innerHTML='<title id="chart-t">Aceleración medida frente al modelo ideal para cada inclinación</title>'+o;
   /* semáforo */
   var luces=[],n=cs.length;
-  luces.push(n>=3?["v","Tienes "+n+" inclinaciones: suficiente para ver una tendencia."]:["a","Solo tienes 2 inclinaciones. Con una tercera la tendencia será más confiable."]);
+  luces.push(n>=3?["v","Tienes "+n+" inclinaciones: suficiente para ver una tendencia."]:n===2?["a","Solo tienes 2 inclinaciones. Con una tercera la tendencia será más confiable."]:["r","Solo tienes 1 inclinación: puedes comparar ese punto con el modelo, pero no ver cómo cambia la aceleración al inclinar más."]);
+  var pocos=cs.filter(function(c){return c.n<3});if(pocos.length)luces.push(["a","A "+pocos.map(function(c){return c.th+"°"}).join(" y ")+" tienes menos de 3 descensos. Un solo tiempo no deja ver cuánto varía tu medición."]);
   var mono=cs.every(function(c,i){return i===0||c.med>cs[i-1].med});
-  luces.push(mono?["v","La aceleración crece al inclinar más, como se espera."]:["r","La aceleración no crece con la inclinación en alguna fila. Revisa los ángulos y los tiempos de esa medición."]);
+  if(n>1)luces.push(mono?["v","La aceleración crece al inclinar más, como se espera."]:["r","La aceleración no crece con la inclinación en alguna fila. Revisa los ángulos y los tiempos de esa medición."]);
   var over=cs.filter(function(c){return c.med>c.mod*1.05});
   luces.push(over.length?["r","A "+over.map(function(c){return c.th+"°"}).join(" y ")+" mediste más que el modelo ideal. La fricción solo frena, así que sospecha de la medición: ¿empujón al soltar?, ¿salida marcada tarde?"]:["v","Ninguna medición supera al modelo ideal."]);
   var sp=Math.max.apply(null,cs.map(function(c){return c.spread}));
-  luces.push(sp<=0.10?["v","Tus tres tiempos por inclinación se parecen entre sí."]:sp<=0.20?["a","En alguna inclinación tus tiempos varían más de 10 %. Si puedes, repite ese descenso."]:["r","En alguna inclinación tus tiempos varían más de 20 %. Repite esa medición."]);
+  if(cs.some(function(c){return c.n>1}))luces.push(sp<=0.10?["v","Tus tiempos por inclinación se parecen entre sí."]:sp<=0.20?["a","En alguna inclinación tus tiempos varían más de 10 %. Si puedes, repite ese descenso."]:["r","En alguna inclinación tus tiempos varían más de 20 %. Repite esa medición."]);
   if(cs.some(function(c){return c.dif<-50}))luces.push(["a","Hay una diferencia mayor a 50 % con el modelo. Confirma que d está en metros y que el cuerpo partió del reposo."]);
   $("semaforo").innerHTML=luces.map(function(l){return '<div class="luz '+l[0]+'"><i aria-hidden="true"></i><span><span class="sr">'+({v:"Bien: ",a:"Atención: ",r:"Corregir: "})[l[0]]+'</span>'+l[1]+'</span></div>'}).join("");
   S.luces=luces.map(function(l){return l[0]}).join("");save()}
@@ -1562,7 +1620,7 @@ CRIT.forEach(function(_,i){Array.prototype.forEach.call(document.getElementsByNa
 /* ================= cierre y ficha ================= */
 var CAUSAS=/fricci|rozamiento|roce|cuadro|video|reacci|tiempo|rueda|gira|rota|aire|[aá]ngulo|empuj|error|medi|superficie/i,fichaTxt="";
 $("z-gen").addEventListener("click",function(){var rev=$("z-rev");rev.innerHTML="";var p=[],e=S.exp.trim();
-  if(S.rows.length<2)p.push(["mide","Faltan mediciones: guarda al menos dos inclinaciones (lo ideal son tres)."]);
+  if(S.rows.length<1)p.push(["mide","Faltan mediciones: guarda al menos una inclinación (lo ideal son tres)."]);
   else if(!S.mano.ok)p.push(["analiza","Falta calcular a mano la primera fila."]);
   if(!checkCp())p.push(["explica","Falta tu idea en una frase: la causa principal y el dato que la sostiene."]);
   if(!S.fmt)p.push(["explica","Elige cómo presentarás tu explicación: video, audio o en vivo."]);
