@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Física en mi bolsillo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Gabarito:wght@500;700;800&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+.iso{
+  --anatomy-page:#0b0b0b;--anatomy-card:#131313;--anatomy-text:#a3a3a3;--anatomy-strong:#e6e6e6;--anatomy-muted:#6e6e6e;
+  --anatomy-paper:#131313;--anatomy-face:#1b1b1b;--anatomy-top:#1c1c1c;
+  --anatomy-shade-0:#0f0f0f;--anatomy-shade-1:#121212;--anatomy-shade-2:#151515;--anatomy-shade-3:#181818;
+  --anatomy-lit-top:#262626;--anatomy-lit-shade:#1d1d1d;
+  --anatomy-hi:#d4d4d4;--anatomy-mid:#6a6a6a;--anatomy-lo:#3e3e3e;--anatomy-faint:#2a2a2a;--anatomy-lit:#ffffff;
+  --anatomy-halo:#050505;--anatomy-halo-opacity:.9;--anatomy-dot:#e6e6e6;
+  --anatomy-red:#ff6b6b;--anatomy-green:#6be0a0;--anatomy-blue:#6b9bff;
+  --anatomy-weight:.6px;--anatomy-ease:cubic-bezier(.32,.72,0,1);
+  --anatomy-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --anatomy-lift:inset 0 1px 0 0 #ffffff0a,inset 0 0 0 1px #ffffff06,0 0 0 1px #00000026,0 1px 1px -.5px #00000014,0 3px 3px -1.5px #00000014,0 6px 6px -3px #00000014,0 12px 12px -6px #00000014;
+}
+.iso[data-theme="light"]{
+  --anatomy-page:#f2f2ef;--anatomy-card:#fbfbfa;--anatomy-text:#57575a;--anatomy-strong:#18181a;--anatomy-muted:#8c8c90;
+  --anatomy-paper:#fbfbfa;--anatomy-face:#ffffff;--anatomy-top:#ffffff;
+  --anatomy-shade-0:#dcdcd9;--anatomy-shade-1:#e5e5e2;--anatomy-shade-2:#ededea;--anatomy-shade-3:#f4f4f1;
+  --anatomy-lit-top:#ffffff;--anatomy-lit-shade:#eeeeeb;
+  --anatomy-hi:#26262a;--anatomy-mid:#8a8a8f;--anatomy-lo:#b4b4b8;--anatomy-faint:#d4d4d6;--anatomy-lit:#000000;
+  --anatomy-halo:#8a8a80;--anatomy-halo-opacity:.32;--anatomy-dot:#3a3a3e;
+  --anatomy-red:#e5484d;--anatomy-green:#30a46c;--anatomy-blue:#3e63dd;
+  --anatomy-lift:inset 0 1px 0 0 #ffffff,0 0 0 1px #0000000f,0 1px 1px -.5px #0000000a,0 3px 3px -1.5px #0000000a,0 6px 6px -3px #0000000a,0 12px 12px -6px #0000000a;
+}
+.iso-svg{display:block;width:100%;height:auto;overflow:visible}
+.iso-svg path,.iso-svg circle{vector-effect:non-scaling-stroke}
+.iso-fill{fill:var(--anatomy-paper);stroke:none}
+.iso-solid[data-lit]>.iso-fill{fill:var(--anatomy-face)}
+.iso-shade,.iso-top{stroke:none}
+.iso-shade[data-shade="0"]{fill:var(--anatomy-shade-0)}
+.iso-shade[data-shade="1"]{fill:var(--anatomy-shade-1)}
+.iso-shade[data-shade="2"]{fill:var(--anatomy-shade-2)}
+.iso-shade[data-shade="3"]{fill:var(--anatomy-shade-3)}
+.iso-top{fill:var(--anatomy-top)}
+.iso-solid[data-lit]>.iso-top{fill:var(--anatomy-lit-top)}
+.iso-solid[data-lit]>.iso-shade{fill:var(--anatomy-lit-shade)}
+.iso-solid[data-seamless]>.iso-shade,.iso-solid[data-seamless]>.iso-top{stroke-width:.4;stroke-linejoin:round}
+.iso-solid[data-seamless]>.iso-shade[data-shade="0"]{stroke:var(--anatomy-shade-0)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="1"]{stroke:var(--anatomy-shade-1)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="2"]{stroke:var(--anatomy-shade-2)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="3"]{stroke:var(--anatomy-shade-3)}
+.iso-solid[data-seamless]>.iso-top{stroke:var(--anatomy-top)}
+.iso-solid[data-seamless][data-lit]>.iso-top{stroke:var(--anatomy-lit-top)}
+.iso-solid[data-seamless][data-lit]>.iso-shade{stroke:var(--anatomy-lit-shade)}
+.iso-solid[data-lit]>.iso-edge{stroke:var(--anatomy-lit)}
+.iso-halo{fill:var(--anatomy-halo);stroke:none;filter:blur(9px);opacity:var(--anatomy-halo-opacity);transform:translateY(3px)}
+.iso-line{fill:none;stroke:var(--anatomy-lo);stroke-width:var(--anatomy-weight);stroke-linecap:round;stroke-linejoin:round}
+.iso-line[data-tone="hi"]{stroke:var(--anatomy-hi)}
+.iso-line[data-tone="mid"]{stroke:var(--anatomy-mid)}
+.iso-line[data-tone="lo"]{stroke:var(--anatomy-lo)}
+.iso-line[data-tone="faint"]{stroke:var(--anatomy-faint)}
+.iso-line[data-tone="lit"]{stroke:var(--anatomy-lit)}
+.iso-line[data-tone="red"]{stroke:var(--anatomy-red)}
+.iso-line[data-tone="green"]{stroke:var(--anatomy-green)}
+.iso-line[data-tone="blue"]{stroke:var(--anatomy-blue)}
+.iso-line[data-dotted]{stroke-dasharray:.01 3.5;stroke-width:1}
+.iso-line[data-dashed]{stroke-dasharray:3 3}
+.iso-line[data-flow]{stroke-dasharray:2 6}
+.iso-wire-end{fill:var(--anatomy-paper);stroke:var(--anatomy-lo);stroke-width:var(--anatomy-weight)}
+.iso-wire[data-tone="hi"] .iso-wire-end{stroke:var(--anatomy-hi)}
+.iso-wire[data-tone="mid"] .iso-wire-end{stroke:var(--anatomy-mid)}
+.iso-wire[data-tone="faint"] .iso-wire-end{stroke:var(--anatomy-faint)}
+.iso-wire[data-tone="lit"] .iso-wire-end{stroke:var(--anatomy-lit)}
+.iso-dots circle{fill:var(--anatomy-dot);stroke:none;opacity:.32}
+.iso-dots[data-tone="hi"] circle{opacity:.85}
+.iso-dots[data-tone="mid"] circle{opacity:.45}
+.iso-dots[data-tone="lo"] circle{opacity:.22}
+.iso-dots[data-tone="faint"] circle{opacity:.12}
+.iso-face-text{fill:var(--anatomy-mid);font-family:var(--anatomy-mono);letter-spacing:.04em}
+.iso-face-text[data-tone="hi"]{fill:var(--anatomy-hi)}
+.iso-face-text[data-tone="lo"]{fill:var(--anatomy-lo)}
+.iso-face-text[data-tone="faint"]{fill:var(--anatomy-faint)}
+.tb-body{fill:var(--anatomy-shade-2);stroke:none}
+.tb-shine{fill:var(--anatomy-top);stroke:none}
+.tb-shade{fill:var(--anatomy-shade-0);stroke:none}
+.tb-ring{fill:none;stroke:var(--anatomy-lo);stroke-width:.45;stroke-linecap:butt;stroke-linejoin:round}
+.tb-ring[data-tone="mid"]{stroke:var(--anatomy-mid)}
+.tb-ring[data-tone="faint"]{stroke:var(--anatomy-faint)}
+.tb-ring[data-tone="hi"]{stroke:var(--anatomy-hi)}
+@keyframes iso-flow{to{stroke-dashoffset:-32}}
+@keyframes iso-pulse{0%,100%{opacity:.18}12%{opacity:1}40%{opacity:.18}}
+.iso-line[data-flow]{animation:iso-flow 1600ms linear infinite}
+.iso-dots circle[data-pulse]{animation:iso-pulse 1600ms steps(1,end) infinite;animation-delay:var(--pulse-at,0ms)}
+.iso-figure{margin:32px 0 36px}
+.iso-plate{position:relative;padding:52px 24px;border-radius:0;background:var(--anatomy-card);box-shadow:0 0 0 1px var(--anatomy-mid);--anatomy-paper:var(--anatomy-card)}
+.iso-plate-corners{position:absolute;inset:18px 20px;pointer-events:none}
+.iso-plate-corner{position:absolute;color:var(--anatomy-muted);font-family:var(--anatomy-mono);font-size:10.5px;line-height:1;letter-spacing:.04em;white-space:nowrap}
+.iso-plate-corner[data-corner="fig"]{top:0;left:0;color:var(--anatomy-text)}
+.iso-plate-corner[data-corner="title"]{top:0;right:0;text-transform:uppercase;letter-spacing:.1em}
+.iso-plate-corner[data-corner="hint"]{bottom:0;left:0;text-transform:uppercase;letter-spacing:.1em}
+.iso-plate-corner[data-corner="readout"]{right:0;bottom:0;color:var(--anatomy-text);font-variant-numeric:tabular-nums}
+.iso-plate .iso-svg{margin:0 auto}
+.iso-legend{display:grid;gap:8px;margin-top:12px;color:var(--anatomy-muted);font-size:13px;line-height:1.55}
+.iso-keys{display:flex;flex-wrap:wrap;gap:6px 18px}
+.iso-key{display:inline-flex;align-items:center;gap:7px}
+.iso-swatch{width:16px;height:10px;flex:none;overflow:visible}
+.iso-swatch path{fill:none;stroke:var(--anatomy-hi);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+.iso-swatch[data-mark="raised"] path,.iso-swatch[data-mark="flat"] path{stroke:var(--anatomy-mid)}
+.iso-swatch[data-mark="lit"] path{stroke:var(--anatomy-lit)}
+.iso-swatch[data-mark="dim"] path{stroke:var(--anatomy-lo)}
+.iso-swatch[data-mark="dotted"] path{stroke-dasharray:.01 3;stroke-width:1.4}
+.iso-swatch[data-mark="dashed"] path{stroke-dasharray:3 2.5}
+.iso-swatch[data-mark="red"] path{stroke:var(--anatomy-red)}
+.iso-swatch[data-mark="green"] path{stroke:var(--anatomy-green)}
+.iso-swatch[data-mark="blue"] path{stroke:var(--anatomy-blue)}
+.iso-swatch-crease{stroke:var(--anatomy-lo)!important}
+@media (max-width:560px){.iso-plate{padding:48px 12px 70px}.iso-plate-corner[data-corner="hint"]{bottom:18px}}
+@media (prefers-reduced-motion:reduce){.iso-line[data-flow],.iso-dots circle[data-pulse]{animation:none}}
+
+/* Materiales de la skill anatomy (kit/turn.mjs → TURN.materialCss()), solo los que usan las figuras de M1. */
+[data-mat="steel"]{--anatomy-paper:#2c3034;--anatomy-face:#34393d;--anatomy-top:#3e4348;--anatomy-shade-0:#1f2225;--anatomy-shade-1:#25292c;--anatomy-shade-2:#2c3034;--anatomy-shade-3:#34393d;--anatomy-lit-top:#4a5056;--anatomy-lit-shade:#33383c;--anatomy-hi:#d0d4d8;--anatomy-mid:#727980;--anatomy-lo:#4a5056;--anatomy-faint:#33383d;--anatomy-dot:#d8dce0;--anatomy-lit:#ffffff;--mat-body:#30353a;--mat-shine:#5c6369;--mat-shade:#1a1d20;--mat-edge:#d0d4d8}
+.iso[data-theme="light"] [data-mat="steel"]{--anatomy-paper:#b8bdc1;--anatomy-face:#cdd1d4;--anatomy-top:#e5e8ea;--anatomy-shade-0:#8f959b;--anatomy-shade-1:#a4aaaf;--anatomy-shade-2:#b8bdc1;--anatomy-shade-3:#cdd1d4;--anatomy-lit-top:#f1f3f4;--anatomy-lit-shade:#c6cacd;--anatomy-hi:#2b2f33;--anatomy-mid:#6b7177;--anatomy-lo:#959ba1;--anatomy-faint:#aeb3b8;--anatomy-dot:#33373b;--anatomy-lit:#000000;--mat-body:#b3b8bd;--mat-shine:#eef0f2;--mat-shade:#7d8389;--mat-edge:#2b2f33}
+.iso[data-theme="dark"] [data-mat="steel"]{--anatomy-paper:#2c3034;--anatomy-face:#34393d;--anatomy-top:#3e4348;--anatomy-shade-0:#1f2225;--anatomy-shade-1:#25292c;--anatomy-shade-2:#2c3034;--anatomy-shade-3:#34393d;--anatomy-lit-top:#4a5056;--anatomy-lit-shade:#33383c;--anatomy-hi:#d0d4d8;--anatomy-mid:#727980;--anatomy-lo:#4a5056;--anatomy-faint:#33383d;--anatomy-dot:#d8dce0;--anatomy-lit:#ffffff;--mat-body:#30353a;--mat-shine:#5c6369;--mat-shade:#1a1d20;--mat-edge:#d0d4d8}
+[data-mat="gunmetal"]{--anatomy-paper:#1d2125;--anatomy-face:#22272b;--anatomy-top:#2a2f34;--anatomy-shade-0:#15181b;--anatomy-shade-1:#191c20;--anatomy-shade-2:#1d2125;--anatomy-shade-3:#22272b;--anatomy-lit-top:#323840;--anatomy-lit-shade:#20252a;--anatomy-hi:#a9b0b7;--anatomy-mid:#5c636a;--anatomy-lo:#3a4046;--anatomy-faint:#2a2f34;--anatomy-dot:#b8bec4;--anatomy-lit:#ffffff;--mat-body:#1f2327;--mat-shine:#3a4046;--mat-shade:#111316;--mat-edge:#a9b0b7}
+.iso[data-theme="light"] [data-mat="gunmetal"]{--anatomy-paper:#444a51;--anatomy-face:#50575e;--anatomy-top:#5f666e;--anatomy-shade-0:#2f3439;--anatomy-shade-1:#393f45;--anatomy-shade-2:#444a51;--anatomy-shade-3:#50575e;--anatomy-lit-top:#6d757d;--anatomy-lit-shade:#4b5258;--anatomy-hi:#0f1113;--anatomy-mid:#1d2125;--anatomy-lo:#272b30;--anatomy-faint:#30353a;--anatomy-dot:#b0b5ba;--anatomy-lit:#000000;--mat-body:#3d4349;--mat-shine:#6e757c;--mat-shade:#24282c;--mat-edge:#0f1113}
+.iso[data-theme="dark"] [data-mat="gunmetal"]{--anatomy-paper:#1d2125;--anatomy-face:#22272b;--anatomy-top:#2a2f34;--anatomy-shade-0:#15181b;--anatomy-shade-1:#191c20;--anatomy-shade-2:#1d2125;--anatomy-shade-3:#22272b;--anatomy-lit-top:#323840;--anatomy-lit-shade:#20252a;--anatomy-hi:#a9b0b7;--anatomy-mid:#5c636a;--anatomy-lo:#3a4046;--anatomy-faint:#2a2f34;--anatomy-dot:#b8bec4;--anatomy-lit:#ffffff;--mat-body:#1f2327;--mat-shine:#3a4046;--mat-shade:#111316;--mat-edge:#a9b0b7}
+[data-mat="brass"]{--anatomy-paper:#3d3017;--anatomy-face:#49391c;--anatomy-top:#574523;--anatomy-shade-0:#2a210f;--anatomy-shade-1:#332813;--anatomy-shade-2:#3d3017;--anatomy-shade-3:#49391c;--anatomy-lit-top:#66522b;--anatomy-lit-shade:#45371b;--anatomy-hi:#e9cf8a;--anatomy-mid:#8e7438;--anatomy-lo:#5e4c25;--anatomy-faint:#44371c;--anatomy-dot:#e9cf8a;--anatomy-lit:#fff0c8;--mat-body:#433419;--mat-shine:#8a6f36;--mat-shade:#21190b;--mat-edge:#e9cf8a}
+.iso[data-theme="light"] [data-mat="brass"]{--anatomy-paper:#bd9646;--anatomy-face:#d2ad5b;--anatomy-top:#e6c87e;--anatomy-shade-0:#8a6a2c;--anatomy-shade-1:#a47f38;--anatomy-shade-2:#bd9646;--anatomy-shade-3:#d2ad5b;--anatomy-lit-top:#f0d796;--anatomy-lit-shade:#c8a252;--anatomy-hi:#3f2e0e;--anatomy-mid:#765a24;--anatomy-lo:#9a7a3c;--anatomy-faint:#b08c46;--anatomy-dot:#3a2a0c;--anatomy-lit:#1f1606;--mat-body:#b8913f;--mat-shine:#efd795;--mat-shade:#7d5f26;--mat-edge:#3f2e0e}
+.iso[data-theme="dark"] [data-mat="brass"]{--anatomy-paper:#3d3017;--anatomy-face:#49391c;--anatomy-top:#574523;--anatomy-shade-0:#2a210f;--anatomy-shade-1:#332813;--anatomy-shade-2:#3d3017;--anatomy-shade-3:#49391c;--anatomy-lit-top:#66522b;--anatomy-lit-shade:#45371b;--anatomy-hi:#e9cf8a;--anatomy-mid:#8e7438;--anatomy-lo:#5e4c25;--anatomy-faint:#44371c;--anatomy-dot:#e9cf8a;--anatomy-lit:#fff0c8;--mat-body:#433419;--mat-shine:#8a6f36;--mat-shade:#21190b;--mat-edge:#e9cf8a}
+
+/* Idea de diseño: cuaderno de laboratorio. Hoja cuadriculada, una sola columna que corre como página,
+   tinta azul para lo que hace el estudiante, rojo de maestro para metas y correcciones.
+   La mesa de pruebas en falso 3D (kit iso de Nivela) es lo único con volumen. */
+:root{
+  color-scheme:light;
+  --hoja:#f7f9f8; --cuadro:#dfe8ea; --blanco:#ffffff; --tinta:#1c2a4a; --lapiz:#566173;
+  --boli:#2146c7; --boli-suave:#e6ecff; --rojo:#c9302a; --rojo-suave:#fdeceb; --verde:#1b7450; --verde-suave:#e3f4ec; --ambar:#8a5a00; --ambar-suave:#fff1cf;
+  --titulo:"Gabarito","Trebuchet MS",system-ui,sans-serif; --texto:"Karla",Verdana,system-ui,sans-serif; --mano:"Caveat","Comic Sans MS",cursive;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background-color:var(--hoja);color:var(--tinta);font:17px/1.55 var(--texto);
+  background-image:linear-gradient(var(--cuadro) 1px,transparent 1px),linear-gradient(90deg,var(--cuadro) 1px,transparent 1px);background-size:22px 22px}
+.hoja{max-width:700px;margin:0 auto;padding:16px 18px 64px 22px;position:relative;min-height:100vh}
+.hoja::before{content:"";position:absolute;left:10px;top:0;bottom:0;width:2px;background:rgba(201,48,42,.32)}
+header.top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.marca{font:800 19px var(--titulo)}
+.quien{font-size:14px;color:var(--lapiz)}
+nav.momentos{display:flex;gap:4px;margin:10px -18px 18px -22px;padding:0 18px 6px 22px;overflow-x:auto;scrollbar-width:none}
+nav.momentos::-webkit-scrollbar{display:none}
+nav.momentos button{flex:none;font:600 14.5px var(--texto);color:var(--lapiz);background:none;border:0;border-bottom:3px solid transparent;padding:8px 6px;cursor:pointer;white-space:nowrap}
+nav.momentos button[aria-current="step"]{color:var(--boli);border-color:var(--boli);font-weight:700}
+nav.momentos button.hecho{color:var(--verde)}
+section.momento{display:none;flex-direction:column;gap:14px}
+section.momento.on{display:flex}
+h1,h2,h3{font-family:var(--titulo);margin:0;text-wrap:balance;line-height:1.1}
+h1{font-size:33px;font-weight:800}
+h2{font-size:22px;font-weight:700;margin-top:14px}
+h3{font-size:17px;font-weight:700}
+h1:focus{outline:none}
+p{margin:0;max-width:62ch}
+.entrada{font-size:19px}
+.gris{color:var(--lapiz);font-size:15px}
+.nota{font:600 24px/1.15 var(--mano);color:var(--boli);transform:rotate(-1.2deg);margin:2px 0 0 6px;max-width:28ch}
+ul.lista,ol.lista{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;max-width:62ch}
+a{color:var(--boli)}
+:focus-visible{outline:3px solid var(--boli);outline-offset:2px}
+/* mesa de pruebas */
+.plato{margin:4px -18px 0 -22px;background:var(--blanco);border-top:2px solid var(--tinta);border-bottom:2px solid var(--tinta);position:relative;overflow:hidden}
+.plato svg{display:block;width:100%;height:auto;touch-action:pan-y;cursor:ew-resize}
+.lect{position:absolute;left:14px;bottom:8px;font:700 15px var(--texto);line-height:1.35;pointer-events:none;font-variant-numeric:tabular-nums}
+.lect small{display:block;color:var(--lapiz);font-weight:400}
+.asa{position:absolute;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(33,70,199,.14);touch-action:none;cursor:grab;display:grid;place-items:center;border:0;padding:0}
+.asa::after{content:"";width:22px;height:22px;border-radius:50%;background:var(--boli);border:3px solid #fff;box-shadow:0 0 0 1.5px var(--boli)}
+.asa:active{cursor:grabbing}
+.asa[disabled]{display:none}
+.iso{--anatomy-halo:#6f7f86;--anatomy-halo-opacity:.28}
+[data-mat="pine"]{--anatomy-top:#ecd0a2;--anatomy-shade-3:#dcb984;--anatomy-shade-2:#d0ab75;--anatomy-shade-1:#c49d66;--anatomy-shade-0:#b98f58;--anatomy-hi:#5b4120;--anatomy-faint:#cfae7c}
+.f-top{fill:var(--anatomy-top)}.f-s0{fill:var(--anatomy-shade-0)}.f-s1{fill:var(--anatomy-shade-1)}.f-s2{fill:var(--anatomy-shade-2)}.f-s3{fill:var(--anatomy-shade-3)}
+.f-edge{stroke:var(--anatomy-hi);stroke-width:1.1px;stroke-linejoin:round}
+.esc-body .iso-line,.esc-ramp .iso-line[data-tone="hi"]{stroke-width:1.1px}
+.esc-grip{fill:none;stroke:#8a5a2b;stroke-width:1px}
+.esc-arc{fill:none;stroke:var(--boli);stroke-width:1.6px}.esc-ang{font:700 17px var(--texto);fill:var(--boli)}
+.esc-wheel{fill:#23272b;stroke:#0f1113;stroke-width:1px}.esc-hub{fill:#d0d4d8}
+.esc-tag{font:800 13px var(--titulo);fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.5);stroke-width:2.5px}
+.esc-link{fill:none;stroke:#2b2f33;stroke-width:3.5px;stroke-linecap:round}
+.esc-pole{fill:none;stroke:var(--tinta);stroke-width:1.6px}.esc-flag{fill:var(--rojo)}
+/* controles */
+.mandos{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.boton{font:700 16.5px var(--titulo);padding:11px 20px;border-radius:999px;border:2px solid var(--tinta);background:var(--tinta);color:#fff;cursor:pointer;display:inline-block;margin:0}
+.boton.sec{background:var(--blanco);color:var(--tinta)}
+.boton.chico{font-size:14.5px;padding:7px 14px}
+.boton:disabled{opacity:.4;cursor:not-allowed}
+.seg{display:inline-flex;border:2px solid var(--tinta);border-radius:999px;overflow:hidden;background:var(--blanco)}
+.seg label{margin:0;padding:7px 14px;font:700 14.5px var(--titulo);cursor:pointer}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--tinta);color:#fff}
+.seg label:has(input:focus-visible){outline:3px solid var(--boli);outline-offset:-3px}
+.seg label:has(input:disabled){opacity:.4;cursor:not-allowed}
+.fila{display:grid;grid-template-columns:104px 1fr 66px;gap:10px;align-items:center;font-weight:600}
+.fila label{margin:0;font-size:16px}
+.fila input[type=range]{accent-color:var(--boli);width:100%;height:28px}
+.fila output{text-align:right;font-variant-numeric:tabular-nums}
+.cuerpos{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px 22px}
+.cuerpo{display:flex;flex-direction:column;gap:8px;padding-left:12px;border-left:4px solid #c9a24a}
+.cuerpo.b{border-color:#3d4349}
+.cuerpo .cab{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.lecturas{display:flex;gap:22px;flex-wrap:wrap}
+.lecturas div{min-width:96px}
+.lecturas .k{font-size:14px;color:var(--lapiz)}
+.lecturas .v{font:800 27px/1.1 var(--titulo);font-variant-numeric:tabular-nums}
+.lecturas .u{font-size:13.5px;color:var(--lapiz)}
+.pregunta{border-left:4px solid var(--boli);padding:2px 0 2px 14px;display:flex;flex-direction:column;gap:8px}
+.op{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1.5px dashed var(--cuadro);cursor:pointer;font-weight:400;margin:0;font-size:17px}
+.op input{width:19px;height:19px;margin-top:4px;accent-color:var(--boli);flex:none}
+.aviso{border-left:4px solid;padding:9px 12px;font-size:16px;border-radius:0 8px 8px 0}
+.aviso b{display:block;font-family:var(--titulo)}
+.aviso.ok{background:var(--verde-suave);border-color:var(--verde);color:#0f4a33}
+.aviso.ojo{background:var(--ambar-suave);border-color:#c98a00;color:#5c3d00}
+.aviso.mal{background:var(--rojo-suave);border-color:var(--rojo);color:#7d1b17}
+.err{color:var(--rojo);font-weight:700;font-size:15px}
+label{font-weight:700;font-size:15.5px;display:block;margin-bottom:4px}
+input[type=text],input[type=number],textarea{width:100%;font:400 17px var(--texto);color:var(--tinta);background:var(--blanco);border:2px solid var(--tinta);border-radius:8px;padding:9px 11px}
+textarea{min-height:104px;resize:vertical}
+.dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.grande{font:800 46px/1 var(--titulo);color:var(--boli);font-variant-numeric:tabular-nums;min-width:150px}
+.nivel{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+video,audio{width:100%;max-height:56vh;border-radius:8px;background:#000;display:block}
+audio{background:none}
+.reloj{font:500 15px var(--texto);background:var(--blanco);border:1.5px solid var(--tinta);border-radius:6px;padding:4px 8px;font-variant-numeric:tabular-nums}
+.tabla{overflow-x:auto;margin:0 -4px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;background:var(--blanco)}
+th,td{text-align:left;padding:7px 7px;border:1.5px solid var(--tinta);font-size:15px;white-space:nowrap}
+th{font-family:var(--titulo);font-weight:700;background:var(--boli-suave)}
+.semaforo{display:flex;flex-direction:column;gap:6px}
+.luz{display:flex;gap:10px;align-items:flex-start;font-size:16px}
+.luz i{flex:none;width:16px;height:16px;border-radius:50%;margin-top:4px;border:2px solid var(--tinta)}
+.luz.v i{background:#2fa873}.luz.a i{background:#f0b429}.luz.r i{background:#e04b43}
+.grafica{background:var(--blanco);border:2px solid var(--tinta);border-radius:8px;padding:6px}
+.grafica svg{display:block;width:100%;height:auto}
+.tarjeta{background:var(--blanco);border:2px solid var(--tinta);border-radius:10px;padding:16px;transform:rotate(-.6deg);box-shadow:5px 5px 0 var(--boli-suave);display:flex;flex-direction:column;gap:10px}
+.tarjeta .q{font:700 20px/1.25 var(--titulo)}
+.rubrica{display:flex;flex-direction:column;gap:10px}
+.crit{display:flex;flex-direction:column;gap:6px;padding-bottom:10px;border-bottom:1.5px dashed var(--cuadro)}
+.guia60{display:grid;grid-template-columns:2fr 3fr;border:2px solid var(--tinta);border-radius:8px;overflow:hidden;background:var(--blanco);font-size:15px}
+.guia60 div{padding:8px 10px}
+.guia60 div+div{border-left:2px solid var(--tinta)}
+.guia60 .act{background:var(--boli-suave)}
+.cuenta{font:800 44px/1 var(--titulo);font-variant-numeric:tabular-nums}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:16px;margin:0}
+.check input{width:20px;height:20px;margin-top:3px;accent-color:var(--boli);flex:none}
+.ficha{background:var(--blanco);border:2px solid var(--tinta);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ficha dl{margin:0;display:grid;grid-template-columns:minmax(92px,34%) 1fr;gap:4px 12px;font-size:15px}
+.ficha dt{color:var(--lapiz)} .ficha dd{margin:0;overflow-wrap:anywhere}
+.ficha .txt{font-size:15.5px;white-space:pre-wrap;overflow-wrap:anywhere}
+.pie{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:10px}
+details summary{cursor:pointer;font-weight:700}
+details>*+*{margin-top:8px}
+footer{font-size:14px;color:var(--lapiz);margin-top:28px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:430px){h1{font-size:28px}.fila{grid-template-columns:92px 1fr 60px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="hoja iso" data-theme="light">
+<header class="top"><div class="marca">Física en mi bolsillo</div><div class="quien" id="quien"></div></header>
+<nav class="momentos" aria-label="Momentos del recorrido" id="nav"></nav>
+
+<!-- 1 PREDICE -->
+<section class="momento" id="s-predice" aria-labelledby="h-predice">
+  <h1 id="h-predice">Sueltas tu patineta en una bajada, sin nadie arriba</h1>
+  <p class="entrada">¿Bajaría más rápido si vas tú encima? ¿Y si además se sube alguien contigo? Antes de medir nada, apuesta.</p>
+  <p class="nota">¿pesar más es bajar más rápido?</p>
+  <details id="plan">
+    <summary>Qué vas a aprender, hacer y entregar</summary>
+    <p><b>Aprenderás</b> a explicar, con datos de tu equipo, cómo cambia la aceleración en una rampa según su inclinación y por qué tu medición no coincide con el modelo ideal a = g·sen θ.</p>
+    <ol class="lista"><li><b>Predice</b> en la mesa de pruebas (10 min).</li><li><b>Mide</b> tu rampa real con el sensor de inclinación y la cámara del celular (20 min).</li><li><b>Analiza</b> tus datos en una gráfica (10 min).</li><li><b>Explica</b> la diferencia en 60 segundos: video, audio o en vivo (10 min).</li><li><b>Retroalimenta</b> con tarjetas de preguntas y otro equipo (10 min).</li><li><b>Cierra</b> con tu bitácora (5 min).</li></ol>
+    <p><b>Entregarás</b> tu ficha de evidencia, que se arma sola al final, junto con tu explicación de 60 segundos.</p>
+    <p class="gris">Trabajen en equipo de 3 o 4 con un celular y roten los roles en cada inclinación: quien opera, quien registra, quien verifica el ángulo y quien explica.</p>
+  </details>
+  <div class="dos">
+    <div><label for="f-nombre">Tu nombre</label><input type="text" id="f-nombre" autocomplete="name" placeholder="Ana López Ruiz"></div>
+    <div><label for="f-equipo">Equipo y grupo</label><input type="text" id="f-equipo" placeholder="Equipo 3, 3.º B"></div>
+  </div>
+
+  <h2>Tus tres apuestas</h2>
+  <p class="gris">Elige una, decide qué va a pasar y suelta para comprobarlo. Después arma tus propias pruebas.</p>
+  <div class="mandos" id="reto-btns"></div>
+  <div class="pregunta" id="reto-panel" hidden>
+    <p id="reto-q" style="font-weight:700"></p>
+    <div id="reto-opts" role="radiogroup" aria-labelledby="reto-q"></div>
+    <div id="reto-fb" aria-live="polite"></div>
+    <div><button class="boton sec chico" id="reto-free" hidden>Armar mis propias pruebas</button></div>
+  </div>
+
+  <div class="plato" id="plato">
+    <svg class="iso-svg" id="sv" role="img" aria-label="Mesa de pruebas: una tabla inclinada con uno o dos cuerpos. Arrastra el punto azul para inclinar la tabla y desliza de lado sobre la escena para girar la vista; también hay controles deslizantes."></svg>
+    <div class="lect" aria-hidden="true"><span id="lect-th">θ = 30°</span> &nbsp; <span id="lect-mu">μ = 0.00</span> &nbsp; <span id="lect-t">t = 0.00 s</span><small id="lect-tip">punto azul: inclina la tabla · desliza de lado: gira la vista</small></div>
+    <button class="asa" id="asa" aria-label="Girar la tabla"></button>
+  </div>
+  <div class="mandos">
+    <button class="boton" id="sim-go">Soltar</button>
+    <button class="boton sec" id="sim-reset">Regresar arriba</button>
+    <label class="check" for="sim-slow" style="font-size:15px"><input type="checkbox" id="sim-slow"> Cámara lenta</label>
+  </div>
+  <div id="sim-msg" aria-live="polite"></div>
+  <div class="lecturas" id="sim-tiles" aria-live="polite"></div>
+
+  <h3>Arma la prueba</h3>
+  <div class="seg" role="radiogroup" aria-label="Cuántos cuerpos">
+    <label><input type="radio" name="mode" value="uno" id="m-uno" checked>Uno</label>
+    <label><input type="radio" name="mode" value="unidos" id="m-unidos">Dos unidos</label>
+    <label><input type="radio" name="mode" value="sueltos" id="m-sueltos">Dos sueltos</label>
+  </div>
+  <div class="fila"><label for="c-az">Girar la vista</label><input type="range" id="c-az" min="0" max="359" step="1" value="38"><output><button class="boton sec chico" id="c-az0" style="padding:4px 9px">Frente</button></output></div>
+  <div class="fila"><label for="c-th">Ángulo θ</label><input type="range" id="c-th" min="0" max="60" step="1" value="30"><output id="c-th-o">30°</output></div>
+  <div class="fila"><label for="c-mu">Fricción μ</label><input type="range" id="c-mu" min="0" max="0.6" step="0.05" value="0"><output id="c-mu-o">0.00</output></div>
+  <div class="cuerpos">
+    <div class="cuerpo a"><div class="cab"><h3>A, va delante</h3>
+      <div class="seg" role="radiogroup" aria-label="Tipo del cuerpo A"><label><input type="radio" name="ta" value="carro" id="ta-c" checked>Con ruedas</label><label><input type="radio" name="ta" value="bloque" id="ta-b">Bloque</label></div></div>
+      <div class="fila"><label for="c-ma">Masa</label><input type="range" id="c-ma" min="0.1" max="2" step="0.1" value="0.5"><output id="c-ma-o">0.5 kg</output></div></div>
+    <div class="cuerpo b" id="card-b"><div class="cab"><h3>B, va detrás</h3>
+      <div class="seg" role="radiogroup" aria-label="Tipo del cuerpo B"><label><input type="radio" name="tb" value="carro" id="tb-c">Con ruedas</label><label><input type="radio" name="tb" value="bloque" id="tb-b" checked>Bloque</label></div></div>
+      <div class="fila"><label for="c-mb">Masa</label><input type="range" id="c-mb" min="0.1" max="2" step="0.1" value="0.5"><output id="c-mb-o">0.5 kg</output></div>
+      <div><button class="boton sec chico" id="c-swap">Intercambiar lugares</button></div></div>
+  </div>
+  <p class="gris">El bloque siente toda la fricción μ. Lo que tiene ruedas solo siente la décima parte.</p>
+
+  <details>
+    <summary>El modelo, por si lo necesitas</summary>
+    <p>Sobre la tabla, una parte del peso empuja al cuerpo hacia abajo (m·g·sen θ) y la fricción lo frena (μ·m·g·cos θ). Con la segunda ley de Newton: <b>a = g·(sen θ − μ·cos θ)</b>. Sin fricción queda el modelo ideal <b>a = g·sen θ</b>, con g = 9.81 m/s².</p>
+    <p>Para medir: si el cuerpo parte del reposo y recorre una distancia d en un tiempo t, entonces d = ½·a·t², así que <b>a = 2d / t²</b>.</p>
+  </details>
+  <div id="log-box" hidden><h3>Tus lanzamientos</h3>
+    <div class="tabla"><table id="log"><thead><tr><th>Prueba</th><th>θ</th><th>μ</th><th>a de A</th><th>a de B</th><th>t (s)</th></tr></thead><tbody></tbody></table></div></div>
+  <div class="pie"><span></span><button class="boton" data-go="mide">Ahora mídelo de verdad</button></div>
+</section>
+
+<!-- 2 MIDE -->
+<section class="momento" id="s-mide" aria-labelledby="h-mide">
+  <h1 id="h-mide">Tu celular es el instrumento</h1>
+  <p class="entrada">Mide la misma rampa con tres inclinaciones distintas. En cada una: fija el ángulo con el sensor y cronometra tres descensos con la cámara.</p>
+  <p class="gris">Necesitan una tabla lisa de 1 m o más, algo que ruede o resbale, cinta métrica y libros para elevar un extremo. Marquen en la tabla una salida y una meta.</p>
+
+  <h2>A. El ángulo, con el sensor de inclinación</h2>
+  <p>Acuesta el celular sobre la tabla con la pantalla hacia arriba y fija la lectura.</p>
+  <div class="nivel">
+    <div class="grande" id="tilt-val">–.–°</div>
+    <svg viewBox="0 0 120 70" width="120" height="70" aria-hidden="true"><line x1="10" y1="60" x2="110" y2="60" stroke="#566173" stroke-width="2"/><line id="tilt-line" x1="10" y1="60" x2="110" y2="60" stroke="#2146c7" stroke-width="5" stroke-linecap="round"/></svg>
+  </div>
+  <div class="mandos">
+    <button class="boton chico" id="tilt-on">Activar sensor</button>
+    <button class="boton sec chico" id="tilt-zero" disabled>Poner en cero sobre la mesa</button>
+    <button class="boton sec chico" id="tilt-fix" disabled>Fijar este ángulo</button>
+  </div>
+  <p class="gris" id="tilt-msg" aria-live="polite">El navegador te pedirá permiso para leer el sensor de movimiento.</p>
+  <details><summary>Mi celular no tiene sensor o no dio permiso</summary>
+    <p class="gris">Mide la altura del extremo elevado y el largo de la tabla: sen θ = altura / largo.</p>
+    <div class="dos"><div><label for="d-h">Altura (cm)</label><input type="number" id="d-h" inputmode="decimal" placeholder="21"></div><div><label for="d-l">Largo de la tabla (cm)</label><input type="number" id="d-l" inputmode="decimal" placeholder="100"></div></div>
+    <p><button class="boton sec chico" id="d-calc">Calcular el ángulo</button> <span class="err" id="d-calc-err" aria-live="polite"></span></p>
+  </details>
+  <div class="dos">
+    <div><label for="d-theta">Ángulo θ (grados)</label><input type="number" id="d-theta" inputmode="decimal" step="0.1" placeholder="12.0"></div>
+    <div><label for="d-d">De salida a meta, d (metros)</label><input type="number" id="d-d" inputmode="decimal" step="0.01" placeholder="1.00"></div>
+  </div>
+
+  <h2>B. El tiempo, con la cámara</h2>
+  <ol class="lista"><li>Graba de lado, de modo que se vean la salida y la meta.</li><li>Suelta el cuerpo <b>sin empujarlo</b> y deja de grabar cuando cruce la meta.</li><li>Avanza cuadro por cuadro y marca los dos instantes.</li></ol>
+  <div class="mandos">
+    <label class="boton chico" for="vid-in">Abrir cámara y grabar</label><input class="sr" type="file" id="vid-in" accept="video/*" capture="environment">
+    <label class="boton sec chico" for="vid-in2">Elegir un video guardado</label><input class="sr" type="file" id="vid-in2" accept="video/*">
+  </div>
+  <div id="vid-box" hidden style="display:flex;flex-direction:column;gap:10px">
+    <video id="vid" playsinline muted preload="auto"></video>
+    <div class="mandos">
+      <button class="boton sec chico" id="v-b10" aria-label="Retroceder 10 cuadros">−10</button>
+      <button class="boton sec chico" id="v-b1" aria-label="Retroceder un cuadro">−1</button>
+      <button class="boton sec chico" id="v-play">Ver lento</button>
+      <button class="boton sec chico" id="v-f1" aria-label="Avanzar un cuadro">+1</button>
+      <button class="boton sec chico" id="v-f10" aria-label="Avanzar 10 cuadros">+10</button>
+      <span class="reloj" id="v-now">0.000 s</span>
+    </div>
+    <div class="mandos">
+      <button class="boton sec chico" id="v-start">Marcar salida</button><span class="gris" id="v-start-o">sin marcar</span>
+      <button class="boton sec chico" id="v-end">Marcar meta</button><span class="gris" id="v-end-o">sin marcar</span>
+    </div>
+    <div class="mandos"><button class="boton chico" id="v-save" disabled>Guardar este tiempo</button><span class="err" id="v-err" aria-live="polite"></span></div>
+    <p class="gris">Cada cuadro dura unos 0.03 s: esa es la precisión de tu cronómetro de video.</p>
+  </div>
+  <details><summary>No puedo grabar: escribir un tiempo de cronómetro</summary>
+    <div class="mandos"><div style="flex:1;min-width:140px"><label for="t-man">Tiempo (s)</label><input type="number" id="t-man" inputmode="decimal" step="0.01" placeholder="1.12"></div><button class="boton sec chico" id="t-add">Agregar</button></div>
+  </details>
+  <div><b>Tiempos de esta inclinación</b> <span class="gris">(se necesitan 3)</span><div class="mandos" id="t-list" style="margin-top:6px"></div></div>
+  <p class="err" id="d-err" aria-live="assertive"></p>
+  <div><button class="boton" id="row-save">Guardar esta inclinación</button></div>
+
+  <h2>Tus inclinaciones</h2>
+  <div class="tabla"><table id="rows"><thead><tr><th>θ</th><th>d (m)</th><th>t₁</th><th>t₂</th><th>t₃</th><th></th></tr></thead><tbody></tbody></table></div>
+  <p class="gris" id="rows-msg"></p>
+  <details><summary>Hoy no tenemos materiales</summary>
+    <p class="gris">Puedes continuar con datos de respaldo: son un ejemplo preparado para practicar, no una medición de tu equipo, y tu ficha lo indicará.</p>
+    <button class="boton sec chico" id="d-backup">Usar datos de respaldo</button>
+  </details>
+  <div class="pie"><button class="boton sec" data-go="predice">Anterior</button><button class="boton" data-go="analiza">Analizar mis datos</button></div>
+</section>
+
+<!-- 3 ANALIZA -->
+<section class="momento" id="s-analiza" aria-labelledby="h-analiza">
+  <h1 id="h-analiza">¿Qué dicen tus datos?</h1>
+  <div id="an-empty" hidden><p class="entrada">Todavía no hay suficientes mediciones. Guarda al menos dos inclinaciones.</p><p><button class="boton" data-go="mide">Ir a medir</button></p></div>
+  <div id="an-body" style="display:flex;flex-direction:column;gap:14px">
+    <p class="entrada">Antes de ver la gráfica, calcula tú la primera fila. Así sabes de dónde sale cada número.</p>
+    <div class="pregunta">
+      <p id="mano-q" style="font-weight:700"></p>
+      <div class="mandos"><div style="flex:1;min-width:150px"><label for="mano-in">Tu resultado (m/s²)</label><input type="number" id="mano-in" inputmode="decimal" step="0.01"></div><button class="boton chico" id="mano-go">Revisar</button></div>
+      <div id="mano-fb" aria-live="polite"></div>
+    </div>
+    <div id="an-res" hidden style="display:flex;flex-direction:column;gap:14px">
+      <div class="tabla"><table id="an-table"><thead><tr><th>θ</th><th>t prom. (s)</th><th>a medida</th><th>a modelo</th><th>Diferencia</th></tr></thead><tbody></tbody></table></div>
+      <figure class="grafica" style="margin:0"><svg id="chart" viewBox="0 0 640 440" role="img" aria-labelledby="chart-t"><title id="chart-t">Aceleración medida frente al modelo ideal para cada inclinación</title></svg>
+        <figcaption class="gris" style="padding:4px 6px">Línea: modelo ideal a = g·sen θ. Puntos: lo que midió tu equipo. La línea roja punteada es la diferencia que vas a explicar.</figcaption></figure>
+      <h2>Punto de control: ¿tus datos son congruentes?</h2>
+      <div class="semaforo" id="semaforo" aria-live="polite"></div>
+      <p class="gris">Si hay luces rojas, vuelve a medir esa inclinación antes de explicar. Un dato malo arruina la mejor explicación.</p>
+    </div>
+  </div>
+  <div class="pie"><button class="boton sec" data-go="mide">Anterior</button><button class="boton" data-go="explica">Explicar la diferencia</button></div>
+</section>
+
+<!-- 4 EXPLICA -->
+<section class="momento" id="s-explica" aria-labelledby="h-explica">
+  <h1 id="h-explica">Explícalo en 60 segundos</h1>
+  <p class="entrada">Tu medición y el modelo no coinciden. Eso no es un error de tu equipo: es lo que hay que explicar.</p>
+  <h2>Punto de control: tu idea en una frase</h2>
+  <div class="dos">
+    <div><label for="cp-causa">La causa principal de la diferencia es…</label><input type="text" id="cp-causa" placeholder="la fricción entre…"></div>
+    <div><label for="cp-dato">…y el dato que lo sostiene es</label><input type="text" id="cp-dato" placeholder="a 14° medimos 1.94 y el modelo da…"></div>
+  </div>
+  <div id="cp-fb" aria-live="polite"></div>
+
+  <h2>Elige cómo la vas a presentar</h2>
+  <p class="gris">Los tres formatos valen lo mismo y se revisan con la misma rúbrica. Se califica la explicación, no el formato.</p>
+  <div class="seg" role="radiogroup" aria-label="Formato de la explicación">
+    <label><input type="radio" name="fmt" value="video" id="fmt-video">Video</label>
+    <label><input type="radio" name="fmt" value="audio" id="fmt-audio">Audio sobre la gráfica</label>
+    <label><input type="radio" name="fmt" value="vivo" id="fmt-vivo">En vivo</label>
+  </div>
+  <div class="guia60" id="guia60"><div id="g-a"><b>0 a 15 s</b><br>Muestra tu apuesta y tu gráfica.</div><div id="g-b"><b>15 a 60 s</b><br>Explica la diferencia: al menos una causa, con un dato, y una mejora del montaje.</div></div>
+  <div class="mandos"><span class="cuenta" id="cuenta">60</span><button class="boton sec chico" id="cuenta-go">Ensayar con cronómetro</button></div>
+  <div id="fmt-video-box" hidden class="mandos"><label class="boton chico" for="ex-vid">Grabar mi video</label><input class="sr" type="file" id="ex-vid" accept="video/*" capture="user"></div>
+  <div id="fmt-audio-box" hidden class="mandos"><label class="boton chico" for="ex-aud">Grabar mi audio</label><input class="sr" type="file" id="ex-aud" accept="audio/*" capture></div>
+  <p id="fmt-vivo-box" hidden class="gris">La presentarás frente a la rampa cuando tu docente lo indique. Usa el cronómetro para ensayar.</p>
+  <div id="ex-prev"></div>
+  <p class="gris" id="ex-msg" aria-live="polite"></p>
+
+  <h2>Tu guion</h2>
+  <div><label for="x-exp">¿Por qué la medición no coincide con el modelo ideal?</label>
+    <p class="gris" style="margin-bottom:6px">Usa tus datos, da al menos una causa y di si hace que la aceleración salga mayor o menor.</p>
+    <textarea id="x-exp" placeholder="A 14° el modelo predice…"></textarea></div>
+  <div><label for="x-mej">¿Qué cambiarías en el montaje para acercarte al modelo?</label><textarea id="x-mej" style="min-height:76px" placeholder="Usaríamos una tabla más…"></textarea></div>
+  <div class="pie"><button class="boton sec" data-go="analiza">Anterior</button><button class="boton" data-go="retro">Ponerla a prueba</button></div>
+</section>
+
+<!-- 5 RETROALIMENTA -->
+<section class="momento" id="s-retro" aria-labelledby="h-retro">
+  <h1 id="h-retro">Que tu explicación aguante preguntas</h1>
+  <p class="entrada">Saca dos tarjetas y respóndelas con tus datos. Luego pasa el celular a otro equipo para que revise tu explicación.</p>
+  <h2>Tarjetas de preguntas</h2>
+  <div class="tarjeta" id="card" hidden><p class="q" id="card-q"></p><label class="sr" for="card-a">Tu respuesta</label><textarea id="card-a" style="min-height:76px" placeholder="Con nuestros datos…"></textarea>
+    <div class="mandos"><button class="boton chico" id="card-save">Guardar respuesta</button><span class="err" id="card-err" aria-live="polite"></span></div></div>
+  <div class="mandos"><button class="boton sec" id="card-draw">Sacar una tarjeta</button><span class="gris" id="card-count"></span></div>
+  <div id="card-done" style="display:flex;flex-direction:column;gap:8px"></div>
+
+  <h2>Revisión de otro equipo</h2>
+  <p class="gris">Quien revisa escucha o lee la explicación y marca cada criterio. No se califica a la persona: se ayuda a mejorar la explicación.</p>
+  <div><label for="co-quien">Equipo o persona que revisa</label><input type="text" id="co-quien" placeholder="Equipo 5"></div>
+  <div class="rubrica" id="rubrica"></div>
+  <div><label for="co-com">Una sugerencia concreta para mejorarla</label><textarea id="co-com" style="min-height:76px" placeholder="Les falta decir…"></textarea></div>
+  <div><label for="co-cambio">Después de las tarjetas y la revisión, ¿qué cambiaste en tu explicación?</label><textarea id="co-cambio" style="min-height:76px" placeholder="Agregamos que…"></textarea></div>
+  <div class="pie"><button class="boton sec" data-go="explica">Anterior</button><button class="boton" data-go="cierra">Cerrar</button></div>
+</section>
+
+<!-- 6 CIERRA -->
+<section class="momento" id="s-cierra" aria-labelledby="h-cierra">
+  <h1 id="h-cierra">Vuelve a la patineta</h1>
+  <p class="entrada">Esta parte es individual. Respóndela tú, con lo que mediste.</p>
+  <div><label for="z-salida">Alguien de tu equipo dice: «la diferencia con el modelo se debe a que nuestro carrito es pesado». ¿Estás de acuerdo? Justifica con tu gráfica.</label><textarea id="z-salida" placeholder="No estoy de acuerdo porque…"></textarea></div>
+  <div><label for="z-trans">Dos amigos bajan en patineta por la misma bajada y uno pesa el doble que el otro. Según lo que viste, ¿quién llega primero? ¿Qué cosa real podría cambiar ese resultado?</label><textarea id="z-trans" placeholder="Llegarían…"></textarea></div>
+  <div><label for="z-meta">¿Qué cambió entre lo que apostaste al inicio y lo que piensas ahora?</label><textarea id="z-meta" style="min-height:76px" placeholder="Al principio creía que…"></textarea></div>
+  <div><button class="boton" id="z-gen">Revisar y armar mi ficha</button></div>
+  <div id="z-rev" aria-live="polite" style="display:flex;flex-direction:column;gap:8px"></div>
+  <div id="ficha-wrap" hidden style="display:flex;flex-direction:column;gap:12px">
+    <div class="ficha" id="ficha"></div>
+    <div class="mandos"><button class="boton" id="f-share" hidden>Compartir</button><button class="boton sec" id="f-copy">Copiar</button><button class="boton sec" id="f-dl">Descargar</button></div>
+    <p class="gris" id="f-msg" aria-live="polite">Envía la ficha a tu docente por el medio que te indique. Si grabaste video o audio, envíalo junto con ella.</p>
+    <label class="sr" for="f-area">Texto de tu ficha</label><textarea id="f-area" readonly hidden></textarea>
+  </div>
+  <div class="pie"><button class="boton sec" data-go="retro">Anterior</button><button class="boton sec" data-go="fuentes">Fuentes utilizadas</button></div>
+</section>
+
+<!-- FUENTES -->
+<section class="momento" id="s-fuentes" aria-labelledby="h-fuentes">
+  <h1 id="h-fuentes">Fuentes utilizadas</h1>
+  <p>Moebs, W., Ling, S. J. y Sanny, J. (2021). <i>Física universitaria volumen 1</i>. OpenStax. Secciones 3.4 (movimiento con aceleración constante), 5.6 (fuerzas comunes) y 6.2 (fricción). <a href="https://openstax.org/books/f%C3%ADsica-universitaria-volumen-1/pages/5-6-fuerzas-comunes">Abrir el libro en OpenStax</a>. Acceso gratis en openstax.org.</p>
+  <p class="gris">De aquí provienen el modelo a = g·(sen θ − μ·cos θ), la ecuación d = ½·a·t² y el tratamiento de cuerpos unidos.</p>
+  <p>Staacks, S., Hütz, S., Heinke, H. y Stampfer, C. (2018). Advanced tools for smartphone-based experiments: phyphox. <i>Physics Education, 53</i>(4), 045009. <a href="https://doi.org/10.1088/1361-6552/aac05e">https://doi.org/10.1088/1361-6552/aac05e</a></p>
+  <p class="gris">Respalda el uso de los sensores del celular como instrumentos de medición en la clase de física.</p>
+  <h2>Sobre este recurso</h2>
+  <p class="gris">Diseñado por Eduardo Jiménez Santiago para Física de bachillerato. Se elaboró con apoyo de inteligencia artificial y el contenido fue revisado por el docente. Simplificaciones de la mesa de pruebas: g = 9.81 m/s², la fricción estática y la cinética usan el mismo μ, y lo que tiene ruedas siente la décima parte de μ. El video, el audio y los datos del sensor se quedan en tu celular: la página no los envía a ningún lado. Dibujo isométrico hecho con iso-kit (licencia MIT, © 2026 Ryan).</p>
+  <div class="pie"><button class="boton sec" data-go="cierra">Volver a mi ficha</button><button class="boton sec" data-go="predice">Ir al inicio</button></div>
+</section>
+
+<footer><a href="#fuentes">Fuentes utilizadas</a></footer>
+</div>
+<script>/* iso-kit (MIT, (c) 2026 Ryan) */
+const k=(()=>{const AZIMUTH = 45;
+const ELEVATION = 30;
+const SHADES = 4;
+const RADIANS = Math.PI / 180;
+const UNIT = Math.sqrt(1.6);
+function cameraOf({ scale, azimuth = AZIMUTH, elevation = ELEVATION }) {
+    const a = azimuth * RADIANS;
+    const e = elevation * RADIANS;
+    return { sinA: Math.sin(a), cosA: Math.cos(a), sinE: Math.sin(e), cosE: Math.cos(e), k: scale * UNIT };
+}
+function iso([x, y, z], projection) {
+    const { origin } = projection;
+    const { sinA, cosA, sinE, cosE, k } = cameraOf(projection);
+    return [origin[0] + (x * sinA - y * cosA) * k, origin[1] + ((x * cosA + y * sinA) * sinE - z * cosE) * k];
+}
+function towardViewer(projection) {
+    const { sinA, cosA } = cameraOf(projection);
+    return [cosA, sinA];
+}
+function depthOf([x, y, z], projection) {
+    const { sinA, cosA, sinE, cosE } = cameraOf(projection);
+    return (x * cosA + y * sinA) * cosE + z * sinE;
+}
+const tenth = (value) => {
+    const text = (Math.round(value * 10) / 10).toFixed(1).replace(/\.0$/, "");
+    return text === "-0" ? "0" : text;
+};
+function pathOf(points, closed = false) {
+    if (!points.length)
+        return "";
+    return points.map(([x, y], at) => `${at ? "L" : "M"}${tenth(x)} ${tenth(y)}`).join("") + (closed ? "Z" : "");
+}
+const joinPaths = (paths) => paths.filter(Boolean).join("");
+function roundedPlan({ x, y, w, d, r }, steps = 8) {
+    const radius = Math.max(0, Math.min(r, w / 2, d / 2));
+    const corners = [
+        [x + w - radius, y + radius, -90],
+        [x + w - radius, y + d - radius, 0],
+        [x + radius, y + d - radius, 90],
+        [x + radius, y + radius, 180],
+    ];
+    const out = [];
+    for (const [cx, cy, start] of corners) {
+        const count = radius > 0 ? steps : 0;
+        for (let step = 0; step <= count; step++) {
+            const angle = (start + (count ? (90 * step) / count : 45)) * RADIANS;
+            out.push([cx + radius * Math.cos(angle), cy + radius * Math.sin(angle)]);
+        }
+    }
+    return out;
+}
+function signedArea(points) {
+    let area = 0;
+    for (let index = 0; index < points.length; index++) {
+        const [ax, ay] = points[index];
+        const [bx, by] = points[(index + 1) % points.length];
+        area += ax * by - bx * ay;
+    }
+    return area / 2;
+}
+const oriented = (points) => (signedArea(points) < 0 ? [...points].reverse() : points);
+function convexHull(points) {
+    const sorted = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    if (sorted.length < 3)
+        return sorted;
+    const cross = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const lower = [];
+    for (const point of sorted) {
+        while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], point) <= 0)
+            lower.pop();
+        lower.push(point);
+    }
+    const upper = [];
+    for (let index = sorted.length - 1; index >= 0; index--) {
+        const point = sorted[index];
+        while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], point) <= 0)
+            upper.pop();
+        upper.push(point);
+    }
+    return [...lower.slice(0, -1), ...upper.slice(0, -1)];
+}
+function runsOf(flags, want) {
+    const count = flags.length;
+    const runs = [];
+    const start = flags.findIndex((flag, index) => flag !== flags[(index + count - 1) % count]);
+    if (start < 0)
+        return flags[0] === want ? [Array.from({ length: count + 1 }, (_, index) => index % count)] : [];
+    let run = null;
+    for (let step = 0; step < count; step++) {
+        const index = (start + step) % count;
+        if (flags[index] === want) {
+            if (!run)
+                run = [index];
+            run.push((index + 1) % count);
+        }
+        else if (run) {
+            runs.push(run);
+            run = null;
+        }
+    }
+    if (run)
+        runs.push(run);
+    return runs;
+}
+function extrude(ring, z, height, projection, options = {}) {
+    const convex = options.convex ?? true;
+    const count = ring.length;
+    const counter = signedArea(ring) > 0;
+    const [vx, vy] = towardViewer(projection);
+    const { sinA, cosA } = cameraOf(projection);
+    const normals = ring.map(([ax, ay], index) => {
+        const [bx, by] = ring[(index + 1) % count];
+        const dx = bx - ax;
+        const dy = by - ay;
+        const length = Math.hypot(dx, dy) || 1;
+        return (counter ? [dy / length, -dx / length] : [-dy / length, dx / length]);
+    });
+    const facing = normals.map(([nx, ny]) => nx * vx + ny * vy > 1e-9);
+    const top = ring.map(([x, y]) => iso([x, y, z + height], projection));
+    const bottom = ring.map(([x, y]) => iso([x, y, z], projection));
+    const outline = [];
+    const crease = [];
+    for (const run of runsOf(facing, false))
+        outline.push(pathOf(run.map((index) => top[index])));
+    for (const run of runsOf(facing, true)) {
+        crease.push(pathOf(run.map((index) => top[index])));
+        if (height > 0)
+            outline.push(pathOf(run.map((index) => bottom[index])));
+    }
+    if (height > 0) {
+        for (let index = 0; index < count; index++) {
+            if (facing[(index + count - 1) % count] !== facing[index])
+                outline.push(pathOf([top[index], bottom[index]]));
+        }
+    }
+    let fill;
+    if (convex) {
+        fill = pathOf(convexHull([...top, ...bottom]), true);
+    }
+    else {
+        const parts = [pathOf(oriented(top), true), pathOf(oriented(bottom), true)];
+        for (let index = 0; index < count; index++) {
+            if (!facing[index])
+                continue;
+            const next = (index + 1) % count;
+            parts.push(pathOf(oriented([top[index], top[next], bottom[next], bottom[index]]), true));
+        }
+        fill = parts.join("");
+    }
+    const buckets = Array.from({ length: SHADES }, () => []);
+    if (height > 0) {
+        const [lx, ly] = [-sinA, cosA];
+        for (let index = 0; index < count; index++) {
+            if (!facing[index])
+                continue;
+            const [nx, ny] = normals[index];
+            const lit = (nx * lx + ny * ly + 1) / 2;
+            const shade = Math.min(SHADES - 1, Math.max(0, Math.floor(lit * SHADES)));
+            const next = (index + 1) % count;
+            buckets[shade].push(pathOf(oriented([top[index], top[next], bottom[next], bottom[index]]), true));
+        }
+    }
+    let bevel;
+    if (options.bevel && options.bevel > 0) {
+        const by = options.bevel;
+        const inset = ring.map(([x, y], index) => {
+            const [ax, ay] = normals[(index + count - 1) % count];
+            const [bx, by2] = normals[index];
+            const mx = ax + bx;
+            const my = ay + by2;
+            const length = Math.hypot(mx, my) || 1;
+            return [x - (mx / length) * by, y - (my / length) * by];
+        });
+        const insetTop = inset.map(([x, y]) => iso([x, y, z + height], projection));
+        bevel = runsOf(facing, true)
+            .map((run) => pathOf([top[run[0]], ...run.slice(1, -1).map((index) => insetTop[index]), top[run[run.length - 1]]]))
+            .join("");
+    }
+    return {
+        fill,
+        outline: outline.join(""),
+        crease: crease.join(""),
+        top: pathOf(oriented(top), true),
+        shades: buckets.map((paths) => paths.join("")),
+        bevel,
+    };
+}
+const ringOf = (plan, steps = 8) => roundedPlan(plan, steps);
+function slabOf(plan, z, height, projection, steps = 8, bevel = 0) {
+    return extrude(ringOf(plan, steps), z, height, projection, { convex: true, bevel });
+}
+function circleRing(cx, cy, radius, steps = 40) {
+    return Array.from({ length: steps }, (_, step) => {
+        const angle = (step / steps) * Math.PI * 2;
+        return [cx + radius * Math.cos(angle), cy + radius * Math.sin(angle)];
+    });
+}
+function cylinder(cx, cy, radius, z, height, projection, steps = 32, bevel = 0) {
+    return extrude(circleRing(cx, cy, radius, steps), z, height, projection, { convex: true, bevel });
+}
+const insetPlan = ({ x, y, w, d, r }, by) => ({ x: x + by, y: y + by, w: w - by * 2, d: d - by * 2, r: Math.max(0, r - by) });
+function onTop(points, z, projection, closed = false) {
+    return pathOf(points.map(([x, y]) => iso([x, y, z], projection)), closed);
+}
+const planOutline = (plan, z, projection, steps = 8) => onTop(ringOf(plan, steps), z, projection, true);
+const lineOnTop = (from, to, z, projection) => onTop([from, to], z, projection);
+const segment = (from, to, projection) => pathOf([iso(from, projection), iso(to, projection)]);
+const rise = (at, from, to, projection) => segment([at[0], at[1], from], [at[0], at[1], to], projection);
+const ring = (cx, cy, radius, z, projection, steps = 40) => onTop(circleRing(cx, cy, radius, steps), z, projection, true);
+const pointsAt = (points, projection) => points.map((point) => iso(point, projection));
+function dotGrid(x, y, columns, rows, gap, z, projection) {
+    const dots = [];
+    for (let row = 0; row < rows; row++) {
+        for (let column = 0; column < columns; column++)
+            dots.push(iso([x + column * gap, y + row * gap, z], projection));
+    }
+    return dots;
+}
+function corners({ x, y, w, d }, inset = 0) {
+    return [
+        [x + inset, y + inset],
+        [x + w - inset, y + inset],
+        [x + inset, y + d - inset],
+        [x + w - inset, y + d - inset],
+    ];
+}
+function boxCorners({ x, y, w, d }, z0, z1) {
+    const out = [];
+    for (const px of [x, x + w])
+        for (const py of [y, y + d])
+            for (const z of [z0, z1])
+                out.push([px, py, z]);
+    return out;
+}
+function knurl(cx, cy, radius, z0, z1, count, projection, inset = 0.4) {
+    const [vx, vy] = towardViewer(projection);
+    const lines = [];
+    for (let index = 0; index < count; index++) {
+        const angle = (index / count) * Math.PI * 2;
+        const nx = Math.cos(angle);
+        const ny = Math.sin(angle);
+        if (nx * vx + ny * vy < 0.15)
+            continue;
+        lines.push(segment([cx + radius * nx, cy + radius * ny, z0 + inset], [cx + radius * nx, cy + radius * ny, z1 - inset], projection));
+    }
+    return lines.join("");
+}
+function sideArc(cx, cy, radius, z, projection, steps = 24) {
+    const [vx, vy] = towardViewer(projection);
+    const facing = Math.atan2(vy, vx);
+    const points = [];
+    for (let step = 0; step <= steps; step++) {
+        const angle = facing - Math.PI / 2 + (step / steps) * Math.PI;
+        points.push(iso([cx + radius * Math.cos(angle), cy + radius * Math.sin(angle), z], projection));
+    }
+    return pathOf(points);
+}
+function ringSeam(ring, z, projection) {
+    const count = ring.length;
+    const counter = signedArea(ring) > 0;
+    const [vx, vy] = towardViewer(projection);
+    const facing = ring.map(([ax, ay], index) => {
+        const [bx, by] = ring[(index + 1) % count];
+        const dx = bx - ax;
+        const dy = by - ay;
+        const [nx, ny] = counter ? [dy, -dx] : [-dy, dx];
+        return nx * vx + ny * vy > 1e-9;
+    });
+    return runsOf(facing, true).map((run) => pathOf(run.map((index) => iso([ring[index][0], ring[index][1], z], projection)))).join("");
+}
+const sideSeam = (plan, z, projection, steps = 8) => ringSeam(ringOf(plan, steps), z, projection);
+function sideRing(center, radius, axis, projection, steps = 20) {
+    const [px, py, pz] = center;
+    const points = [];
+    for (let step = 0; step < steps; step++) {
+        const angle = (step / steps) * Math.PI * 2;
+        const u = radius * Math.cos(angle);
+        const v = radius * Math.sin(angle);
+        points.push(iso(axis === "x" ? [px, py + u, pz + v] : [px + u, py, pz + v], projection));
+    }
+    return pathOf(points, true);
+}
+function coil(from, to, center, radius, turns, axis, projection, perTurn = 16) {
+    const count = Math.max(1, Math.round(turns * perTurn));
+    const back = [];
+    const front = [];
+    let run = [];
+    let near = null;
+    for (let index = 0; index <= count; index++) {
+        const share = index / count;
+        const angle = share * turns * Math.PI * 2;
+        const u = radius * Math.cos(angle);
+        const v = radius * Math.sin(angle);
+        const along = from + (to - from) * share;
+        const point = axis === "x" ? [along, center[0] + u, center[1] + v] : [center[0] + u, along, center[1] + v];
+        const normal = axis === "x" ? [0, Math.cos(angle), Math.sin(angle)] : [Math.cos(angle), 0, Math.sin(angle)];
+        const facing = depthOf(normal, projection) > 0;
+        const flat = iso(point, projection);
+        if (near === null)
+            near = facing;
+        if (facing !== near) {
+            run.push(flat);
+            (near ? front : back).push(pathOf(run));
+            run = [flat];
+            near = facing;
+            continue;
+        }
+        run.push(flat);
+    }
+    if (run.length > 1)
+        (near ? front : back).push(pathOf(run));
+    return { back: back.join(""), front: front.join("") };
+}
+function topTicks(from, to, step, every, edge, z, lengths, projection, axis = "x") {
+    const minor = [];
+    const major = [];
+    const first = Math.ceil(from / step) * step;
+    for (let at = first, index = Math.round(first / step); at <= to + 1e-9; at += step, index++) {
+        const big = index % every === 0;
+        const length = big ? lengths[1] : lengths[0];
+        const a = axis === "x" ? [at, edge] : [edge, at];
+        const b = axis === "x" ? [at, edge + length] : [edge + length, at];
+        (big ? major : minor).push(lineOnTop(a, b, z, projection));
+    }
+    return { minor: minor.join(""), major: major.join("") };
+}
+function sideTicks(from, to, step, every, face, top, lengths, projection, axis = "x") {
+    const minor = [];
+    const major = [];
+    const first = Math.ceil(from / step) * step;
+    for (let at = first, index = Math.round(first / step); at <= to + 1e-9; at += step, index++) {
+        const big = index % every === 0;
+        const length = big ? lengths[1] : lengths[0];
+        const a = axis === "x" ? [at, face, top] : [face, at, top];
+        const b = axis === "x" ? [at, face, top - length] : [face, at, top - length];
+        (big ? major : minor).push(segment(a, b, projection));
+    }
+    return { minor: minor.join(""), major: major.join("") };
+}
+function radialTicks(cx, cy, radius, count, every, z, lengths, projection, from = 0, span = Math.PI * 2) {
+    const minor = [];
+    const major = [];
+    const closed = Math.abs(span - Math.PI * 2) < 1e-9;
+    const steps = closed ? count : count + 1;
+    for (let index = 0; index < steps; index++) {
+        const angle = from + (index / count) * span;
+        const big = index % every === 0;
+        const inner = radius - (big ? lengths[1] : lengths[0]);
+        const sx = Math.sin(angle);
+        const sy = -Math.cos(angle);
+        (big ? major : minor).push(lineOnTop([cx + sx * inner, cy + sy * inner], [cx + sx * radius, cy + sy * radius], z, projection));
+    }
+    return { minor: minor.join(""), major: major.join("") };
+}
+const haloOf = (plan, z, height, projection) => slabOf(plan, z, height, projection).fill;
+function axisVector(projection, [dx, dy, dz]) {
+    const origin = iso([0, 0, 0], projection);
+    const moved = iso([dx, dy, dz], projection);
+    return [moved[0] - origin[0], moved[1] - origin[1]];
+}
+const fine = (value) => Math.round(value * 100) / 100;
+function translateAlong(projection, by) {
+    const [x, y] = axisVector(projection, by);
+    return `translate(${fine(x)} ${fine(y)})`;
+}
+const thousandth = (value) => Math.round(value * 1000) / 1000;
+function axesAt(at, z, projection) {
+    const origin = iso([at[0], at[1], z], projection);
+    const along = (point) => {
+        const [px, py] = iso(point, projection);
+        return [px - origin[0], py - origin[1]];
+    };
+    return { origin, x: along([at[0] + 1, at[1], z]), y: along([at[0], at[1] + 1, z]), z: along([at[0], at[1], z + 1]) };
+}
+const matrixOf = (u, v, origin) => `matrix(${thousandth(u[0])} ${thousandth(u[1])} ${thousandth(v[0])} ${thousandth(v[1])} ${thousandth(origin[0])} ${thousandth(origin[1])})`;
+function holdStill(element, [dx, dy]) {
+    const text = dx || dy ? `translate(${-dx} ${-dy})` : "";
+    element.querySelectorAll("[data-hold]").forEach((node) => (text ? node.setAttribute("transform", text) : node.removeAttribute("transform")));
+}
+function topMatrix(at, z, projection, along = "x") {
+    const { origin, x, y } = axesAt(at, z, projection);
+    return along === "x" ? matrixOf(x, y, origin) : matrixOf([-y[0], -y[1]], x, origin);
+}
+function sideMatrix(at, z, projection, face) {
+    const { origin, x, y, z: up } = axesAt(at, z, projection);
+    const down = [-up[0], -up[1]];
+    return face === "left" ? matrixOf(x, down, origin) : matrixOf([-y[0], -y[1]], down, origin);
+}
+function screenRise(height, projection) {
+    const { cosE, k } = cameraOf(projection);
+    return height * cosE * k;
+}
+function fitProjection(points, width, height, { pad = 24, headroom = 0, azimuth = AZIMUTH, elevation = ELEVATION } = {}) {
+    const unit = { origin: [0, 0], scale: 1, azimuth, elevation };
+    const flat = points.map((point) => iso(point, unit));
+    const xs = flat.map(([x]) => x);
+    const ys = flat.map(([, y]) => y);
+    const left = Math.min(...xs);
+    const right = Math.max(...xs);
+    const up = Math.min(...ys);
+    const down = Math.max(...ys);
+    const scale = Math.min((width - pad * 2) / (right - left), (height - pad * 2 - headroom) / (down - up));
+    return {
+        origin: [width / 2 - ((left + right) / 2) * scale, headroom + (height - headroom) / 2 - ((up + down) / 2) * scale],
+        scale,
+        azimuth,
+        elevation,
+    };
+}
+const escape = (text) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const attrs = (pairs) => Object.entries(pairs)
+    .filter(([, value]) => value !== undefined && value !== false)
+    .map(([key, value]) => ` ${key}="${escape(String(value))}"`)
+    .join("");
+function solidSvg(paths, { tone = "hi", crease = "faint", halo = false, lit = false, flat = false, className, inner = "" } = {}) {
+    const parts = [];
+    if (halo)
+        parts.push(`<path class="iso-halo" d="${paths.fill}"/>`);
+    parts.push(`<path class="iso-fill" d="${paths.fill}"/>`);
+    if (!flat) {
+        paths.shades.forEach((d, shade) => {
+            if (d)
+                parts.push(`<path class="iso-shade" data-shade="${shade}" d="${d}"/>`);
+        });
+        parts.push(`<path class="iso-top" d="${paths.top}"/>`);
+    }
+    if (crease !== "none" && paths.crease)
+        parts.push(`<path class="iso-line iso-crease" data-tone="${crease}" d="${paths.crease}"/>`);
+    if (crease !== "none" && paths.bevel)
+        parts.push(`<path class="iso-line iso-bevel" data-tone="${crease}" d="${paths.bevel}"/>`);
+    if (inner)
+        parts.push(inner);
+    parts.push(`<path class="iso-line iso-edge" data-tone="${tone}" d="${paths.outline}"/>`);
+    return `<g${attrs({ class: className ? `iso-solid ${className}` : "iso-solid", "data-lit": lit ? "" : undefined, "data-seamless": paths.seamless ? "" : undefined })}>${parts.join("")}</g>`;
+}
+function lineSvg(d, { tone = "lo", dotted = false, dashed = false, flow = false, className, free } = {}) {
+    if (!d)
+        return "";
+    return `<path${attrs({
+        class: className ? `iso-line ${className}` : "iso-line",
+        "data-tone": tone,
+        "data-free": free === true ? "" : free || undefined,
+        "data-dotted": dotted ? "" : undefined,
+        "data-dashed": dashed ? "" : undefined,
+        "data-flow": flow ? "" : undefined,
+        d,
+    })}/>`;
+}
+function dotsSvg(points, { size = 0.5, tone = "mid", pulse = false } = {}) {
+    const dots = points
+        .map(([x, y, alpha], index) => `<circle cx="${tenth(x)}" cy="${tenth(y)}" r="${size}"${alpha !== undefined && alpha < 1 ? ` fill-opacity="${Math.max(0, alpha).toFixed(2)}"` : ""}${pulse ? ` data-pulse="" style="--pulse-at:${(index * 137) % 1600}ms"` : ""}/>`)
+        .join("");
+    return `<g class="iso-dots" data-tone="${tone}">${dots}</g>`;
+}
+function fadedSvg(list, style = {}) {
+    const groups = new Map();
+    for (const entry of list) {
+        const [d, alpha] = Array.isArray(entry) ? entry : [entry.d, entry.alpha];
+        if (!d || !(alpha > 0.02))
+            continue;
+        const level = Math.min(1, Math.round(alpha * 20) / 20);
+        groups.set(level, (groups.get(level) ?? "") + d);
+    }
+    return [...groups].map(([alpha, d]) => (alpha >= 1 ? lineSvg(d, style) : `<g opacity="${alpha.toFixed(2)}">${lineSvg(d, style)}</g>`)).join("");
+}
+function fadeLineSvg(points, { fade = [0, 0], tone = "lo", className, stops = 6 } = {}) {
+    if (points.length < 2)
+        return "";
+    const ease = (t) => t * t * (3 - 2 * t);
+    const hashOf = (text) => {
+        let hash = 2166136261;
+        for (let index = 0; index < text.length; index++)
+            hash = Math.imul(hash ^ text.charCodeAt(index), 16777619);
+        return (hash >>> 0).toString(36);
+    };
+    const lengths = [0];
+    for (let index = 1; index < points.length; index++)
+        lengths.push(lengths[index - 1] + Math.hypot(points[index][0] - points[index - 1][0], points[index][1] - points[index - 1][1]));
+    const at = (length) => {
+        let index = 1;
+        while (index < points.length - 1 && lengths[index] < length)
+            index++;
+        const span = lengths[index] - lengths[index - 1] || 1;
+        const t = Math.max(0, Math.min(1, (length - lengths[index - 1]) / span));
+        return [points[index - 1][0] + (points[index][0] - points[index - 1][0]) * t, points[index - 1][1] + (points[index][1] - points[index - 1][1]) * t];
+    };
+    const pieceOf = (from, to) => [at(from), ...points.filter((_, index) => lengths[index] > from + 1e-6 && lengths[index] < to - 1e-6), at(to)];
+    const total = lengths[lengths.length - 1];
+    if (total < 1e-6)
+        return "";
+    let [start, end] = Array.isArray(fade) ? fade : [fade, fade];
+    if (start + end > total) {
+        const share = total / (start + end);
+        start *= share;
+        end *= share;
+    }
+    const paint = `var(--anatomy-${tone})`;
+    const ramp = (piece, rising) => {
+        const d = pathOf(piece);
+        const [x1, y1] = piece[0];
+        const [x2, y2] = piece[piece.length - 1];
+        const id = `iso-fade-${hashOf(`${d}|${tone}|${rising}`)}`;
+        const marks = Array.from({ length: stops + 1 }, (_, index) => {
+            const t = index / stops;
+            const alpha = ease(rising ? t : 1 - t);
+            return `<stop offset="${t.toFixed(3)}" stop-opacity="${alpha.toFixed(3)}" style="stop-color:${paint}"/>`;
+        }).join("");
+        const gradient = `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${tenth(x1)}" y1="${tenth(y1)}" x2="${tenth(x2)}" y2="${tenth(y2)}">${marks}</linearGradient>`;
+        return `<defs>${gradient}</defs><path${attrs({ class: className ? `iso-line ${className}` : "iso-line", "data-tone": tone, "data-free": rising ? "start" : "end", d, style: `stroke:url(#${id})` })}/>`;
+    };
+    const parts = [];
+    if (start > 0.05)
+        parts.push(ramp(pieceOf(0, start), true));
+    if (total - end - start > 0.05)
+        parts.push(lineSvg(pathOf(pieceOf(start, total - end)), { tone, className }));
+    if (end > 0.05)
+        parts.push(ramp(pieceOf(total - end, total), false));
+    return `<g class="iso-fade">${parts.join("")}</g>`;
+}
+function wireSvg(from, to, { via = [], tone = "lo", dotted = false, dashed = false, flow = false, ends = "both", size = 1.2 } = {}) {
+    const d = pathOf([from, ...via, to]);
+    const end = ([x, y]) => `<circle class="iso-wire-end" cx="${tenth(x)}" cy="${tenth(y)}" r="${size}"/>`;
+    return `<g class="iso-wire" data-tone="${tone}">${lineSvg(d, { tone, dotted, dashed, flow })}${ends === "both" || ends === "from" ? end(from) : ""}${ends === "both" || ends === "to" ? end(to) : ""}</g>`;
+}
+function faceTextSvg(transform, text, { size = 3, tone = "mid", anchor = "start" } = {}) {
+    return `<text class="iso-face-text" data-tone="${tone}" transform="${transform}" font-size="${size}" text-anchor="${anchor}">${escape(text)}</text>`;
+}
+function groupSvg(children, extra = {}) {
+    return `<g${attrs(extra)}>${Array.isArray(children) ? children.join("") : children}</g>`;
+}
+function figureSvg({ width, height, label, body, standalone = false, className }) {
+    const style = standalone ? `<style>${ISO_CSS}</style>` : "";
+    return `<svg${attrs({
+        xmlns: "http://www.w3.org/2000/svg",
+        class: `iso-svg${standalone ? " iso" : ""}${className ? ` ${className}` : ""}`,
+        "data-theme": standalone || undefined,
+        viewBox: `0 0 ${width} ${height}`,
+        role: "img",
+        "aria-label": label,
+    })}>${style}${Array.isArray(body) ? body.join("") : body}</svg>`;
+}
+function swatchSvg(mark) {
+    if (mark === "raised" || mark === "flat" || mark === "lit") {
+        const body = mark === "flat" ? "M2 6.5 8 3.5 14 6.5 8 9.5Z" : "M2 4.5 8 1.5 14 4.5 14 6 8 9 2 6Z";
+        const crease = mark === "flat" ? "" : `<path class="iso-swatch-crease" d="M2 4.5 8 7.5 14 4.5"/>`;
+        return `<svg class="iso-swatch" data-mark="${mark}" viewBox="0 0 16 10" aria-hidden="true"><path d="${body}"/>${crease}</svg>`;
+    }
+    return `<svg class="iso-swatch" data-mark="${mark}" viewBox="0 0 16 10" aria-hidden="true"><path d="M1.5 5h13"/></svg>`;
+}
+function plateHtml({ fig, title, hint, readout = "", keys = [], caption, body }) {
+    const corner = (name, text, extra = "") => `<span class="iso-plate-corner" data-corner="${name}"${extra}>${escape(text)}</span>`;
+    const legend = keys.length || caption
+        ? `<figcaption class="iso-legend">${keys.length ? `<span class="iso-keys">${keys.map((key) => `<span class="iso-key">${swatchSvg(key.mark)}${escape(key.label)}</span>`).join("")}</span>` : ""}${caption ? `<span class="iso-caption">${escape(caption)}</span>` : ""}</figcaption>`
+        : "";
+    return `<figure class="iso-figure"><div class="iso-plate"><div class="iso-plate-corners" aria-hidden="true">${corner("fig", fig)}${title ? corner("title", title) : ""}${hint ? corner("hint", hint) : ""}${corner("readout", readout, " data-readout")}</div>${body}</div>${legend}</figure>`;
+}
+function pageHtml({ title, theme = "dark", body, script = "", width = 650 }) {
+    return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escape(title)}</title><style>${ISO_CSS}${PAGE_CSS.replace("__WIDTH__", String(width))}</style></head><body class="iso" data-theme="${theme}"><main class="iso-page">${body}</main>${script ? `<script type="module">${script.replace(/<\/(script)/gi, "<\\/$1")}<\/script>` : ""}</body></html>`;
+}
+const PAGE_CSS = `
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body[data-theme="light"]{color-scheme:light}
+body{margin:0;background:var(--anatomy-page);color:var(--anatomy-text);font:14px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.iso-page{width:min(__WIDTH__px,100% - 32px);margin:64px auto 96px}
+`;
+const ISO_CSS = `
+.iso{
+  --anatomy-page:#0b0b0b;--anatomy-card:#131313;--anatomy-text:#a3a3a3;--anatomy-strong:#e6e6e6;--anatomy-muted:#6e6e6e;
+  --anatomy-paper:#131313;--anatomy-face:#1b1b1b;--anatomy-top:#1c1c1c;
+  --anatomy-shade-0:#0f0f0f;--anatomy-shade-1:#121212;--anatomy-shade-2:#151515;--anatomy-shade-3:#181818;
+  --anatomy-lit-top:#262626;--anatomy-lit-shade:#1d1d1d;
+  --anatomy-hi:#d4d4d4;--anatomy-mid:#6a6a6a;--anatomy-lo:#3e3e3e;--anatomy-faint:#2a2a2a;--anatomy-lit:#ffffff;
+  --anatomy-halo:#050505;--anatomy-halo-opacity:.9;--anatomy-dot:#e6e6e6;
+  --anatomy-red:#ff6b6b;--anatomy-green:#6be0a0;--anatomy-blue:#6b9bff;
+  --anatomy-weight:.6px;--anatomy-ease:cubic-bezier(.32,.72,0,1);
+  --anatomy-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --anatomy-lift:inset 0 1px 0 0 #ffffff0a,inset 0 0 0 1px #ffffff06,0 0 0 1px #00000026,0 1px 1px -.5px #00000014,0 3px 3px -1.5px #00000014,0 6px 6px -3px #00000014,0 12px 12px -6px #00000014;
+}
+.iso[data-theme="light"]{
+  --anatomy-page:#f2f2ef;--anatomy-card:#fbfbfa;--anatomy-text:#57575a;--anatomy-strong:#18181a;--anatomy-muted:#8c8c90;
+  --anatomy-paper:#fbfbfa;--anatomy-face:#ffffff;--anatomy-top:#ffffff;
+  --anatomy-shade-0:#dcdcd9;--anatomy-shade-1:#e5e5e2;--anatomy-shade-2:#ededea;--anatomy-shade-3:#f4f4f1;
+  --anatomy-lit-top:#ffffff;--anatomy-lit-shade:#eeeeeb;
+  --anatomy-hi:#26262a;--anatomy-mid:#8a8a8f;--anatomy-lo:#b4b4b8;--anatomy-faint:#d4d4d6;--anatomy-lit:#000000;
+  --anatomy-halo:#8a8a80;--anatomy-halo-opacity:.32;--anatomy-dot:#3a3a3e;
+  --anatomy-red:#e5484d;--anatomy-green:#30a46c;--anatomy-blue:#3e63dd;
+  --anatomy-lift:inset 0 1px 0 0 #ffffff,0 0 0 1px #0000000f,0 1px 1px -.5px #0000000a,0 3px 3px -1.5px #0000000a,0 6px 6px -3px #0000000a,0 12px 12px -6px #0000000a;
+}
+.iso-svg{display:block;width:100%;height:auto;overflow:visible}
+.iso-svg path,.iso-svg circle{vector-effect:non-scaling-stroke}
+.iso-fill{fill:var(--anatomy-paper);stroke:none}
+.iso-solid[data-lit]>.iso-fill{fill:var(--anatomy-face)}
+.iso-shade,.iso-top{stroke:none}
+.iso-shade[data-shade="0"]{fill:var(--anatomy-shade-0)}
+.iso-shade[data-shade="1"]{fill:var(--anatomy-shade-1)}
+.iso-shade[data-shade="2"]{fill:var(--anatomy-shade-2)}
+.iso-shade[data-shade="3"]{fill:var(--anatomy-shade-3)}
+.iso-top{fill:var(--anatomy-top)}
+.iso-solid[data-lit]>.iso-top{fill:var(--anatomy-lit-top)}
+.iso-solid[data-lit]>.iso-shade{fill:var(--anatomy-lit-shade)}
+.iso-solid[data-seamless]>.iso-shade,.iso-solid[data-seamless]>.iso-top{stroke-width:.4;stroke-linejoin:round}
+.iso-solid[data-seamless]>.iso-shade[data-shade="0"]{stroke:var(--anatomy-shade-0)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="1"]{stroke:var(--anatomy-shade-1)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="2"]{stroke:var(--anatomy-shade-2)}
+.iso-solid[data-seamless]>.iso-shade[data-shade="3"]{stroke:var(--anatomy-shade-3)}
+.iso-solid[data-seamless]>.iso-top{stroke:var(--anatomy-top)}
+.iso-solid[data-seamless][data-lit]>.iso-top{stroke:var(--anatomy-lit-top)}
+.iso-solid[data-seamless][data-lit]>.iso-shade{stroke:var(--anatomy-lit-shade)}
+.iso-solid[data-lit]>.iso-edge{stroke:var(--anatomy-lit)}
+.iso-halo{fill:var(--anatomy-halo);stroke:none;filter:blur(9px);opacity:var(--anatomy-halo-opacity);transform:translateY(3px)}
+.iso-line{fill:none;stroke:var(--anatomy-lo);stroke-width:var(--anatomy-weight);stroke-linecap:round;stroke-linejoin:round}
+.iso-line[data-tone="hi"]{stroke:var(--anatomy-hi)}
+.iso-line[data-tone="mid"]{stroke:var(--anatomy-mid)}
+.iso-line[data-tone="lo"]{stroke:var(--anatomy-lo)}
+.iso-line[data-tone="faint"]{stroke:var(--anatomy-faint)}
+.iso-line[data-tone="lit"]{stroke:var(--anatomy-lit)}
+.iso-line[data-tone="red"]{stroke:var(--anatomy-red)}
+.iso-line[data-tone="green"]{stroke:var(--anatomy-green)}
+.iso-line[data-tone="blue"]{stroke:var(--anatomy-blue)}
+.iso-line[data-dotted]{stroke-dasharray:.01 3.5;stroke-width:1}
+.iso-line[data-dashed]{stroke-dasharray:3 3}
+.iso-line[data-flow]{stroke-dasharray:2 6}
+.iso-wire-end{fill:var(--anatomy-paper);stroke:var(--anatomy-lo);stroke-width:var(--anatomy-weight)}
+.iso-wire[data-tone="hi"] .iso-wire-end{stroke:var(--anatomy-hi)}
+.iso-wire[data-tone="mid"] .iso-wire-end{stroke:var(--anatomy-mid)}
+.iso-wire[data-tone="faint"] .iso-wire-end{stroke:var(--anatomy-faint)}
+.iso-wire[data-tone="lit"] .iso-wire-end{stroke:var(--anatomy-lit)}
+.iso-dots circle{fill:var(--anatomy-dot);stroke:none;opacity:.32}
+.iso-dots[data-tone="hi"] circle{opacity:.85}
+.iso-dots[data-tone="mid"] circle{opacity:.45}
+.iso-dots[data-tone="lo"] circle{opacity:.22}
+.iso-dots[data-tone="faint"] circle{opacity:.12}
+.iso-face-text{fill:var(--anatomy-mid);font-family:var(--anatomy-mono);letter-spacing:.04em}
+.iso-face-text[data-tone="hi"]{fill:var(--anatomy-hi)}
+.iso-face-text[data-tone="lo"]{fill:var(--anatomy-lo)}
+.iso-face-text[data-tone="faint"]{fill:var(--anatomy-faint)}
+.tb-body{fill:var(--anatomy-shade-2);stroke:none}
+.tb-shine{fill:var(--anatomy-top);stroke:none}
+.tb-shade{fill:var(--anatomy-shade-0);stroke:none}
+.tb-ring{fill:none;stroke:var(--anatomy-lo);stroke-width:.45;stroke-linecap:butt;stroke-linejoin:round}
+.tb-ring[data-tone="mid"]{stroke:var(--anatomy-mid)}
+.tb-ring[data-tone="faint"]{stroke:var(--anatomy-faint)}
+.tb-ring[data-tone="hi"]{stroke:var(--anatomy-hi)}
+@keyframes iso-flow{to{stroke-dashoffset:-32}}
+@keyframes iso-pulse{0%,100%{opacity:.18}12%{opacity:1}40%{opacity:.18}}
+.iso-line[data-flow]{animation:iso-flow 1600ms linear infinite}
+.iso-dots circle[data-pulse]{animation:iso-pulse 1600ms steps(1,end) infinite;animation-delay:var(--pulse-at,0ms)}
+.iso-figure{margin:32px 0 36px}
+.iso-plate{position:relative;padding:52px 24px;border-radius:0;background:var(--anatomy-card);box-shadow:0 0 0 1px var(--anatomy-mid);--anatomy-paper:var(--anatomy-card)}
+.iso-plate-corners{position:absolute;inset:18px 20px;pointer-events:none}
+.iso-plate-corner{position:absolute;color:var(--anatomy-muted);font-family:var(--anatomy-mono);font-size:10.5px;line-height:1;letter-spacing:.04em;white-space:nowrap}
+.iso-plate-corner[data-corner="fig"]{top:0;left:0;color:var(--anatomy-text)}
+.iso-plate-corner[data-corner="title"]{top:0;right:0;text-transform:uppercase;letter-spacing:.1em}
+.iso-plate-corner[data-corner="hint"]{bottom:0;left:0;text-transform:uppercase;letter-spacing:.1em}
+.iso-plate-corner[data-corner="readout"]{right:0;bottom:0;color:var(--anatomy-text);font-variant-numeric:tabular-nums}
+.iso-plate .iso-svg{margin:0 auto}
+.iso-legend{display:grid;gap:8px;margin-top:12px;color:var(--anatomy-muted);font-size:13px;line-height:1.55}
+.iso-keys{display:flex;flex-wrap:wrap;gap:6px 18px}
+.iso-key{display:inline-flex;align-items:center;gap:7px}
+.iso-swatch{width:16px;height:10px;flex:none;overflow:visible}
+.iso-swatch path{fill:none;stroke:var(--anatomy-hi);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+.iso-swatch[data-mark="raised"] path,.iso-swatch[data-mark="flat"] path{stroke:var(--anatomy-mid)}
+.iso-swatch[data-mark="lit"] path{stroke:var(--anatomy-lit)}
+.iso-swatch[data-mark="dim"] path{stroke:var(--anatomy-lo)}
+.iso-swatch[data-mark="dotted"] path{stroke-dasharray:.01 3;stroke-width:1.4}
+.iso-swatch[data-mark="dashed"] path{stroke-dasharray:3 2.5}
+.iso-swatch[data-mark="red"] path{stroke:var(--anatomy-red)}
+.iso-swatch[data-mark="green"] path{stroke:var(--anatomy-green)}
+.iso-swatch[data-mark="blue"] path{stroke:var(--anatomy-blue)}
+.iso-swatch-crease{stroke:var(--anatomy-lo)!important}
+@media (max-width:560px){.iso-plate{padding:48px 12px 70px}.iso-plate-corner[data-corner="hint"]{bottom:18px}}
+@media (prefers-reduced-motion:reduce){.iso-line[data-flow],.iso-dots circle[data-pulse]{animation:none}}
+`;
+
+return {iso,fitProjection,slabOf,solidSvg,lineSvg,cylinder,haloOf,pathOf,axisVector};})();</script>
+<script>/* Escena isométrica de la rampa, con vista giratoria. Usa la proyección, los sólidos y los materiales del kit iso de Nivela (iso-kit.mjs).
+   Las caras propias (tabla y cuerpos inclinados) se ocultan por su normal y se sombrean con los mismos tonos del kit. */
+const ESC=(()=>{
+  const W=640,H=470,RAD=Math.PI/180,L=150,Y0=0,YF=34,PX=150,EL=24,CEN=[78,17,42];
+  const BOUND=[[-14,-10,-4],[166,46,-4],[-14,46,-4],[166,-10,-4],[0,0,132],[0,YF,132]];
+  let scale=1e9;for(let a=0;a<360;a+=15)scale=Math.min(scale,k.fitProjection(BOUND,W,H,{pad:8,azimuth:a,elevation:EL}).scale);
+  let AZ=38,P=null,V=null,LT=null;
+  function setView(az){AZ=((az%360)+360)%360;const p0={origin:[0,0],scale,azimuth:AZ,elevation:EL},c=k.iso(CEN,p0);
+    P={origin:[W/2-c[0],H*0.5-c[1]],scale,azimuth:AZ,elevation:EL};
+    const a=AZ*RAD,e=EL*RAD;V=[Math.cos(a)*Math.cos(e),Math.sin(a)*Math.cos(e),Math.sin(e)];LT=[-Math.sin(a),Math.cos(a)]}
+  setView(AZ);
+  const at=(p)=>k.iso(p,P), poly=(pts)=>k.pathOf(pts.map(at),true), line=(pts)=>k.pathOf(pts.map(at));
+  const dot=(n)=>n[0]*V[0]+n[1]*V[1]+n[2]*V[2];
+  const depth=(p)=>p[0]*V[0]+p[1]*V[1]+p[2]*V[2];
+  function tone(n){if(n[2]>0.5)return "f-top";const h=Math.hypot(n[0],n[1])||1,lit=((n[0]*LT[0]+n[1]*LT[1])/h+1)/2;return "f-s"+Math.min(3,Math.max(0,Math.floor(lit*4)))}
+  /* caja orientada: origen o, ejes unitarios u, v(=y), n; rangos en cada eje */
+  function box(o,u,n,a0,a1,y0,y1,c0,c1){
+    const pt=(a,y,c)=>[o[0]+a*u[0]+c*n[0],y,o[2]+a*u[2]+c*n[2]];
+    const neg=(x)=>[-x[0],-x[1],-x[2]],vy=[0,1,0];
+    const F=[[n,[pt(a0,y0,c1),pt(a0,y1,c1),pt(a1,y1,c1),pt(a1,y0,c1)]],[neg(n),[pt(a0,y0,c0),pt(a1,y0,c0),pt(a1,y1,c0),pt(a0,y1,c0)]],
+      [u,[pt(a1,y0,c0),pt(a1,y1,c0),pt(a1,y1,c1),pt(a1,y0,c1)]],[neg(u),[pt(a0,y0,c0),pt(a0,y1,c0),pt(a0,y1,c1),pt(a0,y0,c1)]],
+      [vy,[pt(a0,y1,c0),pt(a1,y1,c0),pt(a1,y1,c1),pt(a0,y1,c1)]],[neg(vy),[pt(a0,y0,c0),pt(a1,y0,c0),pt(a1,y0,c1),pt(a0,y0,c1)]]];
+    let o2="";for(const [nn,pts] of F)if(dot(nn)>1e-6)o2+=`<path class="${tone(nn)} f-edge" d="${poly(pts)}"/>`;
+    return {svg:o2,pt};
+  }
+  const TRAY={x:-14,y:-10,w:180,d:56,r:5};
+  const geo=(th)=>{const c=Math.cos(th*RAD),s=Math.sin(th*RAD);return {c,s,xt:PX-L*c,Hh:L*s,u:[c,0,-s],n:[s,0,c]}};
+  const nearY=()=>V[1]>=0?YF:Y0;
+  function base(){return `<path class="iso-halo" d="${k.haloOf(TRAY,-4,4,P)}"/>`+`<g data-mat="steel">${k.solidSvg(k.slabOf(TRAY,-4,4,P,8,1),{tone:"mid"})}</g>`}
+  function ramp(th,mu){
+    const g=geo(th);let o="";
+    if(g.Hh>3)o+=`<g data-mat="steel">${k.solidSvg(k.slabOf({x:g.xt-1,y:Y0+4,w:4,d:YF-8,r:.5},0,Math.max(0,g.Hh-1.5),P,2,0),{tone:"mid"})}</g>`;
+    const b=box([g.xt,0,g.Hh],g.u,g.n,0,L,Y0,YF,-2.2,0);
+    o+=`<g data-mat="pine" class="esc-ramp">${b.svg}`;
+    if(dot(g.n)>0){let v="";for(let i=1;i<4;i++){const y=Y0+i*YF/4;v+=line([b.pt(0,y,0),b.pt(L,y,0)])}
+      o+=`<path class="iso-line" data-tone="faint" d="${v}"/>`;
+      if(mu>0){let r="";const nn=Math.round(8+mu*40);for(let i=1;i<nn;i++){const a=L*i/nn;r+=line([b.pt(a,Y0+2,0),b.pt(a,YF-2,0)])}o+=`<path class="esc-grip" d="${r}" style="opacity:${(.25+mu).toFixed(2)}"/>`}}
+    o+=`</g>`;
+    const yy=nearY(),arc=[];for(let f=0;f<=th;f+=2)arc.push([PX-30*Math.cos(f*RAD),yy,30*Math.sin(f*RAD)]);arc.push([PX-30*g.c,yy,30*g.s]);
+    o+=`<path class="esc-arc" d="${line(arc)}${line([[PX-44,yy,0],[PX,yy,0]])}"/>`;
+    const la=at([PX-42*Math.cos(th*RAD/2),yy,42*Math.sin(th*RAD/2)+2]);
+    o+=`<text class="esc-ang" x="${la[0].toFixed(1)}" y="${(la[1]+5).toFixed(1)}" text-anchor="middle">${th}°</text>`;
+    return o;
+  }
+  function body(th,sPos,b,mat,tag){
+    const g=geo(th),l=18,w=20,h=7+b.m*5,r=b.type==="carro"?3:0,yc=(Y0+YF)/2,y0=yc-w/2,y1=yc+w/2,z0=r*1.25,z1=z0+h;
+    const bx=box([g.xt,0,g.Hh],g.u,g.n,sPos-l/2,sPos+l/2,y0,y1,z0,z1);
+    let o=`<g data-mat="${mat}" class="esc-body">${bx.svg}`;
+    if(r){const ys=V[1]>=0?y1+.6:y0-.6;for(const a of [sPos-l/2+4.5,sPos+l/2-4.5]){const ring=[];for(let i=0;i<18;i++){const f=i/18*Math.PI*2;ring.push(bx.pt(a+r*Math.cos(f),ys,r+r*Math.sin(f)))}
+      const hc=at(bx.pt(a,ys,r));o+=`<path class="esc-wheel" d="${poly(ring)}"/><circle class="esc-hub" cx="${hc[0].toFixed(1)}" cy="${hc[1].toFixed(1)}" r="1.6"/>`}}
+    const tp=at(bx.pt(sPos,yc,z1+6));o+=`<text class="esc-tag" x="${tp[0].toFixed(1)}" y="${(tp[1]+4).toFixed(1)}" text-anchor="middle">${tag}</text></g>`;
+    return {svg:o,z:depth(bx.pt(sPos,yc,(z0+z1)/2))};
+  }
+  function link(th,sA,sB){const g=geo(th),y=(Y0+YF)/2,pt=(a,z)=>[g.xt+a*g.c+z*g.s,y,g.Hh-a*g.s+z*g.c];
+    return {svg:`<path class="esc-link" d="${line([pt(sB+9,7),pt(sA-9,7)])}"/>`,z:depth(pt((sA+sB)/2,7))}}
+  function flag(th){const g=geo(th),a=140,yy=V[1]>=0?Y0+1:YF-1,b=[g.xt+a*g.c,yy,g.Hh-a*g.s];
+    return {svg:`<path class="esc-pole" d="${line([b,[b[0],b[1],b[2]+20]])}"/><path class="esc-flag" d="${poly([[b[0],b[1],b[2]+20],[b[0]+6*g.c,b[1],b[2]+17-6*g.s*0],[b[0],b[1],b[2]+14]])}"/>`,z:depth(b)-0.01}}
+  function handle(th){const g=geo(th);return at([g.xt,nearY(),g.Hh])}
+  function angleFromPoint(x,y){let best=0,bd=1e9;for(let t=0;t<=60;t++){const h=handle(t),d=(h[0]-x)**2+(h[1]-y)**2;if(d<bd){bd=d;best=t}}return best}
+  /* cfg: {th,mu,mode,A,B}; pos: [sA,sB] en metros */
+  function render(cfg,pos){
+    const mat=(b)=>b.type==="carro"?"brass":"gunmetal",items=[flag(cfg.th),body(cfg.th,pos[0]*100,cfg.A,mat(cfg.A),"A")];
+    if(cfg.mode!=="uno")items.push(body(cfg.th,pos[1]*100,cfg.B,mat(cfg.B),"B"));
+    if(cfg.mode==="unidos")items.push(link(cfg.th,pos[0]*100,pos[1]*100));
+    items.sort((a,b)=>a.z-b.z);
+    return base()+ramp(cfg.th,cfg.mu)+items.map((i)=>i.svg).join("");
+  }
+  return {W,H,render,angleFromPoint,handle,setView,view:()=>AZ};
+})();
+</script>
+<script>(function(){
+"use strict";
+var G=9.81, RAD=Math.PI/180;
+var MOM=[["predice","1 Predice"],["mide","2 Mide"],["analiza","3 Analiza"],["explica","4 Explica"],["retro","5 Retroalimenta"],["cierra","6 Cierra"],["fuentes","Fuentes"]];
+var $=function(id){return document.getElementById(id)};
+var S={nombre:"",equipo:"",retos:{},runs:0,rows:[],times:[],angSrc:"",backup:false,mano:{ok:false,tries:0,key:""},causa:"",dato:"",fmt:"",exName:"",exp:"",mej:"",cards:{},coQuien:"",coNiv:{},coCom:"",cambio:"",salida:"",trans:"",meta:"",visited:{}};
+try{var sv=JSON.parse(localStorage.getItem("fmb-v3")||"null");if(sv){for(var k0 in sv)S[k0]=sv[k0];}}catch(e){}
+function save(){try{localStorage.setItem("fmb-v3",JSON.stringify(S));}catch(e){}}
+function num(v){var n=parseFloat(String(v).replace(",","."));return isFinite(n)?n:NaN}
+function f2(n){return (Math.round(n*100+1e-6)/100).toFixed(2)}
+function f1(n){return (Math.round(n*10+1e-6)/10).toFixed(1)}
+function words(s){return String(s||"").trim().split(/\s+/).filter(Boolean).length}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function fb(el,kind,title,text){el.innerHTML='<div class="aviso '+kind+'"><b>'+title+'</b>'+text+'</div>'}
+
+/* ================= navegación ================= */
+var nav=$("nav");
+MOM.slice(0,6).forEach(function(m){var b=document.createElement("button");b.textContent=m[1];b.addEventListener("click",function(){go(m[0])});nav.appendChild(b)});
+function go(id){if(location.hash!=="#"+id)location.hash=id;else show()}
+function show(){var id=(location.hash||"").replace("#","");var ix=-1;MOM.forEach(function(m,i){if(m[0]===id)ix=i});if(ix<0){ix=0;id="predice"}
+  MOM.forEach(function(m){$("s-"+m[0]).classList.toggle("on",m[0]===id)});S.visited[id]=1;save();
+  Array.prototype.forEach.call(nav.children,function(b,i){if(i===ix){b.setAttribute("aria-current","step");try{b.scrollIntoView({inline:"center",block:"nearest"})}catch(e){}}else b.removeAttribute("aria-current");b.classList.toggle("hecho",!!S.visited[MOM[i][0]]&&i!==ix)});
+  if(id==="predice")draw();if(id==="analiza")renderAnaliza();if(id==="mide")paintRows();if(id==="retro")paintCards();
+  window.scrollTo(0,0);var h=$("h-"+id);if(h){h.setAttribute("tabindex","-1");try{h.focus({preventScroll:true})}catch(e){}}}
+window.addEventListener("hashchange",show);
+document.addEventListener("click",function(e){var t=e.target.closest("[data-go]");if(t){e.preventDefault();go(t.getAttribute("data-go"))}});
+function quien(){$("quien").textContent=[S.nombre,S.equipo].filter(Boolean).join(", ")}
+[["f-nombre","nombre"],["f-equipo","equipo"],["cp-causa","causa"],["cp-dato","dato"],["x-exp","exp"],["x-mej","mej"],["co-quien","coQuien"],["co-com","coCom"],["co-cambio","cambio"],["z-salida","salida"],["z-trans","trans"],["z-meta","meta"]].forEach(function(p){
+  var el=$(p[0]);el.value=S[p[1]]||"";el.addEventListener("input",function(){S[p[1]]=el.value;save();if(p[0][0]==="f")quien();if(p[0].slice(0,2)==="cp")checkCp()})});
+quien();
+
+/* ================= física de la mesa de pruebas ================= */
+var BLEN=0.18,S_A=0.30,S_B=0.12,S_END=1.40,DT=1/240;
+function muOf(type,mu){return type==="carro"?mu*0.1:mu}
+function raw(type,th,mu){return G*(Math.sin(th*RAD)-muOf(type,mu)*Math.cos(th*RAD))}
+function simulate(c){
+  var two=c.mode!=="uno";var rA=raw(c.A.type,c.th,c.mu),rB=two?raw(c.B.type,c.th,c.mu):0;
+  var comb=two?(c.A.m*rA+c.B.m*rB)/(c.A.m+c.B.m):rA;
+  var sA=S_A,sB=S_B,vA=0,vB=0,t=0,fr=[],a0A=null,a0B=null,together0=false,tEnd=null,n=0;
+  while(t<=12){
+    var aA,aB,tog=false;
+    if(!two){aA=(vA===0&&rA<=0)?0:rA;aB=0}
+    else if(c.mode==="unidos"){tog=true}
+    else{var contact=(sA-sB)<=BLEN+1e-4;var effA=(vA===0&&rA<=0)?0:rA;
+      if(contact&&rB>effA&&vB>=vA-1e-6)tog=true;else{aA=effA;aB=(vB===0&&rB<=0)?0:rB}}
+    if(tog){var a=(vA===0&&comb<=0)?0:comb;aA=aB=a;if(c.mode==="sueltos"){var v=(c.A.m*vA+c.B.m*vB)/(c.A.m+c.B.m);vA=vB=v}}
+    if(a0A===null){a0A=aA;a0B=aB;together0=tog}
+    if(n%4===0)fr.push([t,sA,sB]);n++;
+    vA+=aA*DT;vB+=aB*DT;sA+=vA*DT;sB+=vB*DT;t+=DT;
+    if(two&&c.mode==="sueltos"&&sA-sB<BLEN){sB=sA-BLEN}
+    if(sA>=S_END){tEnd=t;fr.push([t,sA,sB]);break}
+    if(vA===0&&vB===0&&aA===0&&aB===0)break;
+  }
+  var link=0;if(two&&together0&&a0A>0)link=c.A.m*(a0A-rA);
+  return {frames:fr,aA:a0A,aB:a0B,t:tEnd,vA:vA,gap:two?(sA-sB-BLEN):0,together:two&&(sA-sB-BLEN)<0.005,link:link,rA:rA,rB:rB,two:two,moved:sA>S_A+0.001||sB>S_B+0.001};
+}
+window.__fmb={simulate:simulate};
+
+var C={mode:"uno",th:30,mu:0,A:{type:"carro",m:0.5},B:{type:"bloque",m:0.5}};
+var sv=$("sv"),cur=null,playing=false,result=null,locked=false,activeReto=null;
+sv.setAttribute("viewBox","0 0 "+ESC.W+" "+ESC.H);
+function setRadio(name,val){Array.prototype.forEach.call(document.getElementsByName(name),function(r){r.checked=r.value===val})}
+function draw(){sv.innerHTML=ESC.render(C,[cur?cur[1]:S_A,cur?cur[2]:S_B]);var h=ESC.handle(C.th),a=$("asa");
+  a.style.left=(h[0]/ESC.W*100)+"%";
+  var r=sv.getBoundingClientRect(),pr=$("plato").getBoundingClientRect();if(r.height){a.style.top=(r.top-pr.top+h[1]/ESC.H*r.height)+"px"}}
+function syncControls(){setRadio("mode",C.mode);setRadio("ta",C.A.type);setRadio("tb",C.B.type);
+  $("c-th").value=C.th;$("c-mu").value=C.mu;$("c-ma").value=C.A.m;$("c-mb").value=C.B.m;
+  $("c-th-o").textContent=C.th+"°";$("c-mu-o").textContent=f2(C.mu);$("c-ma-o").textContent=f1(C.A.m)+" kg";$("c-mb-o").textContent=f1(C.B.m)+" kg";
+  $("card-b").hidden=C.mode==="uno";$("lect-th").textContent="θ = "+C.th+"°";$("lect-mu").textContent="μ = "+f2(C.mu);
+  var dis=locked||playing;["c-th","c-mu","c-ma","c-mb","c-swap"].forEach(function(i){$(i).disabled=dis});$("asa").disabled=dis;
+  $("lect-tip").textContent=locked?"apuesta en curso · desliza de lado: gira la vista":"punto azul: inclina la tabla · desliza de lado: gira la vista";
+  ["mode","ta","tb"].forEach(function(n){Array.prototype.forEach.call(document.getElementsByName(n),function(r){r.disabled=dis})})}
+function changed(){cur=null;result=null;$("sim-tiles").innerHTML="";$("sim-msg").innerHTML="";$("lect-t").textContent="t = 0.00 s";syncControls();draw()}
+["mode","ta","tb"].forEach(function(n){Array.prototype.forEach.call(document.getElementsByName(n),function(r){r.addEventListener("change",function(){
+  if(n==="mode")C.mode=r.value;else if(n==="ta")C.A.type=r.value;else C.B.type=r.value;changed()})})});
+$("c-th").addEventListener("input",function(){C.th=parseInt(this.value,10);changed()});
+$("c-mu").addEventListener("input",function(){C.mu=parseFloat(this.value);changed()});
+$("c-ma").addEventListener("input",function(){C.A.m=parseFloat(this.value);changed()});
+$("c-mb").addEventListener("input",function(){C.B.m=parseFloat(this.value);changed()});
+$("c-swap").addEventListener("click",function(){var t=C.A;C.A=C.B;C.B=t;changed()});
+window.addEventListener("resize",draw);
+/* girar la tabla arrastrando el asa */
+var asa=$("asa"),drag=false;
+function angFromEvent(e){var r=sv.getBoundingClientRect();var x=(e.clientX-r.left)/r.width*ESC.W,y=(e.clientY-r.top)/r.height*ESC.H;C.th=ESC.angleFromPoint(x,y);changed()}
+asa.addEventListener("pointerdown",function(e){if(locked||playing)return;drag=true;try{asa.setPointerCapture(e.pointerId)}catch(x){}e.preventDefault()});
+asa.addEventListener("pointermove",function(e){if(drag)angFromEvent(e)});
+["pointerup","pointercancel"].forEach(function(ev){asa.addEventListener(ev,function(){drag=false})});
+asa.addEventListener("keydown",function(e){if(locked||playing)return;if(e.key==="ArrowUp"||e.key==="ArrowLeft"){C.th=Math.min(60,C.th+1);changed();e.preventDefault()}if(e.key==="ArrowDown"||e.key==="ArrowRight"){C.th=Math.max(0,C.th-1);changed();e.preventDefault()}});
+
+/* girar la vista: deslizar de lado sobre la escena, o el control deslizante */
+var orb=null;
+function setAz(a){ESC.setView(a);$("c-az").value=Math.round(ESC.view());draw()}
+sv.addEventListener("pointerdown",function(e){orb={x:e.clientX,az:ESC.view()};try{sv.setPointerCapture(e.pointerId)}catch(x){}});
+sv.addEventListener("pointermove",function(e){if(orb)setAz(orb.az-(e.clientX-orb.x)*0.6)});
+["pointerup","pointercancel"].forEach(function(ev){sv.addEventListener(ev,function(){orb=null})});
+$("c-az").addEventListener("input",function(){setAz(parseInt(this.value,10))});
+$("c-az0").addEventListener("click",function(){setAz(38)});
+function nombre(b){return (b.type==="carro"?"ruedas ":"bloque ")+f1(b.m)}
+function describe(){if(C.mode==="uno")return nombre(C.A)+" kg";return nombre(C.A)+" + "+nombre(C.B)+(C.mode==="unidos"?" unidos":" sueltos")}
+function tile(k,v,u){return '<div><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>'}
+function showResult(r){var h="";
+  if(!r.two){h+=tile("Aceleración",f2(r.aA),"m/s²")+tile("Tiempo a la meta",r.t?f2(r.t):"–","s")+tile("Rapidez final",f2(r.vA),"m/s")}
+  else{h+=tile("Aceleración de A",f2(r.aA),"m/s²")+tile("Aceleración de B",f2(r.aB),"m/s²")+tile("A llega en",r.t?f2(r.t):"–","s");
+    if(C.mode==="unidos")h+=tile("Fuerza en la unión",f2(Math.abs(r.link)),"N, "+(Math.abs(r.link)<0.005?"sin esfuerzo":(r.link>0?"B empuja a A":"A jala a B")));
+    else h+=tile("Separación final",r.together?"0":Math.round(r.gap*100),r.together?"cm, bajan juntos":"cm")}
+  $("sim-tiles").innerHTML=h;
+  if(!r.moved)fb($("sim-msg"),"ojo","No se mueven.","La parte del peso que empuja no alcanza a vencer la fricción. Sube el ángulo o baja μ.");
+  else if(!r.t)fb($("sim-msg"),"ojo","A no llegó a la meta.","Revisa quién va delante y cuánta fricción siente.");
+  var tb=$("log").tBodies[0],tr=document.createElement("tr");tr.innerHTML="<td>"+describe()+"</td><td>"+C.th+"°</td><td>"+f2(C.mu)+"</td><td>"+f2(r.aA)+"</td><td>"+(r.two?f2(r.aB):"–")+"</td><td>"+(r.t?f2(r.t):"–")+"</td>";
+  tb.insertBefore(tr,tb.firstChild);while(tb.rows.length>8)tb.deleteRow(8);$("log-box").hidden=false;S.runs++;save();
+  if(activeReto)retoVerdict(r)}
+$("sim-go").addEventListener("click",function(){if(playing)return;
+  if(activeReto&&!S.retos[activeReto.id+"p"]){fb($("reto-fb"),"ojo","Primero tu apuesta.","Elige una opción antes de soltar.");return}
+  result=simulate(C);var fr=result.frames,last=fr[fr.length-1];
+  var fin=function(){playing=false;cur=last;$("lect-t").textContent="t = "+f2(last[0])+" s";syncControls();draw();showResult(result)};
+  if((window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)||fr.length<3){fin();return}
+  playing=true;$("sim-msg").innerHTML="";syncControls();var t0=null,speed=$("sim-slow").checked?0.3:1,i=0;
+  function step(ts){if(t0===null)t0=ts;var e=(ts-t0)/1000*speed;while(i<fr.length-1&&fr[i+1][0]<=e)i++;cur=fr[i];$("lect-t").textContent="t = "+f2(Math.min(e,last[0]))+" s";draw();if(e>=last[0]){fin();return}requestAnimationFrame(step)}
+  requestAnimationFrame(step)});
+$("sim-reset").addEventListener("click",function(){if(!playing)changed()});
+
+/* ================= apuestas ================= */
+var RETOS=[
+ {id:"r1",name:"Apuesta 1: el peso",cfg:{mode:"sueltos",th:30,mu:0.3,A:{type:"bloque",m:0.2},B:{type:"bloque",m:1.0}},
+  q:"Dos mochilas resbalan sueltas por la misma tabla: delante una casi vacía (0.2 kg) y detrás una llena de libros (1.0 kg). ¿Qué va a pasar?",
+  o:[["a","La pesada alcanza a la ligera y la empuja"],["b","La ligera se adelanta y se separan"],["c","Bajan juntas, con la misma aceleración"]],ok:"c",
+  why:function(r){return "Las dos aceleraron a "+f2(r.aA)+" m/s². Más masa es más fuerza hacia abajo, pero también más fricción y más inercia, todo en la misma proporción: se cancela. Cambia las masas y compruébalo."}},
+ {id:"r2",name:"Apuesta 2: ruedas contra caja",cfg:{mode:"sueltos",th:30,mu:0.3,A:{type:"bloque",m:0.5},B:{type:"carro",m:0.5}},
+  q:"Una caja va delante y tu patineta viene detrás, sueltas y con la misma masa. ¿Qué va a pasar?",
+  o:[["a","La patineta alcanza a la caja, la empuja y bajan juntas"],["b","Se separan: la caja se adelanta"],["c","La caja frena a la patineta y ninguna se mueve"]],ok:"a",
+  why:function(r){return "Sola, la caja bajaría a "+f2(r.rA)+" m/s² y la patineta a "+f2(r.rB)+" m/s², porque las ruedas reducen la fricción. Como la patineta viene detrás, alcanza a la caja y la empuja: juntas bajan a "+f2(r.aA)+" m/s². Usa «Intercambiar lugares» y mira qué cambia."}},
+ {id:"r3",name:"Apuesta 3: enganchadas",cfg:{mode:"unidos",th:30,mu:0.3,A:{type:"carro",m:0.5},B:{type:"bloque",m:0.5}},
+  q:"Ahora enganchas la caja detrás de la patineta. La aceleración del conjunto será…",
+  o:[["a","Igual a la de la patineta sola"],["b","Igual a la de la caja sola"],["c","Un valor intermedio entre las dos"]],ok:"c",
+  why:function(r){return "La patineta sola bajaría a "+f2(r.rA)+" m/s² y la caja sola a "+f2(r.rB)+" m/s². Enganchadas comparten una sola aceleración: "+f2(r.aA)+" m/s², y la patineta jala a la caja con "+f2(Math.abs(r.link))+" N. Sube la masa de la caja a 2 kg: ¿hacia cuál de los dos valores se acerca el conjunto?"}}];
+RETOS.forEach(function(R){var b=document.createElement("button");b.className="boton sec chico";b.id="btn-"+R.id;b.textContent=R.name+(S.retos[R.id]?" ✓":"");b.addEventListener("click",function(){if(!playing)loadReto(R)});$("reto-btns").appendChild(b)});
+function loadReto(R){activeReto=R;locked=true;C=JSON.parse(JSON.stringify(R.cfg));delete S.retos[R.id+"p"];
+  $("reto-panel").hidden=false;$("reto-q").textContent=R.q;$("reto-fb").innerHTML="";$("reto-free").hidden=true;
+  var box=$("reto-opts");box.innerHTML="";R.o.forEach(function(o){var l=document.createElement("label");l.className="op";l.innerHTML='<input type="radio" name="reto" id="ro-'+o[0]+'" value="'+o[0]+'"> '+o[1];
+    l.firstChild.addEventListener("change",function(){S.retos[R.id+"p"]=o[0];save();$("reto-fb").innerHTML='<p class="gris">Apuesta guardada. Presiona «Soltar» para comprobarla.</p>'});box.appendChild(l)});
+  changed()}
+function retoVerdict(r){var R=activeReto,p=S.retos[R.id+"p"],good=p===R.ok;var txt=R.o.filter(function(o){return o[0]===p})[0][1];
+  S.retos[R.id]={pred:txt,ok:good};save();$("btn-"+R.id).textContent=R.name+" ✓";
+  fb($("reto-fb"),good?"ok":"ojo",good?"Ganaste la apuesta.":"Perdiste la apuesta, y eso es lo útil.",R.why(r));
+  Array.prototype.forEach.call(document.getElementsByName("reto"),function(x){x.disabled=true});
+  locked=false;activeReto=null;$("reto-free").hidden=false;syncControls();draw()}
+$("reto-free").addEventListener("click",function(){$("reto-panel").hidden=true;changed()});
+syncControls();
+
+/* ================= sensor de inclinación ================= */
+var tilt={on:false,got:false,val:null,zero:0,lp:null};
+function onMotion(e){var a=e.accelerationIncludingGravity;if(!a||a.x===null||a.z===null)return;tilt.got=true;
+  var ang=Math.atan2(Math.sqrt(a.x*a.x+a.y*a.y),Math.abs(a.z))/RAD;tilt.lp=tilt.lp===null?ang:tilt.lp+0.12*(ang-tilt.lp);
+  tilt.val=Math.max(0,tilt.lp-tilt.zero);$("tilt-val").textContent=f1(tilt.val)+"°";
+  var t=Math.min(tilt.val,80)*RAD,ln=$("tilt-line");ln.setAttribute("x2",(10+100*Math.cos(t)).toFixed(1));ln.setAttribute("y2",(60-100*Math.sin(t)).toFixed(1));
+  if($("tilt-fix").disabled){$("tilt-fix").disabled=false;$("tilt-zero").disabled=false;$("tilt-msg").textContent="Sensor activo. Si la mesa no marca 0°, ponlo en cero antes de medir la tabla."}}
+function tiltFail(why){$("tilt-msg").textContent=why+" Usa la opción de altura y largo, o escribe el ángulo."}
+$("tilt-on").addEventListener("click",function(){if(tilt.on)return;
+  if(typeof DeviceMotionEvent==="undefined"){tiltFail("Este dispositivo o navegador no ofrece sensor de movimiento.");return}
+  var start=function(){tilt.on=true;window.addEventListener("devicemotion",onMotion);$("tilt-msg").textContent="Buscando el sensor…";
+    setTimeout(function(){if(!tilt.got){tilt.on=false;window.removeEventListener("devicemotion",onMotion);tiltFail("No llegó ninguna lectura del sensor (suele pasar en computadoras o si el sitio no tiene permiso).")}},2500)};
+  try{if(typeof DeviceMotionEvent.requestPermission==="function"){DeviceMotionEvent.requestPermission().then(function(r){if(r==="granted")start();else tiltFail("No diste permiso para usar el sensor.")}).catch(function(){tiltFail("No se pudo pedir permiso para el sensor.")})}else start()}
+  catch(e){tiltFail("No se pudo activar el sensor.")}});
+$("tilt-zero").addEventListener("click",function(){if(tilt.lp!==null){tilt.zero=tilt.lp;$("tilt-msg").textContent="Cero ajustado. Ahora acuesta el celular sobre la tabla."}});
+$("tilt-fix").addEventListener("click",function(){if(tilt.val===null)return;$("d-theta").value=f1(tilt.val);S.angSrc="sensor";save();$("tilt-msg").textContent="Ángulo fijado en "+f1(tilt.val)+"°."});
+$("d-theta").addEventListener("input",function(){S.angSrc="a mano";save();$("d-err").textContent=""});
+$("d-calc").addEventListener("click",function(){var h=num($("d-h").value),l=num($("d-l").value),er=$("d-calc-err");
+  if(!(h>0)||!(l>0)){er.textContent="Escribe la altura y el largo.";return}
+  if(h>=l){er.textContent="La altura debe ser menor que el largo de la tabla.";return}
+  er.textContent="";$("d-theta").value=f1(Math.asin(h/l)/RAD);S.angSrc="altura y largo";save()});
+
+/* ================= cámara: cronómetro de video ================= */
+var vid=$("vid"),FR=1/30,mark={s:null,e:null},vurl=null;
+function loadVideo(file){if(!file)return;try{if(vurl)URL.revokeObjectURL(vurl)}catch(e){}vurl=URL.createObjectURL(file);vid.src=vurl;vid.load();$("vid-box").hidden=false;mark={s:null,e:null};paintMarks();$("v-err").textContent=""}
+$("vid-in").addEventListener("change",function(){loadVideo(this.files[0]);this.value=""});
+$("vid-in2").addEventListener("change",function(){loadVideo(this.files[0]);this.value=""});
+vid.addEventListener("error",function(){$("v-err").textContent="No se pudo abrir ese video. Prueba grabar de nuevo."});
+function vnow(){$("v-now").textContent=vid.currentTime.toFixed(3)+" s"}
+["timeupdate","seeked","loadeddata"].forEach(function(ev){vid.addEventListener(ev,vnow)});
+function stepV(n){vid.pause();$("v-play").textContent="Ver lento";var d=vid.duration||0;vid.currentTime=Math.max(0,Math.min(d,vid.currentTime+n*FR))}
+$("v-b1").addEventListener("click",function(){stepV(-1)});$("v-f1").addEventListener("click",function(){stepV(1)});
+$("v-b10").addEventListener("click",function(){stepV(-10)});$("v-f10").addEventListener("click",function(){stepV(10)});
+$("v-play").addEventListener("click",function(){if(vid.paused){vid.playbackRate=0.25;var p=vid.play();if(p&&p.catch)p.catch(function(){});this.textContent="Pausar"}else{vid.pause();this.textContent="Ver lento"}});
+vid.addEventListener("ended",function(){$("v-play").textContent="Ver lento"});
+function paintMarks(){$("v-start-o").textContent=mark.s===null?"sin marcar":mark.s.toFixed(3)+" s";$("v-end-o").textContent=mark.e===null?"sin marcar":mark.e.toFixed(3)+" s";
+  var ok=mark.s!==null&&mark.e!==null&&mark.e-mark.s>=0.1;$("v-save").disabled=!ok;$("v-save").textContent=ok?"Guardar "+f2(mark.e-mark.s)+" s":"Guardar este tiempo";
+  $("v-err").textContent=(mark.s!==null&&mark.e!==null&&!ok)?"La meta debe quedar después de la salida.":""}
+$("v-start").addEventListener("click",function(){vid.pause();mark.s=vid.currentTime;paintMarks()});
+$("v-end").addEventListener("click",function(){vid.pause();mark.e=vid.currentTime;paintMarks()});
+$("v-save").addEventListener("click",function(){addTime(mark.e-mark.s,"video");mark={s:null,e:null};paintMarks()});
+$("t-add").addEventListener("click",function(){var t=num($("t-man").value);if(!(t>=0.2&&t<=15)){$("d-err").textContent="Escribe un tiempo entre 0.2 y 15 segundos.";return}addTime(t,"cronómetro");$("t-man").value=""});
+function addTime(t,src){if(S.times.length>=3)S.times.shift();S.times.push({t:Math.round(t*1000)/1000,src:src});save();paintTimes();$("d-err").textContent=""}
+function paintTimes(){var box=$("t-list");box.innerHTML="";if(!S.times.length){box.innerHTML='<span class="gris">Aún no guardas ninguno.</span>';return}
+  S.times.forEach(function(x,i){var b=document.createElement("button");b.className="boton sec chico";b.textContent=f2(x.t)+" s ✕";b.setAttribute("aria-label","Quitar el tiempo "+f2(x.t)+" segundos");
+    b.addEventListener("click",function(){S.times.splice(i,1);save();paintTimes()});box.appendChild(b)})}
+paintTimes();
+$("row-save").addEventListener("click",function(){var th=num($("d-theta").value),d=num($("d-d").value),er=$("d-err");
+  if(!(th>=1&&th<=60)){er.textContent="Falta el ángulo: fíjalo con el sensor o escríbelo en grados (entre 1 y 60).";$("d-theta").focus();return}
+  if(!(d>=0.2&&d<=3)){er.textContent="Escribe la distancia en metros, entre 0.20 y 3. Por ejemplo, 80 cm se escribe 0.80.";$("d-d").focus();return}
+  if(S.times.length<3){er.textContent="Faltan tiempos: guarda tres descensos de esta inclinación.";return}
+  if(S.rows.some(function(r){return Math.abs(r.th-th)<1.5})){er.textContent="Ya tienes una inclinación casi igual. Cambia la altura de la tabla al menos 2°.";return}
+  if(S.backup){S.rows=[];S.backup=false}
+  var srcs=S.times.map(function(x){return x.src});
+  S.rows.push({th:th,d:d,t:S.times.map(function(x){return x.t}),ang:S.angSrc||"a mano",tsrc:srcs.indexOf("cronómetro")<0?"video":(srcs.indexOf("video")<0?"cronómetro":"video y cronómetro")});
+  S.rows.sort(function(a,b){return a.th-b.th});S.times=[];$("d-theta").value="";S.angSrc="";save();paintTimes();paintRows();er.textContent=""});
+function paintRows(){var tb=$("rows").tBodies[0];tb.innerHTML="";S.rows.forEach(function(r,i){var tr=document.createElement("tr");
+  tr.innerHTML="<td>"+r.th+"°</td><td>"+f2(r.d)+"</td><td>"+f2(r.t[0])+"</td><td>"+f2(r.t[1])+"</td><td>"+f2(r.t[2])+"</td><td></td>";
+  var b=document.createElement("button");b.className="boton sec chico";b.textContent="Quitar";b.setAttribute("aria-label","Quitar la inclinación de "+r.th+" grados");
+  b.addEventListener("click",function(){S.rows.splice(i,1);if(!S.rows.length)S.backup=false;save();paintRows()});tr.lastChild.appendChild(b);tb.appendChild(tr)});
+  var n=S.rows.length;$("rows-msg").textContent=S.backup?"Estás usando datos de respaldo. Si guardas una inclinación propia, se reemplazan.":(n===0?"Aún no guardas ninguna inclinación.":n<3?"Llevas "+n+" de 3. Cambia la altura de la tabla y repite.":"Listo: ya puedes analizar. Puedes agregar más inclinaciones si quieres.")}
+$("d-backup").addEventListener("click",function(){S.backup=true;S.rows=[{th:8,d:1,t:[1.42,1.38,1.45],ang:"respaldo",tsrc:"respaldo"},{th:14,d:1,t:[1.02,0.99,1.04],ang:"respaldo",tsrc:"respaldo"},{th:20,d:1,t:[0.84,0.82,0.85],ang:"respaldo",tsrc:"respaldo"}];save();paintRows()});
+
+/* ================= analizar ================= */
+function calc(r){var tm=(r.t[0]+r.t[1]+r.t[2])/3,med=2*r.d/(tm*tm),mod=G*Math.sin(r.th*RAD);return {th:r.th,d:r.d,tm:tm,med:med,mod:mod,dif:(med-mod)/mod*100,spread:(Math.max.apply(null,r.t)-Math.min.apply(null,r.t))/tm,sin:Math.sin(r.th*RAD)}}
+function allCalc(){return S.rows.map(calc)}
+function renderAnaliza(){var has=S.rows.length>=2;$("an-empty").hidden=has;$("an-body").style.display=has?"flex":"none";if(!has)return;
+  var cs=allCalc(),c0=cs[0],key=c0.th+"|"+f2(c0.tm)+"|"+c0.d;if(S.mano.key!==key){S.mano={ok:false,tries:0,key:key};save();$("mano-in").value="";$("mano-fb").innerHTML=""}
+  $("mano-q").textContent="A "+c0.th+"° tu equipo recorrió d = "+f2(c0.d)+" m en un tiempo promedio de "+f2(c0.tm)+" s. Calcula a = 2d / t².";
+  if(S.mano.ok){$("mano-in").value=f2(c0.med);fb($("mano-fb"),"ok","Correcto.","a = "+f2(c0.med)+" m/s². Las demás filas se calculan igual.")}
+  $("an-res").hidden=!S.mano.ok;if(S.mano.ok)paintAnalysis(cs)}
+$("mano-go").addEventListener("click",function(){var cs=allCalc(),c0=cs[0],v=num($("mano-in").value),el=$("mano-fb");
+  if(!(v>0)){fb(el,"ojo","Escribe tu resultado.","Usa punto decimal, por ejemplo 1.25.");return}
+  if(Math.abs(v-c0.med)/c0.med<=0.03){S.mano.ok=true;save();renderAnaliza();return}
+  S.mano.tries++;save();
+  if(Math.abs(v-2*c0.d/c0.tm)/(2*c0.d/c0.tm)<=0.03)fb(el,"ojo","Casi.","Dividiste entre t, pero el tiempo va al cuadrado: multiplica "+f2(c0.tm)+" por sí mismo antes de dividir.");
+  else if(S.mano.tries<2)fb(el,"ojo","Todavía no.","Primero eleva el tiempo al cuadrado, luego multiplica la distancia por 2 y al final divide.");
+  else fb(el,"ojo","Revisa tu sustitución.","a = (2 × "+f2(c0.d)+") / ("+f2(c0.tm)+" × "+f2(c0.tm)+"). Haz la operación y escribe el resultado.")});
+function paintAnalysis(cs){var tb=$("an-table").tBodies[0];tb.innerHTML="";cs.forEach(function(c){var tr=document.createElement("tr");
+  tr.innerHTML="<td>"+c.th+"°</td><td>"+f2(c.tm)+"</td><td>"+f2(c.med)+"</td><td>"+f2(c.mod)+"</td><td>"+(c.dif>0?"+":"")+Math.round(c.dif)+" %</td>";tb.appendChild(tr)});
+  /* gráfica */
+  var W=640,H=440,L=78,R=20,T=20,B=74,xm=Math.min(1,Math.max.apply(null,cs.map(function(c){return c.sin}))*1.2),ym=Math.max(G*xm,Math.max.apply(null,cs.map(function(c){return c.med})))*1.08;
+  var X=function(v){return L+(W-L-R)*v/xm},Y=function(v){return H-B-(H-B-T)*v/ym};var o="";
+  var ystep=ym>6?2:ym>3?1:0.5;for(var y=0;y<=ym;y+=ystep){o+='<line x1="'+L+'" y1="'+Y(y)+'" x2="'+(W-R)+'" y2="'+Y(y)+'" stroke="#dfe8ea" stroke-width="1.5"/><text x="'+(L-10)+'" y="'+(Y(y)+7)+'" text-anchor="end" font-size="22" fill="#566173">'+(ystep<1?f1(y):y)+'</text>'}
+  o+='<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-R)+'" y2="'+(H-B)+'" stroke="#1c2a4a" stroke-width="2"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#1c2a4a" stroke-width="2"/>';
+  o+='<line x1="'+X(0)+'" y1="'+Y(0)+'" x2="'+X(xm)+'" y2="'+Y(G*xm)+'" stroke="#1c2a4a" stroke-width="2.5"/>';
+  cs.forEach(function(c){o+='<line x1="'+X(c.sin)+'" y1="'+Y(c.med)+'" x2="'+X(c.sin)+'" y2="'+Y(c.mod)+'" stroke="#c9302a" stroke-width="2" stroke-dasharray="5 4"/>';
+    o+='<circle cx="'+X(c.sin)+'" cy="'+Y(c.mod)+'" r="4" fill="#1c2a4a"/><circle cx="'+X(c.sin)+'" cy="'+Y(c.med)+'" r="8" fill="#2146c7" stroke="#fff" stroke-width="2.5"/>';
+    o+='<text x="'+X(c.sin)+'" y="'+(H-B+28)+'" text-anchor="middle" font-size="22" fill="#1c2a4a" font-weight="700">'+c.th+'°</text>'});
+  o+='<text x="'+((L+W-R)/2)+'" y="'+(H-8)+'" text-anchor="middle" font-size="22" fill="#566173">inclinación de la tabla</text>';
+  o+='<text transform="translate(24 '+((T+H-B)/2)+') rotate(-90)" text-anchor="middle" font-size="22" fill="#566173">aceleración (m/s²)</text>';
+  $("chart").innerHTML='<title id="chart-t">Aceleración medida frente al modelo ideal para cada inclinación</title>'+o;
+  /* semáforo */
+  var luces=[],n=cs.length;
+  luces.push(n>=3?["v","Tienes "+n+" inclinaciones: suficiente para ver una tendencia."]:["a","Solo tienes 2 inclinaciones. Con una tercera la tendencia será más confiable."]);
+  var mono=cs.every(function(c,i){return i===0||c.med>cs[i-1].med});
+  luces.push(mono?["v","La aceleración crece al inclinar más, como se espera."]:["r","La aceleración no crece con la inclinación en alguna fila. Revisa los ángulos y los tiempos de esa medición."]);
+  var over=cs.filter(function(c){return c.med>c.mod*1.05});
+  luces.push(over.length?["r","A "+over.map(function(c){return c.th+"°"}).join(" y ")+" mediste más que el modelo ideal. La fricción solo frena, así que sospecha de la medición: ¿empujón al soltar?, ¿salida marcada tarde?"]:["v","Ninguna medición supera al modelo ideal."]);
+  var sp=Math.max.apply(null,cs.map(function(c){return c.spread}));
+  luces.push(sp<=0.10?["v","Tus tres tiempos por inclinación se parecen entre sí."]:sp<=0.20?["a","En alguna inclinación tus tiempos varían más de 10 %. Si puedes, repite ese descenso."]:["r","En alguna inclinación tus tiempos varían más de 20 %. Repite esa medición."]);
+  if(cs.some(function(c){return c.dif<-50}))luces.push(["a","Hay una diferencia mayor a 50 % con el modelo. Confirma que d está en metros y que el cuerpo partió del reposo."]);
+  $("semaforo").innerHTML=luces.map(function(l){return '<div class="luz '+l[0]+'"><i aria-hidden="true"></i><span><span class="sr">'+({v:"Bien: ",a:"Atención: ",r:"Corregir: "})[l[0]]+'</span>'+l[1]+'</span></div>'}).join("");
+  S.luces=luces.map(function(l){return l[0]}).join("");save()}
+
+/* ================= explicar ================= */
+function checkCp(){var el=$("cp-fb");if(!S.causa.trim()&&!S.dato.trim()){el.innerHTML="";return false}
+  if(words(S.causa)<2){fb(el,"ojo","Falta la causa.","Nómbrala con tus palabras.");return false}
+  if(!/\d/.test(S.dato)){fb(el,"ojo","Falta un dato.","Escribe un número de tu tabla o de tu gráfica que apoye esa causa.");return false}
+  fb(el,"ok","Idea clara.","Ya tienes el centro de tu explicación: constrúyela alrededor de esta frase.");return true}
+checkCp();
+var exFile=null;
+function paintFmt(){["video","audio","vivo"].forEach(function(f){$("fmt-"+f+"-box").hidden=S.fmt!==f})}
+Array.prototype.forEach.call(document.getElementsByName("fmt"),function(r){if(S.fmt===r.value)r.checked=true;r.addEventListener("change",function(){S.fmt=r.value;save();paintFmt()})});
+paintFmt();
+function loadEx(file,kind){if(!file)return;exFile=file;S.exName=file.name||kind;save();var u=URL.createObjectURL(file);
+  $("ex-prev").innerHTML=kind==="video"?'<video controls playsinline src="'+u+'"></video>':'<audio controls src="'+u+'"></audio>';
+  $("ex-msg").textContent="Grabación lista. Se queda en tu celular: al final podrás compartirla junto con tu ficha."}
+$("ex-vid").addEventListener("change",function(){loadEx(this.files[0],"video");this.value=""});
+$("ex-aud").addEventListener("change",function(){loadEx(this.files[0],"audio");this.value=""});
+var cuentaT=null;
+$("cuenta-go").addEventListener("click",function(){var b=this;if(cuentaT){clearInterval(cuentaT);cuentaT=null;b.textContent="Ensayar con cronómetro";$("cuenta").textContent="60";$("g-a").classList.remove("act");$("g-b").classList.remove("act");return}
+  var t0=Date.now();b.textContent="Detener";$("g-a").classList.add("act");
+  cuentaT=setInterval(function(){var e=(Date.now()-t0)/1000,left=Math.max(0,60-Math.floor(e));$("cuenta").textContent=left;
+    $("g-a").classList.toggle("act",e<15);$("g-b").classList.toggle("act",e>=15&&e<60);
+    if(e>=60){clearInterval(cuentaT);cuentaT=null;b.textContent="Ensayar con cronómetro";$("g-b").classList.remove("act")}},200)});
+
+/* ================= retroalimentar ================= */
+var CARDS=["¿Qué inclinación de tu tabla contradice o debilita tu explicación?","¿Cómo cambiaría tu diferencia si el carrito fuera más pesado? Apóyate en lo que viste en la mesa de pruebas.","Si tu causa fuera la única, ¿la diferencia debería crecer o disminuir al inclinar más? ¿Qué pasa en tu gráfica?","¿Qué tendrías que medir para comprobar que tu causa es la correcta?","Si hubieras marcado la meta un cuadro antes en cada video, ¿tu conclusión seguiría en pie?","¿Qué parte de la diferencia podría deberse a cómo midieron y no a la rampa?","Con una tabla de vidrio y el mismo carrito, ¿qué esperarías ver en la gráfica?","¿Qué le dirías a alguien que piensa que el modelo está mal porque no coincide con tu medición?"];
+var cardNow=null;
+function paintCards(){var done=Object.keys(S.cards);$("card-count").textContent="Respondidas: "+done.length+" (mínimo 2)";
+  $("card-done").innerHTML=done.map(function(i){return '<div class="aviso ok"><b>'+esc(CARDS[i])+'</b>'+esc(S.cards[i])+'</div>'}).join("");
+  $("card-draw").disabled=done.length>=CARDS.length}
+$("card-draw").addEventListener("click",function(){var left=CARDS.map(function(_,i){return i}).filter(function(i){return !(i in S.cards)&&i!==cardNow});if(!left.length)return;
+  cardNow=left[Math.floor(Math.random()*left.length)];$("card-q").textContent=CARDS[cardNow];$("card-a").value="";$("card-err").textContent="";$("card").hidden=false;$("card-a").focus()});
+$("card-save").addEventListener("click",function(){var v=$("card-a").value.trim();if(words(v)<6){$("card-err").textContent="Desarrolla un poco más tu respuesta.";return}
+  S.cards[cardNow]=v;save();$("card").hidden=true;cardNow=null;paintCards()});
+$("card-a").addEventListener("input",function(){$("card-err").textContent=""});
+var CRIT=["Usa datos propios: ángulo y aceleraciones.","Da una causa y la sostiene con un dato.","Dice si la causa aumenta o disminuye la aceleración.","Propone una mejora concreta del montaje."],NIV=["Logrado","En proceso","Falta"];
+$("rubrica").innerHTML=CRIT.map(function(c,i){return '<div class="crit"><span id="cr-'+i+'">'+c+'</span><div class="seg" role="radiogroup" aria-labelledby="cr-'+i+'">'+NIV.map(function(n,j){return '<label><input type="radio" name="cr'+i+'" id="cr'+i+'-'+j+'" value="'+n+'"'+(S.coNiv[i]===n?" checked":"")+'>'+n+'</label>'}).join("")+'</div></div>'}).join("");
+CRIT.forEach(function(_,i){Array.prototype.forEach.call(document.getElementsByName("cr"+i),function(r){r.addEventListener("change",function(){S.coNiv[i]=r.value;save()})})});
+
+/* ================= cierre y ficha ================= */
+var CAUSAS=/fricci|rozamiento|roce|cuadro|video|reacci|tiempo|rueda|gira|rota|aire|[aá]ngulo|empuj|error|medi|superficie/i,fichaTxt="";
+$("z-gen").addEventListener("click",function(){var rev=$("z-rev");rev.innerHTML="";var p=[],e=S.exp.trim();
+  if(S.rows.length<2)p.push(["mide","Faltan mediciones: guarda al menos dos inclinaciones (lo ideal son tres)."]);
+  else if(!S.mano.ok)p.push(["analiza","Falta calcular a mano la primera fila."]);
+  if(!checkCp())p.push(["explica","Falta tu idea en una frase: la causa principal y el dato que la sostiene."]);
+  if(!S.fmt)p.push(["explica","Elige cómo presentarás tu explicación: video, audio o en vivo."]);
+  if(words(e)<25)p.push(["explica","Tu guion es muy breve. Desarróllalo en al menos 25 palabras."]);
+  else{if(!/\d/.test(e))p.push(["explica","Tu guion no incluye ningún dato de tu tabla."]);
+    if(!CAUSAS.test(e))p.push(["explica","No encuentro una causa concreta de la diferencia en tu guion."]);
+    if(!/(mayor|menor|aument|disminu|reduc|baj|sub|m[aá]s|menos|fren)/i.test(e))p.push(["explica","Di si la causa hace que la aceleración salga mayor o menor."])}
+  if(words(S.mej)<6)p.push(["explica","Describe una mejora concreta del montaje."]);
+  if(Object.keys(S.cards).length<2)p.push(["retro","Responde al menos dos tarjetas de preguntas."]);
+  if(words(S.salida)<8)p.push(["cierra","Responde la pregunta sobre el carrito pesado y justifica con tu gráfica."]);
+  if(words(S.trans)<8)p.push(["cierra","Responde la pregunta de los dos amigos en patineta."]);
+  if(words(S.meta)<6)p.push(["cierra","Cuenta qué cambió entre tu apuesta y lo que piensas ahora."]);
+  if(p.length){p.forEach(function(x){var d=document.createElement("div");d.className="aviso ojo";d.innerHTML=esc(x[1])+' <a href="#'+x[0]+'">Ir a completarlo</a>';rev.appendChild(d)});$("ficha-wrap").hidden=true;return}
+  var ok=document.createElement("div");ok.className="aviso ok";ok.innerHTML="<b>Tu trabajo está completo.</b>Esta revisión es automática y solo comprueba lo esencial; tu docente valorará la calidad de tu explicación con la rúbrica.";rev.appendChild(ok);buildFicha()});
+function buildFicha(){var cs=allCalc(),hoy=new Date().toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
+  var retos=RETOS.map(function(R){var x=S.retos[R.id];return R.name+": "+(x?x.pred+(x.ok?" (acertó)":" (no acertó)"):"sin hacer")}).join(" | ");
+  var filas=cs.map(function(c,i){var r=S.rows[i];return c.th+"° ("+r.ang+"): t = "+r.t.map(f2).join(", ")+" s ("+r.tsrc+"), a medida "+f2(c.med)+", modelo "+f2(c.mod)+", diferencia "+(c.dif>0?"+":"")+Math.round(c.dif)+" %"});
+  var co=S.coQuien.trim()?(S.coQuien.trim()+": "+CRIT.map(function(c,i){return (i+1)+") "+(S.coNiv[i]||"sin marcar")}).join(", ")+(S.coCom.trim()?". Sugerencia: "+S.coCom.trim():"")):"Sin revisión de otro equipo";
+  var fm={video:"Video",audio:"Audio sobre la gráfica",vivo:"En vivo"}[S.fmt]+(S.exName&&S.fmt!=="vivo"?" (archivo: "+S.exName+")":"");
+  var rows=[["Nombre",S.nombre||"Sin nombre"],["Equipo y grupo",S.equipo||"Sin dato"],["Fecha",hoy],["Apuestas",retos],["Lanzamientos",String(S.runs)],["Origen de los datos",S.backup?"Datos de respaldo":"Medición del equipo"],["Distancia",f2(cs[0].d)+" m"]];
+  var bl=[["Mediciones",filas.join("\n")],["Semáforo de congruencia",(S.luces||"").split("").map(function(l){return {v:"verde",a:"ámbar",r:"rojo"}[l]}).join(", ")],["Idea en una frase","Causa: "+S.causa.trim()+"\nDato: "+S.dato.trim()],["Formato de la explicación",fm],["Guion",S.exp.trim()],["Mejora del montaje",S.mej.trim()],
+    ["Tarjetas respondidas",Object.keys(S.cards).map(function(i){return "• "+CARDS[i]+"\n  "+S.cards[i]}).join("\n")],["Revisión de otro equipo",co],["Qué cambié después",S.cambio.trim()||"Sin respuesta"],["Salida individual",S.salida.trim()],["Transferencia",S.trans.trim()],["Bitácora",S.meta.trim()]];
+  var h='<h3>Ficha de evidencia</h3><dl>';rows.forEach(function(x){h+="<dt>"+x[0]+"</dt><dd>"+esc(x[1])+"</dd>"});h+="</dl>";bl.forEach(function(x){h+='<div><b>'+x[0]+'</b><div class="txt">'+esc(x[1])+'</div></div>'});
+  $("ficha").innerHTML=h;
+  fichaTxt="FICHA DE EVIDENCIA. Física en mi bolsillo\n"+rows.map(function(x){return x[0]+": "+x[1]}).join("\n")+"\n\n"+bl.map(function(x){return x[0].toUpperCase()+"\n"+x[1]}).join("\n\n");
+  $("f-area").value=fichaTxt;$("ficha-wrap").hidden=false;$("f-share").hidden=!navigator.share;try{$("ficha").scrollIntoView({block:"start"})}catch(e){}}
+$("f-copy").addEventListener("click",function(){var ta=$("f-area"),msg=$("f-msg");
+  function manual(){ta.hidden=false;ta.focus();ta.select();msg.textContent="No se pudo copiar automáticamente. El texto quedó seleccionado: mantén presionado y elige Copiar."}
+  try{navigator.clipboard.writeText(fichaTxt).then(function(){msg.textContent="Ficha copiada. Pégala donde te indique tu docente."},manual)}catch(e){manual()}});
+$("f-share").addEventListener("click",function(){var d={title:"Ficha de evidencia. Física en mi bolsillo",text:fichaTxt};
+  try{if(exFile&&navigator.canShare&&navigator.canShare({files:[exFile]}))d.files=[exFile];navigator.share(d).catch(function(){})}catch(e){}});
+$("f-dl").addEventListener("click",function(){try{var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([fichaTxt],{type:"text/plain"}));a.download="ficha-fisica-en-mi-bolsillo.txt";document.body.appendChild(a);a.click();a.remove()}catch(e){$("f-msg").textContent="No se pudo descargar aquí. Usa Copiar."}});
+
+show();
+})();
+</script>
+</body>
+</html>
