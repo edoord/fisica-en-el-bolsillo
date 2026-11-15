@@ -183,7 +183,8 @@ a{color:var(--boli)}
 .esc-arc{fill:none;stroke:var(--boli);stroke-width:1.6px}.esc-ang{font:700 17px var(--texto);fill:var(--boli)}
 .esc-wheel{fill:#23272b;stroke:#0f1113;stroke-width:1px}.esc-hub{fill:#d0d4d8}
 .esc-tag{font:800 13px var(--titulo);fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.5);stroke-width:2.5px}
-.esc-link{fill:none;stroke:#2b2f33;stroke-width:3.5px;stroke-linecap:round}
+.esc-link{fill:none;stroke:#1c2a4a;stroke-width:6px;stroke-linecap:round}.esc-link-in{fill:none;stroke:#d0d4d8;stroke-width:2.5px;stroke-linecap:round}
+.esc-sole{fill:none;stroke:#c9302a;stroke-width:3px;stroke-linecap:round}
 .esc-pole{fill:none;stroke:var(--tinta);stroke-width:1.6px}.esc-flag{fill:var(--rojo)}
 /* controles */
 .mandos{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -325,7 +326,7 @@ footer{font-size:14px;color:var(--lapiz);margin-top:28px}
       <div class="fila"><label for="c-mb">Masa</label><input type="range" id="c-mb" min="0.1" max="2" step="0.1" value="0.5"><output id="c-mb-o">0.5 kg</output></div>
       <div><button class="boton sec chico" id="c-swap">Intercambiar lugares</button></div></div>
   </div>
-  <p class="gris">El bloque siente toda la fricción μ. Lo que tiene ruedas solo siente la décima parte.</p>
+  <p class="gris">El bloque se apoya directo en la tabla (su base va marcada en rojo) y siente toda la fricción μ. Lo que tiene ruedas solo siente la décima parte. Unidos comparten la misma aceleración, pero cada uno conserva su propia fricción.</p>
 
   <details>
     <summary>El modelo, por si lo necesitas</summary>
@@ -1235,16 +1236,18 @@ const ESC=(()=>{
     return o;
   }
   function body(th,sPos,b,mat,tag){
-    const g=geo(th),l=18,w=20,h=7+b.m*5,r=b.type==="carro"?3:0,yc=(Y0+YF)/2,y0=yc-w/2,y1=yc+w/2,z0=r*1.25,z1=z0+h;
+    const g=geo(th),l=18,w=20,h=7+b.m*5,r=b.type==="carro"?3.6:0,yc=(Y0+YF)/2,y0=yc-w/2,y1=yc+w/2,z0=r*1.7,z1=z0+h;
     const bx=box([g.xt,0,g.Hh],g.u,g.n,sPos-l/2,sPos+l/2,y0,y1,z0,z1);
     let o=`<g data-mat="${mat}" class="esc-body">${bx.svg}`;
-    if(r){const ys=V[1]>=0?y1+.6:y0-.6;for(const a of [sPos-l/2+4.5,sPos+l/2-4.5]){const ring=[];for(let i=0;i<18;i++){const f=i/18*Math.PI*2;ring.push(bx.pt(a+r*Math.cos(f),ys,r+r*Math.sin(f)))}
+    if(!r){const yn=V[1]>=0?y1:y0,ae=dot(g.u)>0?sPos+l/2:sPos-l/2;
+      o+=`<path class="esc-sole" d="${line([bx.pt(sPos-l/2,yn,.5),bx.pt(sPos+l/2,yn,.5)])}${line([bx.pt(ae,y0,.5),bx.pt(ae,y1,.5)])}"/>`}
+    if(r){const ys=V[1]>=0?y1+.6:y0-.6;for(const a of [sPos-l/2+5,sPos+l/2-5]){const ring=[];for(let i=0;i<18;i++){const f=i/18*Math.PI*2;ring.push(bx.pt(a+r*Math.cos(f),ys,r+r*Math.sin(f)))}
       const hc=at(bx.pt(a,ys,r));o+=`<path class="esc-wheel" d="${poly(ring)}"/><circle class="esc-hub" cx="${hc[0].toFixed(1)}" cy="${hc[1].toFixed(1)}" r="1.6"/>`}}
     const tp=at(bx.pt(sPos,yc,z1+6));o+=`<text class="esc-tag" x="${tp[0].toFixed(1)}" y="${(tp[1]+4).toFixed(1)}" text-anchor="middle">${tag}</text></g>`;
     return {svg:o,z:depth(bx.pt(sPos,yc,(z0+z1)/2))};
   }
   function link(th,sA,sB){const g=geo(th),y=(Y0+YF)/2,pt=(a,z)=>[g.xt+a*g.c+z*g.s,y,g.Hh-a*g.s+z*g.c];
-    return {svg:`<path class="esc-link" d="${line([pt(sB+9,7),pt(sA-9,7)])}"/>`,z:depth(pt((sA+sB)/2,7))}}
+    return {svg:`<path class="esc-link" d="${line([pt(sB+9,6),pt(sA-9,6)])}"/><path class="esc-link-in" d="${line([pt(sB+9,6),pt(sA-9,6)])}"/>`,z:depth(pt((sA+sB)/2,6))}}
   function flag(th){const g=geo(th),a=140,yy=V[1]>=0?Y0+1:YF-1,b=[g.xt+a*g.c,yy,g.Hh-a*g.s];
     return {svg:`<path class="esc-pole" d="${line([b,[b[0],b[1],b[2]+20]])}"/><path class="esc-flag" d="${poly([[b[0],b[1],b[2]+20],[b[0]+6*g.c,b[1],b[2]+17-6*g.s*0],[b[0],b[1],b[2]+14]])}"/>`,z:depth(b)-0.01}}
   function handle(th){const g=geo(th);return at([g.xt,nearY(),g.Hh])}
@@ -1292,13 +1295,15 @@ function quien(){$("quien").textContent=[S.nombre,S.equipo].filter(Boolean).join
 quien();
 
 /* ================= física de la mesa de pruebas ================= */
-var BLEN=0.18,S_A=0.30,S_B=0.12,S_END=1.40,DT=1/240;
+var BLEN=0.18,S_A=0.34,S_B=0.16,S_END=1.40,DT=1/240,GAP=0.08;
+function startB(mode){return mode==="unidos"?S_A-BLEN-GAP:S_B}
+function fric(b,th,mu){return muOf(b.type,mu)*b.m*G*Math.cos(th*RAD)}
 function muOf(type,mu){return type==="carro"?mu*0.1:mu}
 function raw(type,th,mu){return G*(Math.sin(th*RAD)-muOf(type,mu)*Math.cos(th*RAD))}
 function simulate(c){
   var two=c.mode!=="uno";var rA=raw(c.A.type,c.th,c.mu),rB=two?raw(c.B.type,c.th,c.mu):0;
   var comb=two?(c.A.m*rA+c.B.m*rB)/(c.A.m+c.B.m):rA;
-  var sA=S_A,sB=S_B,vA=0,vB=0,t=0,fr=[],a0A=null,a0B=null,together0=false,tEnd=null,n=0;
+  var sB0=startB(c.mode),sA=S_A,sB=sB0,vA=0,vB=0,t=0,fr=[],a0A=null,a0B=null,together0=false,tEnd=null,n=0;
   while(t<=12){
     var aA,aB,tog=false;
     if(!two){aA=(vA===0&&rA<=0)?0:rA;aB=0}
@@ -1314,7 +1319,7 @@ function simulate(c){
     if(vA===0&&vB===0&&aA===0&&aB===0)break;
   }
   var link=0;if(two&&together0&&a0A>0)link=c.A.m*(a0A-rA);
-  return {frames:fr,aA:a0A,aB:a0B,t:tEnd,vA:vA,gap:two?(sA-sB-BLEN):0,together:two&&(sA-sB-BLEN)<0.005,link:link,rA:rA,rB:rB,two:two,moved:sA>S_A+0.001||sB>S_B+0.001};
+  return {frames:fr,aA:a0A,aB:a0B,t:tEnd,vA:vA,gap:two?(sA-sB-BLEN):0,together:two&&(sA-sB-BLEN)<0.005,link:link,rA:rA,rB:rB,two:two,moved:sA>S_A+0.001||sB>sB0+0.001};
 }
 window.__fmb={simulate:simulate};
 
@@ -1322,7 +1327,7 @@ var C={mode:"uno",th:30,mu:0,A:{type:"carro",m:0.5},B:{type:"bloque",m:0.5}};
 var sv=$("sv"),cur=null,playing=false,result=null,locked=false,activeReto=null;
 sv.setAttribute("viewBox","0 0 "+ESC.W+" "+ESC.H);
 function setRadio(name,val){Array.prototype.forEach.call(document.getElementsByName(name),function(r){r.checked=r.value===val})}
-function draw(){sv.innerHTML=ESC.render(C,[cur?cur[1]:S_A,cur?cur[2]:S_B]);var h=ESC.handle(C.th),a=$("asa");
+function draw(){sv.innerHTML=ESC.render(C,[cur?cur[1]:S_A,cur?cur[2]:startB(C.mode)]);var h=ESC.handle(C.th),a=$("asa");
   a.style.left=(h[0]/ESC.W*100)+"%";
   var r=sv.getBoundingClientRect(),pr=$("plato").getBoundingClientRect();if(r.height){a.style.top=(r.top-pr.top+h[1]/ESC.H*r.height)+"px"}}
 function syncControls(){setRadio("mode",C.mode);setRadio("ta",C.A.type);setRadio("tb",C.B.type);
@@ -1364,8 +1369,11 @@ function showResult(r){var h="";
   if(!r.two){h+=tile("Aceleración",f2(r.aA),"m/s²")+tile("Tiempo a la meta",r.t?f2(r.t):"–","s")+tile("Rapidez final",f2(r.vA),"m/s")}
   else{h+=tile("Aceleración de A",f2(r.aA),"m/s²")+tile("Aceleración de B",f2(r.aB),"m/s²")+tile("A llega en",r.t?f2(r.t):"–","s");
     if(C.mode==="unidos")h+=tile("Fuerza en la unión",f2(Math.abs(r.link)),"N, "+(Math.abs(r.link)<0.005?"sin esfuerzo":(r.link>0?"B empuja a A":"A jala a B")));
-    else h+=tile("Separación final",r.together?"0":Math.round(r.gap*100),r.together?"cm, bajan juntos":"cm")}
+    else h+=tile("Separación final",r.together?"0":Math.round(r.gap*100),r.together?"cm, bajan juntos":"cm");
+    h+=tile("Fricción sobre A",f2(fric(C.A,C.th,C.mu)),"N, "+(C.A.type==="carro"?"rueda":"roza la tabla"))+tile("Fricción sobre B",f2(fric(C.B,C.th,C.mu)),"N, "+(C.B.type==="carro"?"rueda":"roza la tabla"))}
   $("sim-tiles").innerHTML=h;
+  if(r.moved&&C.mode==="unidos"&&C.A.type!==C.B.type&&C.mu>0){var bl=C.A.type==="bloque"?C.A:C.B;
+    fb($("sim-msg"),"ok","Van unidos, pero no son iguales.","El bloque sigue rozando la tabla: la fricción lo frena con "+f2(fric(bl,C.th,C.mu))+" N. Se mueve a la misma aceleración que el de ruedas solo porque la barra los obliga a ir juntos, con una fuerza de "+f2(Math.abs(r.link))+" N.")}
   if(!r.moved)fb($("sim-msg"),"ojo","No se mueven.","La parte del peso que empuja no alcanza a vencer la fricción. Sube el ángulo o baja μ.");
   else if(!r.t)fb($("sim-msg"),"ojo","A no llegó a la meta.","Revisa quién va delante y cuánta fricción siente.");
   var tb=$("log").tBodies[0],tr=document.createElement("tr");tr.innerHTML="<td>"+describe()+"</td><td>"+C.th+"°</td><td>"+f2(C.mu)+"</td><td>"+f2(r.aA)+"</td><td>"+(r.two?f2(r.aB):"–")+"</td><td>"+(r.t?f2(r.t):"–")+"</td>";
