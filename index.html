@@ -227,6 +227,7 @@ textarea{min-height:104px;resize:vertical}
 .grande{font:800 46px/1 var(--titulo);color:var(--boli);font-variant-numeric:tabular-nums;min-width:150px}
 .nivel{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .vwrap{position:relative}
+.trk{position:absolute;pointer-events:none;overflow:visible}.trk polyline{fill:none;stroke:#ffd23f;stroke-width:3px;vector-effect:non-scaling-stroke;stroke-linejoin:round}
 .mk{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid currentColor;background:rgba(255,255,255,.22);font-size:0;touch-action:none;cursor:grab;padding:0;box-shadow:0 0 0 1.5px #fff,inset 0 0 0 1.5px #fff}
 .mk::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:currentColor;box-shadow:0 0 0 1.5px #fff}
 .mk::after{position:absolute;left:50%;top:-24px;transform:translateX(-50%);font:800 14px var(--titulo);color:#fff;border-radius:4px;padding:0 6px;line-height:20px;white-space:nowrap}
@@ -380,10 +381,11 @@ footer{font-size:14px;color:var(--lapiz);margin-top:28px}
   </div>
   <div id="vid-box" hidden style="display:flex;flex-direction:column;gap:10px">
     <div class="vwrap" id="vwrap"><video id="vid" playsinline muted preload="auto"></video>
+      <svg class="trk" id="trk" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><polyline id="trk-line" points=""/></svg>
       <button class="mk s" id="mk-s" hidden aria-label="Punto de salida: arrástralo para corregirlo">S</button>
       <button class="mk m" id="mk-m" hidden aria-label="Punto de meta: arrástralo para corregirlo">M</button></div>
-    <div class="mandos"><button class="boton chico" id="v-auto">Detección automática</button><span class="gris" id="v-auto-msg" aria-live="polite">Coloca el video un poco antes de soltar el cuerpo y presiona el botón.</span></div>
-    <p class="gris">La página busca dónde y cuándo empieza a moverse el cuerpo (S) y hasta dónde llega (M). Arrastra S o M sobre el video si no quedaron en tu salida y tu meta: los tiempos se recalculan solos. También puedes corregir cada instante con los botones de cuadro.</p>
+    <div class="mandos"><button class="boton chico" id="v-auto">Detección automática</button><span class="gris" id="v-auto-msg" aria-live="polite">Arrastra «Salida» encima del cuerpo y «Meta» a donde debe llegar ese mismo punto. Luego presiona el botón.</span></div>
+    <ol class="lista gris"><li>Deja el video en un cuadro donde el cuerpo todavía esté quieto.</li><li>Arrastra <b>Salida</b> encima del cuerpo (no de la mano) y <b>Meta</b> al lugar donde debe quedar ese mismo punto al llegar.</li><li>Presiona «Detección automática»: la página sigue solo a ese cuerpo, aunque alrededor se mueva una persona.</li><li>Si mueves «Meta», el tiempo se recalcula. También puedes corregir cada instante con los botones de cuadro.</li></ol>
     <div class="mandos">
       <button class="boton sec chico" id="v-b10" aria-label="Retroceder 10 cuadros">−10</button>
       <button class="boton sec chico" id="v-b1" aria-label="Retroceder un cuadro">−1</button>
@@ -1451,7 +1453,7 @@ $("d-calc").addEventListener("click",function(){var h=num($("d-h").value),l=num(
 
 /* ================= cámara: cronómetro de video ================= */
 var vid=$("vid"),FR=1/30,mark={s:null,e:null},vurl=null,det=null,mk={s:null,m:null};
-function loadVideo(file){if(!file)return;try{if(vurl)URL.revokeObjectURL(vurl)}catch(e){}vurl=URL.createObjectURL(file);vid.src=vurl;vid.load();$("vid-box").hidden=false;mark={s:null,e:null};det=null;mk={s:null,m:null};placeMk();autoMsg("Coloca el video un poco antes de soltar el cuerpo y presiona el botón.");paintMarks();$("v-err").textContent=""}
+function loadVideo(file){if(!file)return;try{if(vurl)URL.revokeObjectURL(vurl)}catch(e){}vurl=URL.createObjectURL(file);vid.src=vurl;vid.load();$("vid-box").hidden=false;mark={s:null,e:null};det=null;mk={s:null,m:null};placeMk();autoMsg("Arrastra «Salida» encima del cuerpo y «Meta» a donde debe llegar ese mismo punto. Luego presiona el botón.");paintMarks();$("v-err").textContent=""}
 $("vid-in").addEventListener("change",function(){loadVideo(this.files[0]);this.value=""});
 $("vid-in2").addEventListener("change",function(){loadVideo(this.files[0]);this.value=""});
 vid.addEventListener("error",function(){$("v-err").textContent="No se pudo abrir ese video. Prueba grabar de nuevo."});
@@ -1469,51 +1471,67 @@ function paintMarks(){$("v-start-o").textContent=mark.s===null?"sin marcar":mark
 $("v-start").addEventListener("click",function(){vid.pause();mark.s=vid.currentTime;paintMarks()});
 $("v-goS").addEventListener("click",function(){if(mark.s!==null){vid.pause();vid.currentTime=mark.s}});
 $("v-goE").addEventListener("click",function(){if(mark.e!==null){vid.pause();vid.currentTime=mark.e}});
-/* ---- detección automática: compara cada cuadro con el primero y sigue dónde cambia la imagen ---- */
-var GW=192;
+/* ---- detección automática: sigue al cuerpo por su color a lo largo de la línea Salida → Meta.
+   Solo cuenta lo que tiene el color del punto «Salida» y que antes no estaba ahí, así que una persona moviéndose alrededor no lo confunde. ---- */
+var AW=640;
 function vrect(){var vw=vid.videoWidth||16,vh=vid.videoHeight||9,bw=vid.clientWidth,bh=vid.clientHeight,k=Math.min(bw/vw,bh/vh),w=vw*k,h=vh*k;return {x:vid.offsetLeft+(bw-w)/2,y:vid.offsetTop+(bh-h)/2,w:w,h:h}}
-function placeMk(){var r=vrect();[["s","mk-s"],["m","mk-m"]].forEach(function(p){var e=$(p[1]),m=mk[p[0]];e.hidden=!m;if(m){e.style.left=(r.x+m.x*r.w)+"px";e.style.top=(r.y+m.y*r.h)+"px"}})}
+function placeMk(){var r=vrect();[["s","mk-s"],["m","mk-m"]].forEach(function(p){var e=$(p[1]),m=mk[p[0]];e.hidden=!m;if(m){e.style.left=(r.x+m.x*r.w)+"px";e.style.top=(r.y+m.y*r.h)+"px"}});
+  var tr=$("trk");tr.style.left=r.x+"px";tr.style.top=r.y+"px";tr.style.width=r.w+"px";tr.style.height=r.h+"px";
+  var pl="";if(det&&det.pts){var dm=Math.max.apply(null,det.pts.map(function(p){return p.d}));pl=[0,dm].map(function(d){return ((det.S0.x+det.u.x*d)/det.AW*1000).toFixed(0)+","+((det.S0.y+det.u.y*d)/det.AH*1000).toFixed(0)}).join(" ")}$("trk-line").setAttribute("points",pl)}
 window.addEventListener("resize",placeMk);
-function centroid(mask,W,H){var sx=0,sy=0,n=0;for(var i=0;i<mask.length;i++)if(mask[i]){sx+=i%W;sy+=(i/W)|0;n++}return n?{x:(sx/n+.5)/W,y:(sy/n+.5)/H,n:n}:null}
-function nearCount(mask,W,H,m,R){var cx=m.x*W,cy=m.y*H,r=R*W,n=0,x0=Math.max(0,Math.floor(cx-r)),x1=Math.min(W-1,Math.ceil(cx+r)),y0=Math.max(0,Math.floor(cy-r)),y1=Math.min(H-1,Math.ceil(cy+r));
-  for(var y=y0;y<=y1;y++)for(var x=x0;x<=x1;x++)if(mask[y*W+x]&&(x-cx)*(x-cx)+(y-cy)*(y-cy)<=r*r)n++;return n}
 function autoMsg(t){$("v-auto-msg").textContent=t}
-function recompute(){if(!det||!det.f||!mk.s||!mk.m)return;var F=det.f,W=det.W,H=det.H,iS=-1,iM=-1;
-  for(var i=1;i<F.length;i++){if(nearCount(F[i].mask,W,H,mk.s,0.045)>=2){iS=i;break}}
-  if(iS<0){autoMsg("No hay movimiento cerca de S. Arrástralo sobre el cuerpo en su posición de salida.");return}
-  for(var j=iS+1;j<F.length;j++){if(nearCount(F[j].mask,W,H,mk.m,0.022)>=2){iM=j;break}}
-  if(iM<0){autoMsg("El cuerpo no pasa por M en este tramo del video. Arrástralo sobre la meta.");return}
-  mark.s=F[iS-1].t;mark.e=F[iM].t;paintMarks();vid.pause();vid.currentTime=mark.e;
-  autoMsg("Salida en "+mark.s.toFixed(3)+" s y meta en "+mark.e.toFixed(3)+" s. Revisa los dos cuadros con «Ver» y corrige si hace falta antes de guardar.")}
-function analyze(F,W,H){var cells=W*H,thr=Math.max(6,Math.round(cells*0.0012)),i0=-1;
-  for(var i=1;i<F.length-2;i++){if(F[i].cnt>=thr&&F[i+1].cnt>=thr&&F[i+2].cnt>=thr){i0=i;break}}
-  if(i0<0)return "No detecté ningún movimiento en este tramo. Coloca el video justo antes de soltar el cuerpo e inténtalo otra vez, o marca a mano.";
-  var big=F.filter(function(f){return f.cnt>cells*0.3}).length;if(big>F.length*0.3)return "La imagen completa cambia mucho: parece que la cámara se movió. Apoya el celular al grabar, o marca los cuadros a mano.";
-  var i1=-1;for(var k2=F.length-1;k2>i0;k2--){if(F[k2].fresh&&F[k2].fresh.n>=4){i1=k2;break}}
-  if(i1<0)return "Vi que algo cambia, pero no un recorrido claro. Marca los cuadros a mano.";
-  var s0=centroid(F[i0].mask,W,H),m0=F[i1].fresh;
-  if(Math.hypot(s0.x-m0.x,(s0.y-m0.y)*H/W)<0.12)return "El movimiento que detecté es muy corto. Revisa que en el video se vea todo el recorrido, o marca a mano.";
-  mk.s={x:s0.x,y:s0.y};mk.m={x:m0.x,y:m0.y};return ""}
-$("v-auto").addEventListener("click",function(){if(!vid.duration||(det&&det.busy))return;var W=GW,H=Math.max(40,Math.round(GW*(vid.videoHeight||9)/(vid.videoWidth||16)));
-  var cv2=document.createElement("canvas");cv2.width=W;cv2.height=H;var cx=cv2.getContext("2d",{willReadFrequently:true}),F=[],ref=null,prevMask=null;
-  var t0=Math.max(0,vid.currentTime-0.05),tEnd=Math.min(vid.duration,t0+20);det={busy:true};mk={s:null,m:null};placeMk();autoMsg("Analizando el video…");$("v-auto").disabled=true;
-  function grab(t){try{cx.drawImage(vid,0,0,W,H)}catch(e){return}var d=cx.getImageData(0,0,W,H).data,g=new Uint8Array(W*H);for(var i=0,j=0;i<g.length;i++,j+=4)g[i]=(d[j]*3+d[j+1]*6+d[j+2])/10;
-    if(!ref){ref=g;F.push({t:t,mask:new Uint8Array(W*H),cnt:0,fresh:null});prevMask=F[0].mask;return}
-    var mask=new Uint8Array(W*H),cnt=0,fr=new Uint8Array(W*H);for(var q=0;q<g.length;q++){if(Math.abs(g[q]-ref[q])>22){mask[q]=1;cnt++;if(!prevMask[q])fr[q]=1}}
-    F.push({t:t,mask:mask,cnt:cnt,fresh:centroid(fr,W,H)});prevMask=mask}
-  var finished=false;
-  function finish(){if(finished)return;finished=true;vid.pause();$("v-auto").disabled=false;$("v-play").textContent="Ver lento";
-    if(F.length<6){det=null;autoMsg("No pude leer los cuadros de este video. Marca la salida y la meta a mano.");return}
-    var err=analyze(F,W,H);det={f:F,W:W,H:H};if(err){mk={s:null,m:null};placeMk();autoMsg(err);return}placeMk();recompute()}
-  if(vid.requestVideoFrameCallback){vid.playbackRate=1;vid.currentTime=t0;
-    var cb=function(now,meta){if(finished)return;grab(meta.mediaTime);if(meta.mediaTime>=tEnd-0.02||vid.ended){finish();return}vid.requestVideoFrameCallback(cb)};
-    vid.requestVideoFrameCallback(cb);vid.addEventListener("ended",finish,{once:true});var p=vid.play();if(p&&p.catch)p.catch(function(){finish()});
-    setTimeout(finish,(tEnd-t0)*1000+4000)}
-  else{var t=t0,onSeek=function(){if(finished){vid.removeEventListener("seeked",onSeek);return}grab(vid.currentTime);t+=1/30;if(t>tEnd){vid.removeEventListener("seeked",onSeek);finish();return}vid.currentTime=t};vid.addEventListener("seeked",onSeek);vid.currentTime=t}});
+function compute(){if(!det||!det.pts)return;var P=det.pts,D=det.D,d=P.map(function(p){return p.d}),dmax=Math.max.apply(null,d),i,th=-1;
+  for(i=1;i<P.length-1;i++){if(d[i]>3&&d[i+1]>3){th=i;break}}
+  if(th<0||dmax<D*0.1){autoMsg("No vi que el cuerpo avanzara de «Salida» hacia «Meta». Revisa que «Salida» esté encima del cuerpo (no de la mano) en un cuadro donde todavía esté quieto, y que su color se distinga del fondo. Si no, marca los instantes a mano.");placeMk();return}
+  /* instante de salida: como parte del reposo, la raíz del avance crece en línea recta con el tiempo; se extrapola a cero */
+  var xs=[],ys=[],top=Math.min(dmax,D)*0.25;for(i=th;i<P.length;i++){if(d[i]>4&&d[i]<top){xs.push(P[i].t);ys.push(Math.sqrt(d[i]))}else if(d[i]>=top)break}
+  var t0=P[th-1].t,how="primer cuadro con movimiento";
+  if(xs.length>=5){var n=xs.length,sx=0,sy=0,sxx=0,sxy=0,syy=0;for(i=0;i<n;i++){sx+=xs[i];sy+=ys[i];sxx+=xs[i]*xs[i];sxy+=xs[i]*ys[i];syy+=ys[i]*ys[i]}
+    var m=(n*sxy-sx*sy)/(n*sxx-sx*sx),b=(sy-m*sx)/n,r2=Math.pow(n*sxy-sx*sy,2)/((n*sxx-sx*sx)*(n*syy-sy*sy)),tf=-b/m;
+    if(m>0&&r2>=0.95&&tf<=P[th].t+0.02&&tf>=P[th].t-0.6){t0=Math.max(P[0].t,tf);how="ajuste del movimiento"}}
+  var tA=null,nota="";
+  for(i=1;i<P.length;i++){if(d[i]>=D&&P[i].t>t0){var f=(D-d[i-1])/((d[i]-d[i-1])||1);tA=P[i-1].t+Math.max(0,Math.min(1,f))*(P[i].t-P[i-1].t);break}}
+  if(tA===null){if(dmax>=D*0.85){for(i=1;i<P.length;i++){if(d[i]>=dmax-2){tA=P[i].t;break}}nota=" El cuerpo se detuvo un poco antes de «Meta», así que tomé el instante en que se detiene.";}
+    else{autoMsg("Seguí al cuerpo, pero solo recorrió "+Math.round(dmax/D*100)+" % del camino hasta «Meta». Acerca «Meta» o revisa que el video muestre todo el recorrido.");placeMk();return}}
+  mark.s=Math.round(t0*1000)/1000;mark.e=Math.round(tA*1000)/1000;paintMarks();placeMk();vid.pause();vid.currentTime=mark.e;
+  autoMsg("Listo: salida en "+mark.s.toFixed(3)+" s ("+how+") y meta en "+mark.e.toFixed(3)+" s."+nota+" Revisa los dos instantes con «Ver» y corrige si hace falta antes de guardar.")}
+function runTrack(){if(!vid.duration||(det&&det.busy)||!mk.s||!mk.m)return;var vw=vid.videoWidth||16,vh=vid.videoHeight||9,AH=Math.round(AW*vh/vw);
+  var cvs=document.createElement("canvas");cvs.width=AW;cvs.height=AH;var cx=cvs.getContext("2d",{willReadFrequently:true});
+  var S0={x:mk.s.x*AW,y:mk.s.y*AH},M={x:mk.m.x*AW,y:mk.m.y*AH},D=Math.hypot(M.x-S0.x,M.y-S0.y);
+  if(D<AW*0.08){autoMsg("«Salida» y «Meta» están casi en el mismo punto. Arrastra «Meta» hasta donde llega el cuerpo.");return}
+  var u={x:(M.x-S0.x)/D,y:(M.y-S0.y)/D},WB=Math.max(10,AW*0.035),SMIN=-Math.round(AW*0.12),SMAX=Math.round(D+AW*0.12),NB=SMAX-SMIN+1;
+  /* píxeles de la banda alrededor de la línea Salida → Meta */
+  var idx=[],sb=[],x,y;for(y=0;y<AH;y++)for(x=0;x<AW;x++){var rx=x-S0.x,ry=y-S0.y,sv2=rx*u.x+ry*u.y,w=-rx*u.y+ry*u.x;if(Math.abs(w)<=WB&&sv2>=SMIN&&sv2<=SMAX){idx.push((y*AW+x)*4);sb.push(Math.round(sv2)-SMIN)}}
+  var NP=idx.length,ref=null,oc=null,f0=0,P=[],lastT=null,dRun=0,reachT=null,finished=false,cnt=new Uint16Array(NB);
+  var t0=(det&&det.t0!==undefined&&det.t0!==null)?det.t0:Math.max(0,vid.currentTime),tEnd=Math.min(vid.duration,t0+15);det={busy:true,t0:t0};placeMk();autoMsg("Siguiendo al cuerpo…");$("v-auto").disabled=true;
+  function like(r,g,b){return Math.abs(r-oc[0])+Math.abs(g-oc[1])+Math.abs(b-oc[2])<110&&Math.abs((r-g)-(oc[0]-oc[1]))+Math.abs((g-b)-(oc[1]-oc[2]))<46}
+  function front(){var f=-1,run=0;for(var k=NB-1;k>=0;k--){if(cnt[k]>=3){run++;if(run>=3){f=k+2;break}}else run=0}return f}
+  function grab(t){if(lastT!==null&&t<=lastT)return;try{cx.drawImage(vid,0,0,AW,AH)}catch(e){return}var g=cx.getImageData(0,0,AW,AH).data,i,q;lastT=t;
+    if(!ref){ref=new Uint8Array(NP*3);for(i=0;i<NP;i++){q=idx[i];ref[i*3]=g[q];ref[i*3+1]=g[q+1];ref[i*3+2]=g[q+2]}
+      var rs=[],gs=[],bs=[],cx0=Math.round(S0.x),cy0=Math.round(S0.y);for(var yy=-3;yy<=3;yy++)for(var xx=-3;xx<=3;xx++){var X=Math.max(0,Math.min(AW-1,cx0+xx)),Y=Math.max(0,Math.min(AH-1,cy0+yy)),o=(Y*AW+X)*4;rs.push(g[o]);gs.push(g[o+1]);bs.push(g[o+2])}
+      var med=function(a){a.sort(function(p1,p2){return p1-p2});return a[a.length>>1]};oc=[med(rs),med(gs),med(bs)];
+      cnt.fill(0);for(i=0;i<NP;i++){if(like(ref[i*3],ref[i*3+1],ref[i*3+2]))cnt[sb[i]]++}
+      /* frente inicial del cuerpo: desde «Salida» hacia «Meta» mientras siga habiendo su color */
+      var k=-SMIN,miss=0;f0=k;for(;k<NB;k++){if(cnt[k]>=3){f0=k;miss=0}else if(++miss>3)break}
+      P.push({t:t,d:0});return}
+    cnt.fill(0);for(i=0;i<NP;i++){q=idx[i];var r=g[q],gg=g[q+1],b=g[q+2];if(like(r,gg,b)&&Math.abs(r-ref[i*3])+Math.abs(gg-ref[i*3+1])+Math.abs(b-ref[i*3+2])>48)cnt[sb[i]]++}
+    var f=front(),dd=f<0?0:Math.max(0,f-f0);if(dd>dRun)dRun=dd;P.push({t:t,d:dRun});
+    if(reachT===null&&dRun>=D)reachT=t;if(reachT!==null&&t>reachT+0.3)finish()}
+  function finish(){if(finished)return;finished=true;vid.pause();vid.playbackRate=1;$("v-auto").disabled=false;$("v-play").textContent="Ver lento";
+    if(P.length<6){det={t0:t0};placeMk();autoMsg("No pude leer los cuadros de este video. Marca la salida y la meta a mano.");return}
+    det={pts:P,AW:AW,AH:AH,S0:S0,u:u,D:D,t0:t0};compute()}
+  function go2(){if(vid.requestVideoFrameCallback){vid.playbackRate=1;
+      var cb=function(now,meta){if(finished)return;grab(meta.mediaTime);if(finished)return;if(meta.mediaTime>=tEnd-0.02||vid.ended){finish();return}vid.requestVideoFrameCallback(cb)};
+      vid.requestVideoFrameCallback(cb);vid.addEventListener("ended",finish,{once:true});var p=vid.play();if(p&&p.catch)p.catch(function(){finish()});
+      setTimeout(finish,(tEnd-t0)*1000+5000)}
+    else{var t=t0,onSeek=function(){if(finished){vid.removeEventListener("seeked",onSeek);return}grab(vid.currentTime);t+=1/30;if(finished||t>tEnd){vid.removeEventListener("seeked",onSeek);finish();return}vid.currentTime=t};vid.addEventListener("seeked",onSeek);vid.currentTime=t+0.001}}
+  vid.pause();if(Math.abs(vid.currentTime-t0)>0.01){vid.addEventListener("seeked",function(){go2()},{once:true});vid.currentTime=t0}else go2()}
+$("v-auto").addEventListener("click",runTrack);
 [["s","mk-s"],["m","mk-m"]].forEach(function(p){var e=$(p[1]),dragging=false;
-  e.addEventListener("pointerdown",function(ev){dragging=true;try{e.setPointerCapture(ev.pointerId)}catch(x){}ev.preventDefault()});
+  e.addEventListener("pointerdown",function(ev){if(det&&det.busy)return;dragging=true;try{e.setPointerCapture(ev.pointerId)}catch(x){}ev.preventDefault()});
   e.addEventListener("pointermove",function(ev){if(!dragging)return;var r=vrect(),b=$("vwrap").getBoundingClientRect();mk[p[0]]={x:Math.max(0,Math.min(1,(ev.clientX-b.left-r.x)/r.w)),y:Math.max(0,Math.min(1,(ev.clientY-b.top-r.y)/r.h))};placeMk()});
-  ["pointerup","pointercancel"].forEach(function(n){e.addEventListener(n,function(){if(dragging){dragging=false;recompute()}})})});
+  ["pointerup","pointercancel"].forEach(function(n){e.addEventListener(n,function(){if(!dragging)return;dragging=false;if(det&&det.pts)runTrack()})})});
+vid.addEventListener("loadeddata",function(){if(!mk.s){mk={s:{x:0.3,y:0.45},m:{x:0.7,y:0.6}}}placeMk()});
 $("v-end").addEventListener("click",function(){vid.pause();mark.e=vid.currentTime;paintMarks()});
 $("v-save").addEventListener("click",function(){addTime(mark.e-mark.s,"video");mark={s:null,e:null};paintMarks()});
 $("t-add").addEventListener("click",function(){var t=num($("t-man").value);if(!(t>=0.2&&t<=15)){$("d-err").textContent="Escribe un tiempo entre 0.2 y 15 segundos.";return}addTime(t,"cronómetro");$("t-man").value=""});
